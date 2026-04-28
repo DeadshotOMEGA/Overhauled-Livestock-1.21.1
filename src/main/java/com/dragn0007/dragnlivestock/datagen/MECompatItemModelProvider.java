@@ -4,10 +4,10 @@ import com.dragn0007.dragnlivestock.compat.medievalembroidery.MECompatItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import java.util.function.Supplier;
 
 public class MECompatItemModelProvider extends ItemModelProvider {
     public MECompatItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -222,7 +222,7 @@ public class MECompatItemModelProvider extends ItemModelProvider {
         simpleMedievalItem(MECompatItems.WHITE_YELLOW_CAPARISON_SHOULDER);
     }
 
-    private ItemModelBuilder simpleMedievalItem(RegistryObject<Item> item) {
+    private ItemModelBuilder simpleMedievalItem(Supplier<Item> item) {
         return withExistingParent(item.getId().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation("medievalembroidery","item/" + item.getId().getPath()));

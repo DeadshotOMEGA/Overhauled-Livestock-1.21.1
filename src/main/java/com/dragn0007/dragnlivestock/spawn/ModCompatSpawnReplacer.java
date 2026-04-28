@@ -17,14 +17,14 @@ import net.minecraft.world.entity.animal.goat.Goat;
 import net.minecraft.world.entity.animal.horse.Donkey;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.animal.horse.Mule;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 import java.util.Random;
 
-@Mod.EventBusSubscriber(modid = LivestockOverhaul.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod(modid = LivestockOverhaul.MODID, bus = Mod.Bus.FORGE)
 public class ModCompatSpawnReplacer {
 
     /*
@@ -39,7 +39,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Horse -> Vanilla (so it can be converted into an O-Variant)
         if (LivestockOverhaulCommonConfig.REPLACE_HORSES.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "horse"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "horse"))) {
 
             Entity tfcHorse = event.getEntity();
 
@@ -65,7 +65,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Donkey -> Vanilla (so it can be converted into an O-Variant)
         if (LivestockOverhaulCommonConfig.REPLACE_DONKEYS.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "donkey"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "donkey"))) {
 
             Entity tfcDonkey = event.getEntity();
 
@@ -91,7 +91,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Mule -> Vanilla (so it can be converted into an O-Variant)
         if (LivestockOverhaulCommonConfig.REPLACE_MULES.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "mule"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "mule"))) {
 
             Entity tfcMule = event.getEntity();
 
@@ -117,7 +117,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Pig -> Vanilla (so it can be converted into an O-Variant)
         if (LivestockOverhaulCommonConfig.REPLACE_PIGS.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "pig"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "pig"))) {
 
             Entity tfcPig = event.getEntity();
 
@@ -143,7 +143,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Sheep -> Vanilla (so it can be converted into an O-Variant)
         if (LivestockOverhaulCommonConfig.REPLACE_SHEEP.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "sheep"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "sheep"))) {
 
             Entity tfcSheep = event.getEntity();
 
@@ -169,7 +169,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Cow -> Vanilla (so it can be converted into an O-Variant)
         if (LivestockOverhaulCommonConfig.REPLACE_COWS.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "cow"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "cow"))) {
 
             Entity tfcCow = event.getEntity();
 
@@ -195,7 +195,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Goat -> Vanilla (so it can be converted into an O-Variant)
         if (LivestockOverhaulCommonConfig.REPLACE_GOATS.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "goat"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "goat"))) {
 
             Entity tfcGoat = event.getEntity();
 
@@ -221,7 +221,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Frog -> Vanilla (so it can be converted into an O-Variant)
         if (LivestockOverhaulCommonConfig.REPLACE_FROGS.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "frog"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "frog"))) {
 
             Entity tfcFrog = event.getEntity();
 
@@ -247,7 +247,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Rabbit -> Vanilla (so it can be converted into an O-Variant)
         if (LivestockOverhaulCommonConfig.REPLACE_RABBITS.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "rabbit"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "rabbit"))) {
 
             Entity tfcRabbit = event.getEntity();
 
@@ -273,7 +273,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Cod -> Vanilla (so it can be converted into an O-Variant)
         if (LivestockOverhaulCommonConfig.REPLACE_COD.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "cod"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "cod"))) {
 
             Entity tfcCod = event.getEntity();
 
@@ -299,7 +299,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Salmon -> Vanilla (so it can be converted into an O-Variant)
         if (LivestockOverhaulCommonConfig.REPLACE_SALMON.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "salmon"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "salmon"))) {
 
             Entity tfcSalmon = event.getEntity();
 
@@ -324,7 +324,7 @@ public class ModCompatSpawnReplacer {
         }
 
         // TerraFirmaCraft Caribou -> LO Caribou
-        if (ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "caribou"))) {
+        if (BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "caribou"))) {
 
             Entity tfcCaribou = event.getEntity();
 
@@ -368,7 +368,7 @@ public class ModCompatSpawnReplacer {
 
         // TerraFirmaCraft Camel -> Vanilla
         if (LivestockOverhaulCommonConfig.REPLACE_CAMELS.get() &&
-                ForgeRegistries.ENTITY_TYPES.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "camel"))) {
+                BuiltInRegistries.ENTITY_TYPE.getKey(event.getEntity().getType()).equals(new ResourceLocation("tfc", "camel"))) {
 
             Entity tfcCamel = event.getEntity();
 

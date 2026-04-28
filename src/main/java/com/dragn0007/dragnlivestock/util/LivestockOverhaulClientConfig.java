@@ -1,19 +1,19 @@
 package com.dragn0007.dragnlivestock.util;
 
-import net.minecraftforge.common.ForgeConfigSpec;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class LivestockOverhaulClientConfig {
-    public static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
-    public static final ForgeConfigSpec SPEC;
+    public static final ModConfigSpec.Builder BUILDER = new ModConfigSpec.Builder();
+    public static final ModConfigSpec SPEC;
 
-    public static final ForgeConfigSpec.BooleanValue SIMPLE_MODELS;
-    public static final ForgeConfigSpec.BooleanValue HORSE_COAT_GUI;
-    public static final ForgeConfigSpec.BooleanValue HORSE_SPRINT_TIMER;
-    public static final ForgeConfigSpec.BooleanValue HORSE_SPRINT_HUD;
-    public static final ForgeConfigSpec.BooleanValue RENDER_BRAND_TAGS;
-    public static final ForgeConfigSpec.ConfigValue<Integer> SPRINT_X;
-    public static final ForgeConfigSpec.ConfigValue<Integer> SPRINT_Y;
-    public static final ForgeConfigSpec.BooleanValue ACCESSIBILITY_GENDER_IDENTIFIER;
+    public static final ModConfigSpec.BooleanValue SIMPLE_MODELS;
+    public static final ModConfigSpec.BooleanValue HORSE_COAT_GUI;
+    public static final ModConfigSpec.BooleanValue HORSE_SPRINT_TIMER;
+    public static final ModConfigSpec.BooleanValue HORSE_SPRINT_HUD;
+    public static final ModConfigSpec.BooleanValue RENDER_BRAND_TAGS;
+    public static final ModConfigSpec.ConfigValue<Integer> SPRINT_X;
+    public static final ModConfigSpec.ConfigValue<Integer> SPRINT_Y;
+    public static final ModConfigSpec.BooleanValue ACCESSIBILITY_GENDER_IDENTIFIER;
 
     static {
         BUILDER.push("Client");

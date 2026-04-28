@@ -1,7 +1,6 @@
 package com.dragn0007.dragnlivestock.common.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.network.NetworkEvent.Context;
 
 public interface LivestockOverhaulPacket {
 
@@ -16,6 +15,6 @@ public interface LivestockOverhaulPacket {
 	 * @param sender (Server) The player who sent the packet.
 	 *               <p>(Client) null.</p>
 	 */
-	void handle(Context context);
+	void handle();
 
 }

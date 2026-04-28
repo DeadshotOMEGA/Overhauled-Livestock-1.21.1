@@ -3,8 +3,8 @@ package com.dragn0007.dragnlivestock.datagen.conditions;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
+import net.neoforged.neoforge.common.crafting.conditions.ICondition;
+import net.neoforged.neoforge.common.crafting.conditions.IConditionSerializer;
 
 public class HolidayConfigCondition implements ICondition {
     private final ResourceLocation conditionId;

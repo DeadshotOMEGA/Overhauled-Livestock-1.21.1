@@ -97,13 +97,13 @@ import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.entity.BeehiveBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.common.extensions.IForgeBlockEntity;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinLevelEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.common.extensions.IForgeBlockEntity;
+import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -113,7 +113,7 @@ import java.util.Random;
 
 import static com.dragn0007.dragnlivestock.LivestockOverhaul.MODID;
 
-@Mod.EventBusSubscriber(modid = LivestockOverhaul.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod(modid = LivestockOverhaul.MODID, bus = Mod.Bus.FORGE)
 public class SpawnReplacer {
 
     // This class falls under the LGPL license, as stated in the CODE_LICENSE.txt

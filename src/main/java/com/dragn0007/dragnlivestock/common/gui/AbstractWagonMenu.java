@@ -13,8 +13,8 @@ import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.PickaxeItem;
 import net.minecraft.world.item.ShovelItem;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.items.SlotItemHandler;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.items.SlotItemHandler;
 
 public abstract class AbstractWagonMenu extends AbstractContainerMenu {
 

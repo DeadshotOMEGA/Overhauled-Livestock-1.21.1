@@ -2,9 +2,9 @@ package com.dragn0007.dragnlivestock.datagen.conditions;
 
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.common.crafting.conditions.ICondition;
-import net.minecraftforge.common.crafting.conditions.IConditionSerializer;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.neoforge.common.crafting.conditions.ICondition;
+import net.neoforged.neoforge.common.crafting.conditions.IConditionSerializer;
+import net.neoforged.fml.ModList;
 
 public class TFCCondition implements ICondition {
     private final ResourceLocation conditionId;

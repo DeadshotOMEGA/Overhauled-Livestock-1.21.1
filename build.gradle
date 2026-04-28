@@ -1,172 +1,151 @@
-buildscript {
-    repositories {
-        maven { url = 'https://maven.minecraftforge.net/' }
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-    }
-}
-
 plugins {
-    id 'eclipse'
-    id 'idea'
+    id 'java-library'
     id 'maven-publish'
-    id 'net.minecraftforge.gradle' version '[6.0,6.2)'
-    id 'org.parchmentmc.librarian.forgegradle' version '1.+'
-    id 'org.spongepowered.mixin' version '0.7.+'
+    id 'net.neoforged.moddev' version '2.0.141'
+    id 'idea'
 }
 
-apply plugin: 'org.spongepowered.mixin'
-
-
-version = '1.20.1-3.6'
+version = mod_version
 group = mod_group_id
 
 base {
     archivesName = 'DragNs_Livestock_Overhaul'
 }
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
-println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
-minecraft {
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+}
 
-    mappings channel: mapping_channel, version: mapping_version
+sourceSets.main.java {
+    // TODO: Re-enable subsystems incrementally after NeoForge 1.21.1 API migration.
+    exclude 'com/dragn0007/dragnlivestock/blocks/**'
+    exclude 'com/dragn0007/dragnlivestock/client/**'
+    exclude 'com/dragn0007/dragnlivestock/common/**'
+    exclude 'com/dragn0007/dragnlivestock/compat/jade/**'
+    exclude 'com/dragn0007/dragnlivestock/compat/medievalembroidery/**'
+    exclude 'com/dragn0007/dragnlivestock/datagen/**'
+    exclude 'com/dragn0007/dragnlivestock/entities/**'
+    exclude 'com/dragn0007/dragnlivestock/items/**'
+    exclude 'com/dragn0007/dragnlivestock/spawn/**'
+    exclude 'com/dragn0007/dragnlivestock/util/ThrownFertilizedEgg.java'
+}
 
-    copyIdeResources = true
-    accessTransformer = file("src/main/resources/META-INF/accesstransformer.cfg")
+repositories {
+    maven {
+        name = 'GeckoLib'
+        url = 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+        content {
+            includeGroupByRegex('software\\.bernie.*')
+            includeGroup('com.eliotlash.mclib')
+        }
+    }
+    maven {
+        name = 'BlameJared'
+        url = 'https://maven.blamejared.com'
+    }
+    maven {
+        name = 'CurseMaven'
+        url = 'https://www.cursemaven.com'
+    }
+}
+
+neoForge {
+    version = project.neo_version
+
+    parchment {
+        mappingsVersion = project.parchment_mappings_version
+        minecraftVersion = project.parchment_minecraft_version
+    }
+
+    accessTransformers = project.files('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
-        configureEach {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                "${mod_id}" {
-                    source sourceSets.main
-                }
-            }
-        }
-
         client {
-            property 'forge.enabledGameTestNamespaces', mod_id
+            client()
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         server {
-            property 'forge.enabledGameTestNamespaces', mod_id
-            args '--nogui'
+            server()
+            programArgument '--nogui'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         gameTestServer {
-            property 'forge.enabledGameTestNamespaces', mod_id
+            type = 'gameTestServer'
+            systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
         }
 
         data {
-            workingDirectory project.file('run-data')
+            data()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+        }
 
-            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        configureEach {
+            systemProperty 'forge.logging.markers', 'REGISTRIES'
+            logLevel = org.slf4j.event.Level.DEBUG
+        }
+    }
+
+    mods {
+        "${mod_id}" {
+            sourceSet(sourceSets.main)
         }
     }
 }
 
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-repositories {
-
-    maven {
-        name = 'GeckoLib'
-        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
-        content {
-            includeGroupByRegex("software\\.bernie.*")
-            includeGroup("com.eliotlash.mclib")
-        }
-
-    maven {
-            url 'https://www.cursemaven.com'
-        }
-
-    maven {
-            url 'https://maven.blamejared.com'
-        }
-
-    }
+configurations {
+    runtimeClasspath.extendsFrom localRuntime
 }
 
 dependencies {
-    minecraft "net.minecraftforge:forge:1.20.1-47.3.0" // 47.2.0 is Recommended
-    implementation fg.deobf('software.bernie.geckolib:geckolib-forge-1.20.1:4.4.4')
+    implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.8.4'
 
-    compileOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84.1-FORGE:api")
-    runtimeOnly fg.deobf("vazkii.patchouli:Patchouli:1.20.1-84.1-FORGE")
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-
-    //compat stuff
-    implementation fg.deobf("curse.maven:medieval-embroidery-986913:6428164")
-//    implementation fg.deobf("curse.maven:dragns-deadly-dinos-reconstructed-1293235:6689976")
-
-    //nbtenks made by gotenks
-//    implementation fg.deobf("curse.maven:nbtenks-1255827:6514118")
-
-    implementation fg.deobf("curse.maven:jade-324717:5876199")
-    implementation fg.deobf("curse.maven:xaeros-minimap-263420:6012833")
-    implementation fg.deobf("curse.maven:jei-238222:6075247")
-    implementation fg.deobf("curse.maven:worldedit-225608:4586218")
-//    implementation fg.deobf("curse.maven:lmft-656346:4892299")
-//    implementation fg.deobf("curse.maven:architectury-api-419699:5137938")
-//    implementation fg.deobf("curse.maven:leawind-third-person-930880:5961735")
-//    implementation fg.deobf("curse.maven:minecraft-comes-alive-reborn-535291:6254999")
-    implementation fg.deobf("curse.maven:patchouli-306770:4966125")
-//    implementation fg.deobf("curse.maven:terrafirmacraft-302973:5943050")
+    // TODO: Re-enable optional runtime compat dependencies once NeoForge 1.21.1 artifact compatibility is verified.
+    // localRuntime "vazkii.patchouli:Patchouli:<neoforge-version>"
+    // localRuntime "curse.maven:medieval-embroidery-986913:<fileId>"
 }
 
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
-            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
-            forge_version: forge_version, forge_version_range: forge_version_range,
-            loader_version_range: loader_version_range,
-            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-            mod_authors: mod_authors, mod_description: mod_description,
+            minecraft_version      : minecraft_version,
+            minecraft_version_range: minecraft_version_range,
+            neo_version            : neo_version,
+            loader_version_range   : loader_version_range,
+            mod_id                 : mod_id,
+            mod_name               : mod_name,
+            mod_license            : mod_license,
+            mod_version            : mod_version,
+            mod_authors            : mod_authors,
+            mod_description        : mod_description,
     ]
     inputs.properties replaceProperties
 
-    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+    filesMatching(['META-INF/neoforge.mods.toml', 'pack.mcmeta']) {
         expand replaceProperties + [project: project]
     }
 }
-
-//mixin {
-//    add sourceSets.main, 'mixins.dragnlivestock.refmap.json'
-//    config 'mixins.dragnlivestock.json'
-//}
 
 tasks.named('jar', Jar).configure {
     manifest {
         attributes([
                 'Specification-Title'     : mod_id,
                 'Specification-Vendor'    : mod_authors,
-                'Specification-Version'   : '1', // We are version 1 of ourselves
+                'Specification-Version'   : '1',
                 'Implementation-Title'    : project.name,
                 'Implementation-Version'  : project.jar.archiveVersion,
                 'Implementation-Vendor'   : mod_authors,
                 'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
-
-    finalizedBy 'reobfJar'
 }
-
 
 publishing {
     publications {
         register('mavenJava', MavenPublication) {
-            artifact jar
+            from components.java
         }
     }
     repositories {
@@ -177,5 +156,12 @@ publishing {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+    options.encoding = 'UTF-8'
+}
+
+idea {
+    module {
+        downloadSources = true
+        downloadJavadoc = true
+    }
 }

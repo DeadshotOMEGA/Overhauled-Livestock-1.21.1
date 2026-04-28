@@ -51,10 +51,10 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.network.NetworkHooks;
-import net.minecraftforge.registries.ForgeRegistries;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.network.NetworkHooks;
+import net.minecraft.core.registries.BuiltInRegistries;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
@@ -2127,7 +2127,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 
 			if (ModList.get().isLoaded("create")) {
 				ResourceLocation resourceLocation = new ResourceLocation("create", "superglue");
-				Item createSuperglue = ForgeRegistries.ITEMS.getValue(resourceLocation);
+				Item createSuperglue = BuiltInRegistries.ITEM.getValue(resourceLocation);
 				if (random.nextDouble() < 0.25) {
 					this.spawnAtLocation(createSuperglue.getDefaultInstance());
 				}

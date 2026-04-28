@@ -52,8 +52,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.Tags;
-import net.minecraftforge.network.NetworkHooks;
+import net.neoforged.neoforge.common.Tags;
+import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
@@ -66,7 +66,7 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
         return inventory;
     }
 
-    public net.minecraftforge.common.util.LazyOptional<?> itemHandler = null;
+    public net.neoforged.neoforge.common.util.LazyOptional<?> itemHandler = null;
 
     public static final float MAX_HEALTH = generateMaxHealth((p_272504_) -> {
         return p_272504_ - 1;
@@ -248,7 +248,7 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
 
         this.inventory.addListener(this);
         this.updateContainerEquipment();
-        this.itemHandler = net.minecraftforge.common.util.LazyOptional.of(() -> new net.minecraftforge.items.wrapper.InvWrapper(this.inventory));
+        this.itemHandler = net.neoforged.neoforge.common.util.LazyOptional.of(() -> new net.neoforged.neoforge.items.wrapper.InvWrapper(this.inventory));
     }
 
     @Override

@@ -1,15 +1,5 @@
 package com.dragn0007.dragnlivestock;
 
-import com.dragn0007.dragnlivestock.blocks.LOBlocks;
-import com.dragn0007.dragnlivestock.common.gui.LOMenuTypes;
-import com.dragn0007.dragnlivestock.common.network.LOPackets;
-import com.dragn0007.dragnlivestock.compat.medievalembroidery.MECompatItems;
-import com.dragn0007.dragnlivestock.datagen.conditions.BlanketConfigCondition;
-import com.dragn0007.dragnlivestock.datagen.conditions.HolidayConfigCondition;
-import com.dragn0007.dragnlivestock.datagen.conditions.TFCCondition;
-import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.items.LOItemGroup;
-import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulClientConfig;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.mojang.logging.LogUtils;
@@ -17,17 +7,12 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.ModLoadingContext;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModList;
+import net.neoforged.fml.common.Mod;
 import org.slf4j.Logger;
-import software.bernie.geckolib.GeckoLib;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -38,31 +23,13 @@ public class LivestockOverhaul {
     public static final String MODID = "dragnlivestock";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public LivestockOverhaul() {
-        IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
+    public LivestockOverhaul(IEventBus eventBus) {
+        // TODO: Re-enable content/system registration after registry + networking port.
+        NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent warn) -> warn(warn.getEntity()));
 
-        LOItems.register(eventBus);
-        LOItemGroup.register(eventBus);
-        LOBlocks.register(eventBus);
-        EntityTypes.ENTITY_TYPES.register(eventBus);
-        LOMenuTypes.register(eventBus);
-        LOSoundEvents.REGISTRY.register(eventBus);
-        LOPackets.register();
-        MinecraftForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent warn) -> warn(warn.getEntity()));
+        // TODO: Re-enable config registration once NeoForge 1.21 config bootstrap is reintroduced.
 
-        CraftingHelper.register(new BlanketConfigCondition.Serializer(new ResourceLocation(MODID, "blanket_config_condition")));
-        CraftingHelper.register(new HolidayConfigCondition.Serializer(new ResourceLocation(MODID, "holiday_config_condition")));
-        CraftingHelper.register(new TFCCondition.Serializer(new ResourceLocation(MODID, "tfc_condition")));
-
-        if (ModList.get().isLoaded("medievalembroidery")) {
-            MECompatItems.register(eventBus);
-        }
-
-        GeckoLib.initialize();
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, LivestockOverhaulClientConfig.SPEC, "livestock-overhaul-client.toml");
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, LivestockOverhaulCommonConfig.SPEC, "livestock-overhaul-common.toml");
-
-        MinecraftForge.EVENT_BUS.register(this);
+        NeoForge.EVENT_BUS.register(this);
 
         System.out.println("[DragN's Livestock Overhaul!] Registered Livestock Overhaul.");
         System.out.println("[DragN's Livestock Overhaul!] Do not remove this mod without running the Failsafe Config!");
@@ -131,6 +98,6 @@ public class LivestockOverhaul {
     }
 
     public static ResourceLocation id(String path) {
-        return new ResourceLocation(MODID, path);
+        return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 }

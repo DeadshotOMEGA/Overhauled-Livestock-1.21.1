@@ -36,273 +36,273 @@ import com.dragn0007.dragnlivestock.entities.wagon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredRegister;
+import net.minecraft.core.registries.BuiltInRegistries;
+import java.util.function.Supplier;
 
 import static com.dragn0007.dragnlivestock.LivestockOverhaul.MODID;
 
 public class EntityTypes {
 
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(BuiltInRegistries.ENTITY_TYPE, MODID);
 
-    public static final RegistryObject<EntityType<OHorse>> O_HORSE_ENTITY = ENTITY_TYPES.register("o_horse",
+    public static final Supplier<EntityType<OHorse>> O_HORSE_ENTITY = ENTITY_TYPES.register("o_horse",
             () -> EntityType.Builder.of(OHorse::new,
                     MobCategory.CREATURE)
                     .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"o_horse").toString()));
 
-    public static final RegistryObject<EntityType<ODonkey>> O_DONKEY_ENTITY = ENTITY_TYPES.register("o_donkey",
+    public static final Supplier<EntityType<ODonkey>> O_DONKEY_ENTITY = ENTITY_TYPES.register("o_donkey",
             () -> EntityType.Builder.of(ODonkey::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.1f)
                     .build(new ResourceLocation(MODID,"o_donkey").toString()));
 
-    public static final RegistryObject<EntityType<OMule>> O_MULE_ENTITY = ENTITY_TYPES.register("o_mule",
+    public static final Supplier<EntityType<OMule>> O_MULE_ENTITY = ENTITY_TYPES.register("o_mule",
             () -> EntityType.Builder.of(OMule::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"o_mule").toString()));
 
-    public static final RegistryObject<EntityType<OCow>> O_COW_ENTITY = ENTITY_TYPES.register("o_cow",
+    public static final Supplier<EntityType<OCow>> O_COW_ENTITY = ENTITY_TYPES.register("o_cow",
             () -> EntityType.Builder.of(OCow::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"o_cow").toString()));
 
-    public static final RegistryObject<EntityType<OChicken>> O_CHICKEN_ENTITY = ENTITY_TYPES.register("o_chicken",
+    public static final Supplier<EntityType<OChicken>> O_CHICKEN_ENTITY = ENTITY_TYPES.register("o_chicken",
             () -> EntityType.Builder.of(OChicken::new,
                             MobCategory.CREATURE)
                     .sized(0.7f,0.7f)
                     .build(new ResourceLocation(MODID,"o_chicken").toString()));
 
-    public static final RegistryObject<EntityType<OSalmon>> O_SALMON_ENTITY = ENTITY_TYPES.register("o_salmon",
+    public static final Supplier<EntityType<OSalmon>> O_SALMON_ENTITY = ENTITY_TYPES.register("o_salmon",
             () -> EntityType.Builder.of(OSalmon::new,
                             MobCategory.WATER_AMBIENT)
                     .sized(0.7f, 0.4f)
                     .build(new ResourceLocation(MODID,"o_salmon").toString()));
 
-    public static final RegistryObject<EntityType<OCod>> O_COD_ENTITY = ENTITY_TYPES.register("o_cod",
+    public static final Supplier<EntityType<OCod>> O_COD_ENTITY = ENTITY_TYPES.register("o_cod",
             () -> EntityType.Builder.of(OCod::new,
                             MobCategory.WATER_AMBIENT)
                     .sized(0.5f, 0.3f)
                     .build(new ResourceLocation(MODID,"o_cod").toString()));
 
-    public static final RegistryObject<EntityType<OBee>> O_BEE_ENTITY = ENTITY_TYPES.register("o_bee",
+    public static final Supplier<EntityType<OBee>> O_BEE_ENTITY = ENTITY_TYPES.register("o_bee",
             () -> EntityType.Builder.of(OBee::new,
                             MobCategory.CREATURE)
                     .sized(0.3f, 0.3f)
                     .build(new ResourceLocation(MODID,"o_bee").toString()));
 
-    public static final RegistryObject<EntityType<ORabbit>> O_RABBIT_ENTITY = ENTITY_TYPES.register("o_rabbit",
+    public static final Supplier<EntityType<ORabbit>> O_RABBIT_ENTITY = ENTITY_TYPES.register("o_rabbit",
             () -> EntityType.Builder.of(ORabbit::new,
                             MobCategory.CREATURE)
                     .sized(0.7f, 0.7f)
                     .build(new ResourceLocation(MODID,"o_rabbit").toString()));
 
-    public static final RegistryObject<EntityType<OLlama>> O_LLAMA_ENTITY = ENTITY_TYPES.register("o_llama",
+    public static final Supplier<EntityType<OLlama>> O_LLAMA_ENTITY = ENTITY_TYPES.register("o_llama",
             () -> EntityType.Builder.of(OLlama::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"o_llama").toString()));
 
-    public static final RegistryObject<EntityType<OSheep>> O_SHEEP_ENTITY = ENTITY_TYPES.register("o_sheep",
+    public static final Supplier<EntityType<OSheep>> O_SHEEP_ENTITY = ENTITY_TYPES.register("o_sheep",
             () -> EntityType.Builder.of(OSheep::new,
                             MobCategory.CREATURE)
                     .sized(0.8f,0.8f)
                     .build(new ResourceLocation(MODID,"o_sheep").toString()));
 
-    public static final RegistryObject<EntityType<OPig>> O_PIG_ENTITY = ENTITY_TYPES.register("o_pig",
+    public static final Supplier<EntityType<OPig>> O_PIG_ENTITY = ENTITY_TYPES.register("o_pig",
             () -> EntityType.Builder.of(OPig::new,
                             MobCategory.CREATURE)
                     .sized(1f,1f)
                     .build(new ResourceLocation(MODID,"o_pig").toString()));
 
-    public static final RegistryObject<EntityType<OMooshroom>> O_MOOSHROOM_ENTITY = ENTITY_TYPES.register("o_mooshroom",
+    public static final Supplier<EntityType<OMooshroom>> O_MOOSHROOM_ENTITY = ENTITY_TYPES.register("o_mooshroom",
             () -> EntityType.Builder.of(OMooshroom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"o_mooshroom").toString()));
 
-    public static final RegistryObject<EntityType<OCamel>> O_CAMEL_ENTITY = ENTITY_TYPES.register("o_camel",
+    public static final Supplier<EntityType<OCamel>> O_CAMEL_ENTITY = ENTITY_TYPES.register("o_camel",
             () -> EntityType.Builder.of(OCamel::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,2.5f)
                     .build(new ResourceLocation(MODID,"o_camel").toString()));
 
-    public static final RegistryObject<EntityType<OGoat>> O_GOAT_ENTITY = ENTITY_TYPES.register("o_goat",
+    public static final Supplier<EntityType<OGoat>> O_GOAT_ENTITY = ENTITY_TYPES.register("o_goat",
             () -> EntityType.Builder.of(OGoat::new,
                             MobCategory.CREATURE)
                     .sized(0.9f,1f)
                     .build(new ResourceLocation(MODID,"o_goat").toString()));
 
-    public static final RegistryObject<EntityType<FarmGoat>> FARM_GOAT_ENTITY = ENTITY_TYPES.register("farm_goat",
+    public static final Supplier<EntityType<FarmGoat>> FARM_GOAT_ENTITY = ENTITY_TYPES.register("farm_goat",
             () -> EntityType.Builder.of(FarmGoat::new,
                             MobCategory.CREATURE)
                     .sized(0.9f,1f)
                     .build(new ResourceLocation(MODID,"farm_goat").toString()));
 
-    public static final RegistryObject<EntityType<OFrog>> O_FROG_ENTITY = ENTITY_TYPES.register("o_frog",
+    public static final Supplier<EntityType<OFrog>> O_FROG_ENTITY = ENTITY_TYPES.register("o_frog",
             () -> EntityType.Builder.of(OFrog::new,
                             MobCategory.CREATURE)
                     .sized(0.3f, 0.3f)
                     .build(new ResourceLocation(MODID,"o_frog").toString()));
 
-    public static final RegistryObject<EntityType<Grub>> GRUB_ENTITY = ENTITY_TYPES.register("grub",
+    public static final Supplier<EntityType<Grub>> GRUB_ENTITY = ENTITY_TYPES.register("grub",
             () -> EntityType.Builder.of(Grub::new,
                             MobCategory.CREATURE)
                     .sized(0.3f, 0.3f)
                     .build(new ResourceLocation(MODID,"grub").toString()));
 
 
-    public static final RegistryObject<EntityType<Unicorn>> UNICORN_ENTITY = ENTITY_TYPES.register("unicorn",
+    public static final Supplier<EntityType<Unicorn>> UNICORN_ENTITY = ENTITY_TYPES.register("unicorn",
             () -> EntityType.Builder.of(Unicorn::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"unicorn").toString()));
 
-    public static final RegistryObject<EntityType<HeadlessHorseman>> HEADLESS_HORSEMAN_ENTITY = ENTITY_TYPES.register("headless_horseman",
+    public static final Supplier<EntityType<HeadlessHorseman>> HEADLESS_HORSEMAN_ENTITY = ENTITY_TYPES.register("headless_horseman",
             () -> EntityType.Builder.of(HeadlessHorseman::new,
                             MobCategory.MONSTER)
                     .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"headless_horseman").toString()));
 
 
-//    public static final RegistryObject<EntityType<CoveredWagon>> COVERED_WAGON_ENTITY = ENTITY_TYPES.register("covered_wagon",
+//    public static final Supplier<EntityType<CoveredWagon>> COVERED_WAGON_ENTITY = ENTITY_TYPES.register("covered_wagon",
 //            () -> EntityType.Builder.of(CoveredWagon::new,
 //                            MobCategory.CREATURE)
 //                    .sized(3f,0.8f)
 //                    .build(new ResourceLocation(MODID,"covered_wagon").toString()));
 
-    public static final RegistryObject<EntityType<WheatMoobloom>> WHEAT_MOOBLOOM_ENTITY = ENTITY_TYPES.register("wheat_moobloom",
+    public static final Supplier<EntityType<WheatMoobloom>> WHEAT_MOOBLOOM_ENTITY = ENTITY_TYPES.register("wheat_moobloom",
             () -> EntityType.Builder.of(WheatMoobloom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"wheat_moobloom").toString()));
 
-    public static final RegistryObject<EntityType<SweetBerryMoobloom>> SWEET_BERRY_MOOBLOOM_ENTITY = ENTITY_TYPES.register("sweet_berry_moobloom",
+    public static final Supplier<EntityType<SweetBerryMoobloom>> SWEET_BERRY_MOOBLOOM_ENTITY = ENTITY_TYPES.register("sweet_berry_moobloom",
             () -> EntityType.Builder.of(SweetBerryMoobloom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"sweet_berry_moobloom").toString()));
 
-    public static final RegistryObject<EntityType<PumpkinMoobloom>> PUMPKIN_MOOBLOOM_ENTITY = ENTITY_TYPES.register("pumpkin_moobloom",
+    public static final Supplier<EntityType<PumpkinMoobloom>> PUMPKIN_MOOBLOOM_ENTITY = ENTITY_TYPES.register("pumpkin_moobloom",
             () -> EntityType.Builder.of(PumpkinMoobloom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"pumpkin_moobloom").toString()));
 
-    public static final RegistryObject<EntityType<PotatoMoobloom>> POTATO_MOOBLOOM_ENTITY = ENTITY_TYPES.register("potato_moobloom",
+    public static final Supplier<EntityType<PotatoMoobloom>> POTATO_MOOBLOOM_ENTITY = ENTITY_TYPES.register("potato_moobloom",
             () -> EntityType.Builder.of(PotatoMoobloom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"potato_moobloom").toString()));
 
-    public static final RegistryObject<EntityType<MelonMoobloom>> MELON_MOOBLOOM_ENTITY = ENTITY_TYPES.register("melon_moobloom",
+    public static final Supplier<EntityType<MelonMoobloom>> MELON_MOOBLOOM_ENTITY = ENTITY_TYPES.register("melon_moobloom",
             () -> EntityType.Builder.of(MelonMoobloom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"melon_moobloom").toString()));
 
-    public static final RegistryObject<EntityType<GlowBerryMoobloom>> GLOW_BERRY_MOOBLOOM_ENTITY = ENTITY_TYPES.register("glow_berry_moobloom",
+    public static final Supplier<EntityType<GlowBerryMoobloom>> GLOW_BERRY_MOOBLOOM_ENTITY = ENTITY_TYPES.register("glow_berry_moobloom",
             () -> EntityType.Builder.of(GlowBerryMoobloom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"glow_berry_moobloom").toString()));
 
-    public static final RegistryObject<EntityType<FloweringMoobloom>> FLOWERING_MOOBLOOM_ENTITY = ENTITY_TYPES.register("flowering_moobloom",
+    public static final Supplier<EntityType<FloweringMoobloom>> FLOWERING_MOOBLOOM_ENTITY = ENTITY_TYPES.register("flowering_moobloom",
             () -> EntityType.Builder.of(FloweringMoobloom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"flowering_moobloom").toString()));
 
-    public static final RegistryObject<EntityType<CarrotMoobloom>> CARROT_MOOBLOOM_ENTITY = ENTITY_TYPES.register("carrot_moobloom",
+    public static final Supplier<EntityType<CarrotMoobloom>> CARROT_MOOBLOOM_ENTITY = ENTITY_TYPES.register("carrot_moobloom",
             () -> EntityType.Builder.of(CarrotMoobloom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"carrot_moobloom").toString()));
 
-    public static final RegistryObject<EntityType<BeetrootMoobloom>> BEETROOT_MOOBLOOM_ENTITY = ENTITY_TYPES.register("beetroot_moobloom",
+    public static final Supplier<EntityType<BeetrootMoobloom>> BEETROOT_MOOBLOOM_ENTITY = ENTITY_TYPES.register("beetroot_moobloom",
             () -> EntityType.Builder.of(BeetrootMoobloom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"beetroot_moobloom").toString()));
 
-    public static final RegistryObject<EntityType<AzaleaMoobloom>> AZALEA_MOOBLOOM_ENTITY = ENTITY_TYPES.register("azalea_moobloom",
+    public static final Supplier<EntityType<AzaleaMoobloom>> AZALEA_MOOBLOOM_ENTITY = ENTITY_TYPES.register("azalea_moobloom",
             () -> EntityType.Builder.of(AzaleaMoobloom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"azalea_moobloom").toString()));
 
-    public static final RegistryObject<EntityType<Caribou>> CARIBOU_ENTITY = ENTITY_TYPES.register("caribou",
+    public static final Supplier<EntityType<Caribou>> CARIBOU_ENTITY = ENTITY_TYPES.register("caribou",
             () -> EntityType.Builder.of(Caribou::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,2f)
                     .build(new ResourceLocation(MODID,"caribou").toString()));
 
-    public static final RegistryObject<EntityType<PeachMoobloom>> PEACH_MOOBLOOM_ENTITY = ENTITY_TYPES.register("peach_moobloom",
+    public static final Supplier<EntityType<PeachMoobloom>> PEACH_MOOBLOOM_ENTITY = ENTITY_TYPES.register("peach_moobloom",
             () -> EntityType.Builder.of(PeachMoobloom::new,
                             MobCategory.CREATURE)
                     .sized(1.5f,1.5f)
                     .build(new ResourceLocation(MODID,"peach_moobloom").toString()));
 
 
-    public static final RegistryObject<EntityType<CoveredWagon>> COVERED_WAGON = ENTITY_TYPES.register("covered_wagon",
+    public static final Supplier<EntityType<CoveredWagon>> COVERED_WAGON = ENTITY_TYPES.register("covered_wagon",
             () -> EntityType.Builder.of(CoveredWagon::new,
                     MobCategory.MISC)
                     .sized(3.0F, 1.0F)
                     .build(new ResourceLocation(MODID, "covered_wagon").toString()));
-    public static final RegistryObject<EntityType<LivestockWagon>> LIVESTOCK_WAGON = ENTITY_TYPES.register("livestock_wagon",
+    public static final Supplier<EntityType<LivestockWagon>> LIVESTOCK_WAGON = ENTITY_TYPES.register("livestock_wagon",
             () -> EntityType.Builder.of(LivestockWagon::new,
                             MobCategory.MISC)
                     .sized(3.0F, 4.0F)
                     .build(new ResourceLocation(MODID, "livestock_wagon").toString()));
-    public static final RegistryObject<EntityType<LumberWagon>> LUMBER_WAGON = ENTITY_TYPES.register("lumber_wagon",
+    public static final Supplier<EntityType<LumberWagon>> LUMBER_WAGON = ENTITY_TYPES.register("lumber_wagon",
             () -> EntityType.Builder.of(LumberWagon::new,
                             MobCategory.MISC)
                     .sized(3.0F, 3.0F)
                     .build(new ResourceLocation(MODID, "lumber_wagon").toString()));
-    public static final RegistryObject<EntityType<GoodsCart>> GOODS_CART = ENTITY_TYPES.register("goods_cart",
+    public static final Supplier<EntityType<GoodsCart>> GOODS_CART = ENTITY_TYPES.register("goods_cart",
             () -> EntityType.Builder.of(GoodsCart::new,
                             MobCategory.MISC)
                     .sized(1.5F, 2.0F)
                     .build(new ResourceLocation(MODID, "goods_cart").toString()));
-    public static final RegistryObject<EntityType<DogSled>> DOG_SLED = ENTITY_TYPES.register("dog_sled",
+    public static final Supplier<EntityType<DogSled>> DOG_SLED = ENTITY_TYPES.register("dog_sled",
             () -> EntityType.Builder.of(DogSled::new,
                             MobCategory.MISC)
                     .sized(1.5F, 0.5F)
                     .build(new ResourceLocation(MODID, "dog_sled").toString()));
-    public static final RegistryObject<EntityType<MiningCart>> MINING_CART = ENTITY_TYPES.register("mining_cart",
+    public static final Supplier<EntityType<MiningCart>> MINING_CART = ENTITY_TYPES.register("mining_cart",
             () -> EntityType.Builder.of(MiningCart::new,
                             MobCategory.MISC)
                     .sized(1.5F, 2.0F)
                     .build(new ResourceLocation(MODID, "mining_cart").toString()));
-    public static final RegistryObject<EntityType<TransportCart>> TRANSPORT_CART = ENTITY_TYPES.register("transport_cart",
+    public static final Supplier<EntityType<TransportCart>> TRANSPORT_CART = ENTITY_TYPES.register("transport_cart",
             () -> EntityType.Builder.of(TransportCart::new,
                             MobCategory.MISC)
                     .sized(1.5F, 1.5F)
                     .build(new ResourceLocation(MODID, "transport_cart").toString()));
-    public static final RegistryObject<EntityType<Plow>> PLOW = ENTITY_TYPES.register("plow",
+    public static final Supplier<EntityType<Plow>> PLOW = ENTITY_TYPES.register("plow",
             () -> EntityType.Builder.of(Plow::new,
                             MobCategory.MISC)
                     .sized(1.5F, 2.0F)
                     .build(new ResourceLocation(MODID, "plow").toString()));
-    public static final RegistryObject<EntityType<Mower>> MOWER = ENTITY_TYPES.register("mower",
+    public static final Supplier<EntityType<Mower>> MOWER = ENTITY_TYPES.register("mower",
             () -> EntityType.Builder.of(Mower::new,
                             MobCategory.MISC)
                     .sized(1.5F, 2.0F)
                     .build(new ResourceLocation(MODID, "mower").toString()));
-    public static final RegistryObject<EntityType<Coupe>> COUPE = ENTITY_TYPES.register("coupe",
+    public static final Supplier<EntityType<Coupe>> COUPE = ENTITY_TYPES.register("coupe",
             () -> EntityType.Builder.of(Coupe::new,
                             MobCategory.MISC)
                     .sized(3.0F, 4.0F)
                     .build(new ResourceLocation(MODID, "coupe").toString()));
-    public static final RegistryObject<EntityType<Cabriolet>> CABRIOLET = ENTITY_TYPES.register("cabriolet",
+    public static final Supplier<EntityType<Cabriolet>> CABRIOLET = ENTITY_TYPES.register("cabriolet",
             () -> EntityType.Builder.of(Cabriolet::new,
                             MobCategory.MISC)
                     .sized(1.5F, 1.5F)
                     .build(new ResourceLocation(MODID, "cabriolet").toString()));
-    public static final RegistryObject<EntityType<Sleigh>> SLEIGH = ENTITY_TYPES.register("sleigh",
+    public static final Supplier<EntityType<Sleigh>> SLEIGH = ENTITY_TYPES.register("sleigh",
             () -> EntityType.Builder.of(Sleigh::new,
                             MobCategory.MISC)
                     .sized(1.5F, 1.5F)

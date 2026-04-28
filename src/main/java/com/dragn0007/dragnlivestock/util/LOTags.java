@@ -90,10 +90,10 @@ public class LOTags {
         public static final TagKey<Item> SHEARS = forgeTag("shears");
 
         public static TagKey<Item> forgeTag (String name) {
-            return ItemTags.create(new ResourceLocation("forge", name));
+            return ItemTags.create(ResourceLocation.fromNamespaceAndPath("forge", name));
         }
         public static TagKey<Item> tag (String name) {
-            return ItemTags.create(new ResourceLocation(LivestockOverhaul.MODID, name));
+            return ItemTags.create(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, name));
         }
     }
 
@@ -116,10 +116,10 @@ public class LOTags {
         public static final TagKey<EntityType<?>> MINING_CART = tag("mining_cart");
 
         public static TagKey<EntityType<?>> forgeTag(String name) {
-            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge", name));
+            return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath("forge", name));
         }
         public static TagKey<EntityType<?>> tag(String name) {
-            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation(LivestockOverhaul.MODID, name));
+            return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, name));
         }
     }
 
@@ -130,7 +130,7 @@ public class LOTags {
         public static final TagKey<Block> RABBIT_HUTCHES = forgeTag("rabbit_hutches");
 
         public static TagKey<Block> forgeTag (String name) {
-            return BlockTags.create(new ResourceLocation("forge", name));
+            return BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", name));
         }
     }
 

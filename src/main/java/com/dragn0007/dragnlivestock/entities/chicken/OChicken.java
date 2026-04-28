@@ -40,9 +40,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.living.BabyEntitySpawnEvent;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent;
+import net.neoforged.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.core.animatable.GeoAnimatable;
@@ -920,7 +920,7 @@ public class OChicken extends Animal implements GeoEntity, Taggable {
             for (int i = 0; i < eggCount; i++) {
                 OChicken child = (OChicken) this.getBreedOffspring(pLevel, father);
                 final BabyEntitySpawnEvent event = new BabyEntitySpawnEvent(this, father, child);
-                final boolean cancelled = MinecraftForge.EVENT_BUS.post(event);
+                final boolean cancelled = NeoForge.EVENT_BUS.post(event);
                 child = (OChicken) event.getChild();
                 if (cancelled) {
                     this.setAge(6000);

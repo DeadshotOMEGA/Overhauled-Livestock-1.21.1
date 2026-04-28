@@ -5,10 +5,10 @@ import com.dragn0007.dragnlivestock.items.LOItems;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
-import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import java.util.function.Supplier;
 
 public class LOItemModelProvider extends ItemModelProvider {
     public LOItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -511,19 +511,19 @@ public class LOItemModelProvider extends ItemModelProvider {
         simpleItem(LOItems.HALLOW_HEART);
     }
 
-    private ItemModelBuilder simpleItem(RegistryObject<Item> item) {
+    private ItemModelBuilder simpleItem(Supplier<Item> item) {
         return withExistingParent(item.getId().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"item/" + item.getId().getPath()));
     }
 
-    private ItemModelBuilder advancedItem(RegistryObject<Item> item, String getTextureName) {
+    private ItemModelBuilder advancedItem(Supplier<Item> item, String getTextureName) {
         return withExistingParent(item.getId().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation(LivestockOverhaul.MODID,"item/" + getTextureName));
     }
 
-    private ItemModelBuilder simpleMedievalItem(RegistryObject<Item> item) {
+    private ItemModelBuilder simpleMedievalItem(Supplier<Item> item) {
         return withExistingParent(item.getId().getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
                 new ResourceLocation("medievalembroidery","item/" + item.getId().getPath()));

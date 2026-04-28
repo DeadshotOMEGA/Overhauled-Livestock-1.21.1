@@ -24,8 +24,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraftforge.fml.ModList;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.fml.ModList;
+import java.util.function.Supplier;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -75,7 +75,7 @@ public class PeachMoobloom extends AbstractMoobloom implements GeoEntity {
                 Class<?> TJPItems = Class.forName("com.dragn0007.thatsjustpeachy.item.TJPItems");
                 Field shearedItem = TJPItems.getField("PEACH");
                 Object peachRegistryObject = shearedItem.get(null);
-                Item peachItem = ((RegistryObject<Item>) peachRegistryObject).get();
+                Item peachItem = ((Supplier<Item>) peachRegistryObject).get();
 
                 this.spawnAtLocation(peachItem);
                 this.spawnAtLocation(peachItem);
@@ -90,7 +90,7 @@ public class PeachMoobloom extends AbstractMoobloom implements GeoEntity {
                 Class<?> TJPItems = Class.forName("com.dragn0007.thatsjustpeachy.item.TJPItems");
                 Field milkedItem = TJPItems.getField("PEACH_JUICE");
                 Object peachJuiceRegistryObject = milkedItem.get(null);
-                Item peachJuiceItem = ((RegistryObject<Item>) peachJuiceRegistryObject).get();
+                Item peachJuiceItem = ((Supplier<Item>) peachJuiceRegistryObject).get();
                 ItemStack itemstack1 = ItemUtils.createFilledResult(itemStack, player, new ItemStack(peachJuiceItem));
                 player.setItemInHand(hand, itemstack1);
                 replenishMilkCounter = 0;

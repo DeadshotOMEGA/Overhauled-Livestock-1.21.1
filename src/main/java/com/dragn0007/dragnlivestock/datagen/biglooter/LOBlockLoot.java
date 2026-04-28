@@ -5,7 +5,7 @@ import com.dragn0007.dragnlivestock.items.LOItems;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
-import net.minecraftforge.registries.RegistryObject;
+import java.util.function.Supplier;
 
 import java.util.Set;
 
