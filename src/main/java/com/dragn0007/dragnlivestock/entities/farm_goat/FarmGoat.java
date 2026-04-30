@@ -950,14 +950,16 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 
 	public void setColorByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getBreed() == 0) { //classic
 			this.setVariant(random.nextInt(FarmGoatModel.Variant.values().length));
 		}
 
 		if (this.getBreed() == 1) { //meat
-			if (random.nextDouble() <= 0.03) {
+			if (appearanceRoll <= 0.03) {
 				this.setVariant(random.nextInt(FarmGoatModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.03) {
+			} else if (appearanceRoll > 0.03) {
 				int[] variants = {0, 1, 3, 4, 7, 10, 11, 12, 13, 14, 15, 16, 18, 20};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
@@ -973,9 +975,9 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 4) { //fibrous
-			if (random.nextDouble() <= 0.03) {
+			if (appearanceRoll <= 0.03) {
 				this.setVariant(random.nextInt(FarmGoatModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.03) {
+			} else if (appearanceRoll > 0.03) {
 				int[] variants = {0, 1, 3, 4, 7, 10, 11, 12, 13, 14, 15, 16, 18, 20};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
@@ -983,9 +985,9 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 5) { //dairy
-			if (random.nextDouble() <= 0.06) {
+			if (appearanceRoll <= 0.06) {
 				this.setVariant(random.nextInt(FarmGoatModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.06) {
+			} else if (appearanceRoll > 0.06) {
 				int[] variants = {2, 5, 6, 8, 9, 17, 19};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
@@ -996,14 +998,16 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 
 	public void setMarkingByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getBreed() == 0) { //classic
 			this.setOverlayVariant(random.nextInt(FarmGoatMarkingLayer.Overlay.values().length));
 		}
 
 		if (this.getBreed() == 1) { //meat
-			if (random.nextDouble() <= 0.10) {
+			if (appearanceRoll <= 0.10) {
 				this.setOverlayVariant(random.nextInt(FarmGoatMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.10 && random.nextDouble() < 0.40) {
+			} else if (appearanceRoll > 0.10 && appearanceRoll < 0.40) {
 				int[] variants = {22, 23, 24, 25};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
@@ -1013,9 +1017,9 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 2) { //nubian
-			if (random.nextDouble() <= 0.10) {
+			if (appearanceRoll <= 0.10) {
 				this.setOverlayVariant(random.nextInt(FarmGoatMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.10) {
+			} else if (appearanceRoll > 0.10) {
 				int[] variants = {29, 30, 31, 32};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
@@ -1027,17 +1031,17 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 4) { //fibrous
-			if (random.nextDouble() <= 0.02) {
+			if (appearanceRoll <= 0.02) {
 				this.setOverlayVariant(random.nextInt(FarmGoatMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.02) {
+			} else if (appearanceRoll > 0.02) {
 				this.setOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 5) { //dairy
-			if (random.nextDouble() <= 0.15) {
+			if (appearanceRoll <= 0.15) {
 				this.setOverlayVariant(random.nextInt(FarmGoatMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			} else if (appearanceRoll > 0.15) {
 				this.setOverlayVariant(0);
 			}
 		}
@@ -1046,14 +1050,16 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 
 	public void setFaceMarkingByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getBreed() == 0) { //classic
 			this.setFaceOverlayVariant(random.nextInt(FarmGoatFaceMarkingLayer.Overlay.values().length));
 		}
 
 		if (this.getBreed() == 1) { //meat
-			if (random.nextDouble() <= 0.05) {
+			if (appearanceRoll <= 0.05) {
 				this.setFaceOverlayVariant(random.nextInt(FarmGoatFaceMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05 && random.nextDouble() < 0.40) {
+			} else if (appearanceRoll > 0.05 && appearanceRoll < 0.40) {
 				int[] variants = {0, 1, 2, 3, 4, 5, 7, 8, 9, 11};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setFaceOverlayVariant(variants[randomIndex]);
@@ -1065,9 +1071,9 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 2) { //nubian
-			if (random.nextDouble() <= 0.05) {
+			if (appearanceRoll <= 0.05) {
 				this.setFaceOverlayVariant(random.nextInt(FarmGoatFaceMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {6, 10};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setFaceOverlayVariant(variants[randomIndex]);
@@ -1079,17 +1085,17 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 4) { //fibrous
-			if (random.nextDouble() <= 0.02) {
+			if (appearanceRoll <= 0.02) {
 				this.setFaceOverlayVariant(random.nextInt(FarmGoatFaceMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.02) {
+			} else if (appearanceRoll > 0.02) {
 				this.setFaceOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 5) { //dairy
-			if (random.nextDouble() <= 0.15) {
+			if (appearanceRoll <= 0.15) {
 				this.setFaceOverlayVariant(random.nextInt(FarmGoatFaceMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			} else if (appearanceRoll > 0.15) {
 				this.setFaceOverlayVariant(0);
 			}
 		}

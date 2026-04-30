@@ -893,10 +893,12 @@ public class ORabbit extends TamableAnimal implements GeoEntity {
 	}
 
 	public void setColorByWildStatus() {
+
+		final double appearanceRoll = random.nextDouble();
 		if (getBreed() != 4) {
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setVariant(random.nextInt(ORabbitModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 2, 3, 8, 10, 11, 12};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
@@ -907,16 +909,18 @@ public class ORabbit extends TamableAnimal implements GeoEntity {
 	}
 
 	public void setMarkingByWildStatus() {
+
+		final double appearanceRoll = random.nextDouble();
 		if (getBreed() != 4) {
-			if (random.nextDouble() < 0.10) {
+			if (appearanceRoll < 0.10) {
 				this.setOverlayVariant(random.nextInt(ORabbitMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.10) {
+			} else if (appearanceRoll > 0.10) {
 				this.setOverlayVariant(0);
 			}
 		} else if (getBreed() == 4) {
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(ORabbitMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				this.setOverlayVariant(0);
 			}
 		}

@@ -611,6 +611,8 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		this.entityData.set(BREED, breed);
 	}
 
+	private transient boolean breedVariantAssigned;
+
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
 	public ResourceLocation getTextureLocation() {
 		if (!LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
@@ -625,6 +627,11 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
 	}
+	private void assignBreedVariant(int variant) {
+		this.breedVariantAssigned = true;
+		this.setVariant(variant);
+	}
+
 
 	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OCow.class, EntityDataSerializers.INT);
 	public String getOverlayLocation() {return BovineMarkingOverlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation.toString();}
@@ -992,126 +999,136 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 
 	public void setColorByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+		this.breedVariantAssigned = false;
+
+
 		if (this.getBreed() == 0) { //angus
-			if (random.nextDouble() < 0.05) {
-				this.setVariant(random.nextInt(OCowModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
-				this.setVariant(0);
+			if (appearanceRoll < 0.05) {
+				this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
+				this.assignBreedVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 1) {
-			if (random.nextDouble() < 0.05) { //longhorn
-				this.setVariant(random.nextInt(OCowModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			if (appearanceRoll < 0.05) { //longhorn
+				this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {2, 3, 4, 5, 7, 8, 10, 12};
 				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
+				this.assignBreedVariant(variants[randomIndex]);
 			}
 		}
 
 		if (this.getBreed() == 2) {
-			if (random.nextDouble() < 0.05) { //brahman
-				this.setVariant(random.nextInt(OCowModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			if (appearanceRoll < 0.05) { //brahman
+				this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 8, 9, 11, 12, 13};
 				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
+				this.assignBreedVariant(variants[randomIndex]);
 			}
 		}
 
 		if (this.getBreed() == 3) { //mini
-			this.setVariant(random.nextInt(OCowModel.Variant.values().length));
+			this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
 		}
 
 		if (this.getBreed() == 4) { //watusi
-			if (random.nextDouble() < 0.05) {
-				this.setVariant(random.nextInt(OCowModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			if (appearanceRoll < 0.05) {
+				this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {2, 3, 5, 10, 12};
 				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
+				this.assignBreedVariant(variants[randomIndex]);
 			}
 		}
 
 		if (this.getBreed() == 5) {
-			if (random.nextDouble() < 0.05) { //corriente
-				this.setVariant(random.nextInt(OCowModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			if (appearanceRoll < 0.05) { //corriente
+				this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 2, 3, 4, 5, 8, 9, 10, 12};
 				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
+				this.assignBreedVariant(variants[randomIndex]);
 			}
 		}
 
 		if (this.getBreed() == 6) {
-			if (random.nextDouble() < 0.05) { //holstein
-				this.setVariant(random.nextInt(OCowModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			if (appearanceRoll < 0.05) { //holstein
+				this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 2, 9, 10};
 				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
+				this.assignBreedVariant(variants[randomIndex]);
 			}
 		}
 
 		if (this.getBreed() == 7) {
-			if (random.nextDouble() < 0.05) { //jersey
-				this.setVariant(random.nextInt(OCowModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			if (appearanceRoll < 0.05) { //jersey
+				this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {2, 8};
 				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
+				this.assignBreedVariant(variants[randomIndex]);
 			}
 		}
 
 		if (this.getBreed() == 8) {
-			if (random.nextDouble() < 0.05) { //hereford
-				this.setVariant(random.nextInt(OCowModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			if (appearanceRoll < 0.05) { //hereford
+				this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {2, 5, 10, 12};
 				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
+				this.assignBreedVariant(variants[randomIndex]);
 			}
 		}
 
 		if (this.getBreed() == 9) { //highland
-			this.setVariant(random.nextInt(OCowModel.Variant.values().length));
+			this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
 		}
 
 		if (this.getBreed() == 10) {
-			if (random.nextDouble() < 0.15) { //ox
-				this.setVariant(random.nextInt(OCowModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			if (appearanceRoll < 0.15) { //ox
+				this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
+			} else if (appearanceRoll > 0.15) {
 				int[] variants = {2, 8, 10, 12};
 				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
+				this.assignBreedVariant(variants[randomIndex]);
 			}
 		}
 
 		if (this.getBreed() == 11) {
-			if (random.nextDouble() < 0.15) { //spanish fighting
-				this.setVariant(random.nextInt(OCowModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.15) {
-				this.setVariant(0);
+			if (appearanceRoll < 0.15) { //spanish fighting
+				this.assignBreedVariant(random.nextInt(OCowModel.Variant.values().length));
+			} else if (appearanceRoll > 0.15) {
+				this.assignBreedVariant(0);
 			}
 		}
 
+	
+		if (!this.breedVariantAssigned) {
+			this.setVariant(random.nextInt(OCowModel.Variant.values().length));
+		}
 	}
 
 	public void setMarkingByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getBreed() == 0) { //angus
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(BovineMarkingOverlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				this.setOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 1) {
-			if (random.nextDouble() < 0.05) { //longhorn
+			if (appearanceRoll < 0.05) { //longhorn
 				this.setOverlayVariant(random.nextInt(BovineMarkingOverlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {9, 10, 11, 13, 14, 15, 17, 18, 19};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
@@ -1119,9 +1136,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 2) {
-			if (random.nextDouble() < 0.05) { //brahman
+			if (appearanceRoll < 0.05) { //brahman
 				this.setOverlayVariant(random.nextInt(BovineMarkingOverlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				this.setOverlayVariant(0);
 			}
 		}
@@ -1131,9 +1148,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 4) { //watusi
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(BovineMarkingOverlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 9, 10, 11, 13, 14, 15, 17, 18, 19};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
@@ -1141,9 +1158,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 5) {
-			if (random.nextDouble() < 0.05) { //corriente
+			if (appearanceRoll < 0.05) { //corriente
 				this.setOverlayVariant(random.nextInt(BovineMarkingOverlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 1, 5, 9, 13, 17, 21, 22, 23};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
@@ -1151,9 +1168,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 6) {
-			if (random.nextDouble() < 0.05) { //holstein
+			if (appearanceRoll < 0.05) { //holstein
 				this.setOverlayVariant(random.nextInt(BovineMarkingOverlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {2, 3, 5, 10, 11, 18, 19, 21, 22, 23, 24};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
@@ -1161,9 +1178,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 7) {
-			if (random.nextDouble() < 0.05) { //jersey
+			if (appearanceRoll < 0.05) { //jersey
 				this.setOverlayVariant(random.nextInt(BovineMarkingOverlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 21, 22, 23};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
@@ -1171,33 +1188,33 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 8) {
-			if (random.nextDouble() < 0.05) { //hereford
+			if (appearanceRoll < 0.05) { //hereford
 				this.setOverlayVariant(random.nextInt(BovineMarkingOverlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				this.setOverlayVariant(25);
 			}
 		}
 
 		if (this.getBreed() == 9) { //highland
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(BovineMarkingOverlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				this.setOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 10) { //ox
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setOverlayVariant(random.nextInt(BovineMarkingOverlay.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			} else if (appearanceRoll > 0.15) {
 				this.setOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 11) { //spanish fighting
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setOverlayVariant(random.nextInt(BovineMarkingOverlay.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			} else if (appearanceRoll > 0.15) {
 				this.setOverlayVariant(0);
 			}
 		}
@@ -1206,18 +1223,20 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 
 	public void setHornsByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getBreed() == 0) { //angus
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				this.setHornVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 1) {
-			if (random.nextDouble() < 0.05) { //longhorn
+			if (appearanceRoll < 0.05) { //longhorn
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {2, 3, 4};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setHornVariant(variants[randomIndex]);
@@ -1225,9 +1244,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 2) {
-			if (random.nextDouble() < 0.05) { //brahman
+			if (appearanceRoll < 0.05) { //brahman
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 8, 9, 10};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setHornVariant(variants[randomIndex]);
@@ -1235,9 +1254,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 3) {
-			if (random.nextDouble() < 0.05) { //mini
+			if (appearanceRoll < 0.05) { //mini
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 8, 10};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setHornVariant(variants[randomIndex]);
@@ -1245,9 +1264,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 4) { //watusi
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {5, 6};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setHornVariant(variants[randomIndex]);
@@ -1255,9 +1274,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 5) {
-			if (random.nextDouble() < 0.05) { //corriente
+			if (appearanceRoll < 0.05) { //corriente
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {1, 7, 8, 10};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setHornVariant(variants[randomIndex]);
@@ -1265,33 +1284,33 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 6) {
-			if (random.nextDouble() < 0.05) { //holstein
+			if (appearanceRoll < 0.05) { //holstein
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				this.setHornVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 7) {
-			if (random.nextDouble() < 0.05) { //jersey
+			if (appearanceRoll < 0.05) { //jersey
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				this.setHornVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 8) {
-			if (random.nextDouble() < 0.05) { //hereford
+			if (appearanceRoll < 0.05) { //hereford
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				this.setHornVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 9) {
-			if (random.nextDouble() < 0.05) { //highland
+			if (appearanceRoll < 0.05) { //highland
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {1, 7, 8, 10};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setHornVariant(variants[randomIndex]);
@@ -1299,9 +1318,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 10) {
-			if (random.nextDouble() < 0.25) { //ox
+			if (appearanceRoll < 0.25) { //ox
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.25) {
+			} else if (appearanceRoll > 0.25) {
 				int[] variants = {1, 3, 7, 8, 10};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setHornVariant(variants[randomIndex]);
@@ -1309,9 +1328,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 11) {
-			if (random.nextDouble() < 0.25) { //spanish fighting
+			if (appearanceRoll < 0.25) { //spanish fighting
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.25) {
+			} else if (appearanceRoll > 0.25) {
 				this.setHornVariant(8);
 			}
 		}

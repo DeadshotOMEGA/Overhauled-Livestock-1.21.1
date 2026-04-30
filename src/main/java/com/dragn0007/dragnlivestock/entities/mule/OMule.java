@@ -647,12 +647,14 @@ public class OMule extends AbstractOMount implements GeoEntity {
 
 	public void setFeatheringByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getBreed() == 0) {
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setFeathering(2);
-			} else if (random.nextDouble() < 0.50 && random.nextDouble() > 0.05) {
+			} else if (appearanceRoll < 0.50 && appearanceRoll > 0.05) {
 				this.setFeathering(1);
-			} else if (random.nextDouble() > 0.50) {
+			} else if (appearanceRoll > 0.50) {
 				this.setFeathering(0);
 			} else {
 				this.setFeathering(0);
@@ -660,11 +662,11 @@ public class OMule extends AbstractOMount implements GeoEntity {
 		}
 
 		if (this.getBreed() == 1) {
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setFeathering(0);
-			} else if (random.nextDouble() < 0.30 && random.nextDouble() > 0.05) {
+			} else if (appearanceRoll < 0.30 && appearanceRoll > 0.05) {
 				this.setFeathering(1);
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				this.setFeathering(2);
 			} else {
 				this.setFeathering(2);
@@ -672,11 +674,11 @@ public class OMule extends AbstractOMount implements GeoEntity {
 		}
 
 		if (this.getBreed() == 2) {
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setFeathering(0);
-			} else if (random.nextDouble() < 0.50 && random.nextDouble() > 0.15) {
+			} else if (appearanceRoll < 0.50 && appearanceRoll > 0.15) {
 				this.setFeathering(2);
-			} else if (random.nextDouble() > 0.50) {
+			} else if (appearanceRoll > 0.50) {
 				this.setFeathering(1);
 			} else {
 				this.setFeathering(1);
@@ -687,6 +689,8 @@ public class OMule extends AbstractOMount implements GeoEntity {
 
 	public void setEyeColorByChance() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		//white, cream and mostly-white or bald mules have a better chance of gaining blue or green eyes
 		if (this.getVariant() == 6 || this.getVariant() == 15 || this.getOverlayVariant() == 2 || this.getOverlayVariant() == 8
 				|| this.getOverlayVariant() == 9 || this.getOverlayVariant() == 10 || this.getOverlayVariant() == 15
@@ -694,25 +698,25 @@ public class OMule extends AbstractOMount implements GeoEntity {
 				|| this.getOverlayVariant() == 26 || this.getOverlayVariant() == 32 || this.getOverlayVariant() == 34
 				|| this.getOverlayVariant() == 36 || this.getOverlayVariant() == 37 || this.getOverlayVariant() == 38
 				|| this.getOverlayVariant() == 39) {
-			if (random.nextDouble() < 0.005) {
+			if (appearanceRoll < 0.005) {
 				this.setEyeVariant(7 + this.getRandom().nextInt(9)); //heterochromic
-			} else if (random.nextDouble() < 0.10 && random.nextDouble() > 0.005) {
+			} else if (appearanceRoll < 0.10 && appearanceRoll > 0.005) {
 				this.setEyeVariant(6); //green
-			} else if (random.nextDouble() < 0.30 && random.nextDouble() > 0.10) {
+			} else if (appearanceRoll < 0.30 && appearanceRoll > 0.10) {
 				this.setEyeVariant(5); //blue
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				this.setEyeVariant(this.getRandom().nextInt(4)); //random (between dark brown and dark blue)
 			} else {
 				this.setEyeVariant(0);
 			}
 		} else {
-			if (random.nextDouble() < 0.005) {
+			if (appearanceRoll < 0.005) {
 				this.setEyeVariant(7 + this.getRandom().nextInt(9));
-			} else if (random.nextDouble() < 0.03 && random.nextDouble() > 0.005) {
+			} else if (appearanceRoll < 0.03 && appearanceRoll > 0.005) {
 				this.setEyeVariant(6);
-			} else if (random.nextDouble() < 0.10 && random.nextDouble() > 0.03) {
+			} else if (appearanceRoll < 0.10 && appearanceRoll > 0.03) {
 				this.setEyeVariant(5);
-			} else if (random.nextDouble() > 0.10) {
+			} else if (appearanceRoll > 0.10) {
 				this.setEyeVariant(this.getRandom().nextInt(4));
 			} else {
 				this.setEyeVariant(0);
@@ -723,10 +727,12 @@ public class OMule extends AbstractOMount implements GeoEntity {
 
 	public void setColor() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		//mules tend to come in browns, grey and black but can uncommonly come in other colors
-		if (random.nextDouble() < 0.20) {
+		if (appearanceRoll < 0.20) {
 			this.setOverlayVariant(random.nextInt(OMuleModel.Variant.values().length));
-		} else if (random.nextDouble() > 0.20) {
+		} else if (appearanceRoll > 0.20) {
 			int[] variants = {0, 1, 2, 3, 4, 8, 9, 10, 13, 14};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.setVariant(variants[randomIndex]);
@@ -736,10 +742,12 @@ public class OMule extends AbstractOMount implements GeoEntity {
 
 	public void setMarking() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		//mules dont usually come with markings but definitely can. generally come with small ones
-		if (random.nextDouble() < 0.20) {
+		if (appearanceRoll < 0.20) {
 			this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
-		} else if (random.nextDouble() > 0.20) {
+		} else if (appearanceRoll > 0.20) {
 			int[] variants = {0, 4, 6, 7, 11, 12, 13, 14, 18, 19, 21, 22, 23, 29, 30, 32, 33, 35, 39, 41, 42, 43};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.setVariant(variants[randomIndex]);

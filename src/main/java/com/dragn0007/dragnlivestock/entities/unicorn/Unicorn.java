@@ -712,35 +712,37 @@ public class Unicorn extends OHorse implements GeoEntity {
 
 	public void setFeatheringByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		//overworlds are more likely to have half or full feathering, but have a small chance of having none.
 		if (this.getSpecies() == 0) {
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setFeathering(0);
-			} else if (random.nextDouble() < 0.50 && random.nextDouble() > 0.15) {
+			} else if (appearanceRoll < 0.50 && appearanceRoll > 0.15) {
 				this.setFeathering(2);
-			} else if (random.nextDouble() > 0.50) {
+			} else if (appearanceRoll > 0.50) {
 				this.setFeathering(1);
 			}
 		}
 
 		//nethers are more likely to have no feathering but can have half or full
 		if (this.getSpecies() == 1) {
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setFeathering(2);
-			} else if (random.nextDouble() < 0.30 && random.nextDouble() > 0.15) {
+			} else if (appearanceRoll < 0.30 && appearanceRoll > 0.15) {
 				this.setFeathering(1);
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				this.setFeathering(0);
 			}
 		}
 
 		//ends are more likely to have half feathering
 		if (this.getSpecies() == 2) {
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setFeathering(2);
-			} else if (random.nextDouble() < 0.50 && random.nextDouble() > 0.15) {
+			} else if (appearanceRoll < 0.50 && appearanceRoll > 0.15) {
 				this.setFeathering(0);
-			} else if (random.nextDouble() > 0.50) {
+			} else if (appearanceRoll > 0.50) {
 				this.setFeathering(1);
 			}
 		}
@@ -749,6 +751,8 @@ public class Unicorn extends OHorse implements GeoEntity {
 
 	public void setEyeColorByChance() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		//white, cream and mostly-white or bald horses have a better chance of gaining blue or green eyes
 		if (this.getVariant() == 24 || this.getVariant() == 25 || this.getOverlayVariant() == 2 || this.getOverlayVariant() == 8
 				|| this.getOverlayVariant() == 9 || this.getOverlayVariant() == 10 || this.getOverlayVariant() == 15
@@ -756,25 +760,25 @@ public class Unicorn extends OHorse implements GeoEntity {
 				|| this.getOverlayVariant() == 26 || this.getOverlayVariant() == 32 || this.getOverlayVariant() == 34
 				|| this.getOverlayVariant() == 36 || this.getOverlayVariant() == 37 || this.getOverlayVariant() == 38
 				|| this.getOverlayVariant() == 39) {
-			if (random.nextDouble() < 0.005) {
+			if (appearanceRoll < 0.005) {
 				this.setEyeVariant(7 + this.getRandom().nextInt(9)); //heterochromic
-			} else if (random.nextDouble() < 0.10 && random.nextDouble() > 0.005) {
+			} else if (appearanceRoll < 0.10 && appearanceRoll > 0.005) {
 				this.setEyeVariant(6); //green
-			} else if (random.nextDouble() < 0.30 && random.nextDouble() > 0.10) {
+			} else if (appearanceRoll < 0.30 && appearanceRoll > 0.10) {
 				this.setEyeVariant(5); //blue
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				this.setEyeVariant(this.getRandom().nextInt(4)); //random (between dark brown and dark blue)
 			} else {
 				this.setEyeVariant(0);
 			}
 		} else {
-			if (random.nextDouble() < 0.005) {
+			if (appearanceRoll < 0.005) {
 				this.setEyeVariant(7 + this.getRandom().nextInt(9));
-			} else if (random.nextDouble() < 0.03 && random.nextDouble() > 0.005) {
+			} else if (appearanceRoll < 0.03 && appearanceRoll > 0.005) {
 				this.setEyeVariant(6);
-			} else if (random.nextDouble() < 0.10 && random.nextDouble() > 0.03) {
+			} else if (appearanceRoll < 0.10 && appearanceRoll > 0.03) {
 				this.setEyeVariant(5);
-			} else if (random.nextDouble() > 0.10) {
+			} else if (appearanceRoll > 0.10) {
 				this.setEyeVariant(this.getRandom().nextInt(4));
 			} else {
 				this.setEyeVariant(0);
@@ -785,47 +789,49 @@ public class Unicorn extends OHorse implements GeoEntity {
 
 	public void setColorByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getSpecies() == 0) {
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
-			} else if (random.nextDouble() < 0.30 && random.nextDouble() > 0.05) {
+			} else if (appearanceRoll < 0.30 && appearanceRoll > 0.05) {
 				int[] variants = {4, 8, 9, 11, 16, 18, 19, 24, 25, 29, 30};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				this.setVariant(24);
 			}
 		}
 
 		if (this.getSpecies() == 1) {
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
-			} else if (random.nextDouble() < 0.30 && random.nextDouble() > 0.05) {
+			} else if (appearanceRoll < 0.30 && appearanceRoll > 0.05) {
 				int[] variants = {0, 1, 2, 3, 5, 6, 10, 12, 13, 17, 20, 21, 26, 32};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				this.setVariant(2);
 			}
 		}
 
 		if (this.getSpecies() == 2) {
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
-			} else if (random.nextDouble() < 0.30 && random.nextDouble() > 0.05) {
+			} else if (appearanceRoll < 0.30 && appearanceRoll > 0.05) {
 				int[] variants = {7, 8, 11, 15, 22, 23, 28, 31};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				this.setVariant(31);
 			}
 		}
@@ -834,9 +840,11 @@ public class Unicorn extends OHorse implements GeoEntity {
 
 	public void setMarkingByBreed() {
 
-			if (random.nextDouble() < 0.30) {
+		final double appearanceRoll = random.nextDouble();
+
+			if (appearanceRoll < 0.30) {
 				this.setOverlayVariant(random.nextInt(UnicornMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				int[] variants = {0, 2, 4, 5, 6, 7, 11, 12, 14, 18, 19, 21, 22, 23, 29, 30, 32, 33, 35, 39, 41, 42, 43};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
@@ -846,10 +854,12 @@ public class Unicorn extends OHorse implements GeoEntity {
 
 	public void setHornByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getSpecies() == 0) {
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(UnicornHornLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				int[] variants = {0, 1, 2, 3, 4, 5, 6, 7};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setHornVariant(variants[randomIndex]);
@@ -857,9 +867,9 @@ public class Unicorn extends OHorse implements GeoEntity {
 		}
 
 		if (this.getSpecies() == 1) {
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(UnicornHornLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				int[] variants = {8, 9, 10, 11, 12, 13, 14, 15};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setHornVariant(variants[randomIndex]);
@@ -867,9 +877,9 @@ public class Unicorn extends OHorse implements GeoEntity {
 		}
 
 		if (this.getSpecies() == 2) {
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(UnicornHornLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				int[] variants = {16, 17, 18, 19, 20, 21, 22, 23};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setHornVariant(variants[randomIndex]);

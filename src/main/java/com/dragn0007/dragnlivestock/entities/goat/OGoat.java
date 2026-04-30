@@ -731,13 +731,15 @@ public class OGoat extends AbstractOMount implements GeoEntity, Taggable {
 
 	public void setColor() {
 
-		if (random.nextDouble() < 0.10) {
+		final double appearanceRoll = random.nextDouble();
+
+		if (appearanceRoll < 0.10) {
 			this.setVariant(random.nextInt(OGoatModel.Variant.values().length));
-		} else if (random.nextDouble() > 0.10 && random.nextDouble() < 0.30) {
+		} else if (appearanceRoll > 0.10 && appearanceRoll < 0.30) {
 			int[] variants = {0, 5, 6, 10};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.setVariant(variants[randomIndex]);
-		} else if (random.nextDouble() > 0.30) {
+		} else if (appearanceRoll > 0.30) {
 			this.setVariant(10);
 		}
 
@@ -745,9 +747,11 @@ public class OGoat extends AbstractOMount implements GeoEntity, Taggable {
 
 	public void setMarking() {
 
-		if (random.nextDouble() < 0.10) {
+		final double appearanceRoll = random.nextDouble();
+
+		if (appearanceRoll < 0.10) {
 			this.setOverlayVariant(random.nextInt(OGoatMarkingLayer.Overlay.values().length));
-		} else if (random.nextDouble() > 0.10) {
+		} else if (appearanceRoll > 0.10) {
 			this.setOverlayVariant(0);
 		}
 

@@ -495,6 +495,8 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 		this.entityData.set(BREED, breed);
 	}
 
+	private transient boolean breedVariantAssigned;
+
 	public static final EntityDataAccessor<Integer> VARIANT = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.INT);
 	public ResourceLocation getTextureLocation() {
 		if (!LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
@@ -509,6 +511,11 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
 	}
+	private void assignBreedVariant(int variant) {
+		this.breedVariantAssigned = true;
+		this.setVariant(variant);
+	}
+
 
 	public static final EntityDataAccessor<Integer> OVERLAY = SynchedEntityData.defineId(OSheep.class, EntityDataSerializers.INT);
 	public ResourceLocation getOverlayLocation() {return OSheepMarkingLayer.Overlay.overlayFromOrdinal(getOverlayVariant()).resourceLocation;}
@@ -725,7 +732,8 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 		}
 		Random random = new Random();
 
-		this.setBreed(random.nextInt(SheepBreed.Breed.values().length));
+		// Natural/converted spawns start at base breed progression.
+		this.setBreed(0);
 		this.setGender(random.nextInt(OSheep.Gender.values().length));
 
 		if (LivestockOverhaulCommonConfig.QUALITY.get()) {
@@ -1477,102 +1485,104 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 
 	public void setColorByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+		this.breedVariantAssigned = false;
+
+
 		if (this.getBreed() == 0) { //gulf coast tend to come with white or tan skin
-			if (random.nextDouble() < 0.05) {
-				this.setVariant(random.nextInt(OSheepModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
-				int[] variants = {4, 5};
-				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
-			}
+			int[] variants = {4, 5};
+			int randomIndex = new Random().nextInt(variants.length);
+			this.assignBreedVariant(variants[randomIndex]);
 		}
 
 		if (this.getBreed() == 1) { //norfolk tend to come with black skin
-			if (random.nextDouble() < 0.05) {
-				this.setVariant(random.nextInt(OSheepModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
-				this.setVariant(0);
+			if (appearanceRoll < 0.05) {
+				this.assignBreedVariant(random.nextInt(OSheepModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
+				this.assignBreedVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 2) { //dorset tend to come with white skin
-			if (random.nextDouble() < 0.05) {
-				this.setVariant(random.nextInt(OSheepModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
-				this.setVariant(5);
+			if (appearanceRoll < 0.05) {
+				this.assignBreedVariant(random.nextInt(OSheepModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
+				this.assignBreedVariant(5);
 			}
 		}
 
 		if (this.getBreed() == 3) { //jacob tend to come with black or brown skin
-			if (random.nextDouble() < 0.05) {
-				this.setVariant(random.nextInt(OSheepModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			if (appearanceRoll < 0.05) {
+				this.assignBreedVariant(random.nextInt(OSheepModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 2};
 				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
+				this.assignBreedVariant(variants[randomIndex]);
 			}
 		}
 
 		if (this.getBreed() == 4) { //racka tend to come with black, tan or white skin
-			if (random.nextDouble() < 0.05) {
-				this.setVariant(random.nextInt(OSheepModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			if (appearanceRoll < 0.05) {
+				this.assignBreedVariant(random.nextInt(OSheepModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 4, 5};
 				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
+				this.assignBreedVariant(variants[randomIndex]);
 			}
 		}
 
 		if (this.getBreed() == 5) { //california red tend to come with red skin
-			if (random.nextDouble() < 0.05) {
-				this.setVariant(random.nextInt(OSheepModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
-				this.setVariant(3);
+			if (appearanceRoll < 0.05) {
+				this.assignBreedVariant(random.nextInt(OSheepModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
+				this.assignBreedVariant(3);
 			}
 		}
 
 		if (this.getBreed() == 6) { //hair come in mahogany, cream, doberman, chocolate and light/ dark
-			if (random.nextDouble() < 0.15) {
-				this.setVariant(random.nextInt(OSheepModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			if (appearanceRoll < 0.15) {
+				this.assignBreedVariant(random.nextInt(OSheepModel.Variant.values().length));
+			} else if (appearanceRoll > 0.15) {
 				int[] variants = {6, 7, 8, 9, 10, 11};
 				int randomIndex = new Random().nextInt(variants.length);
-				this.setVariant(variants[randomIndex]);
+				this.assignBreedVariant(variants[randomIndex]);
 			}
 		}
 
 		if (this.getBreed() == 7) { //bunnies tend to come with white skin
-			if (random.nextDouble() < 0.05) {
-				this.setVariant(random.nextInt(OSheepModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05) {
-				this.setVariant(5);
+			if (appearanceRoll < 0.05) {
+				this.assignBreedVariant(random.nextInt(OSheepModel.Variant.values().length));
+			} else if (appearanceRoll > 0.05) {
+				this.assignBreedVariant(5);
 			}
 		}
 
+	
+		if (!this.breedVariantAssigned) {
+			this.setVariant(random.nextInt(OSheepModel.Variant.values().length));
+		}
 	}
 
 	public void setWoolColorByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getBreed() == 0) { //gulf coast tend to come with white wool
-			if (random.nextDouble() < 0.05) {
-				this.setWoolVariant(random.nextInt(OSheepWoolLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
-				this.setWoolVariant(5);
-			}
+			this.setWoolVariant(5);
 		}
 
 		if (this.getBreed() == 1) { //norfolk tend to come with white wool
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setWoolVariant(random.nextInt(OSheepWoolLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				this.setWoolVariant(5);
 			}
 		}
 
 		if (this.getBreed() == 2) { //dorset tend to come with white, tan or brown wool
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setWoolVariant(random.nextInt(OSheepWoolLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {1, 4, 5};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setWoolVariant(variants[randomIndex]);
@@ -1580,9 +1590,9 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 3) { //jacob tend to come with black, white, tan or brown wool
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setWoolVariant(random.nextInt(OSheepWoolLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 1, 4, 5};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setWoolVariant(variants[randomIndex]);
@@ -1590,9 +1600,9 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 4) { //racka tend to come with black, white, or tan wool
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setWoolVariant(random.nextInt(OSheepWoolLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {0, 4, 5};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setWoolVariant(variants[randomIndex]);
@@ -1600,9 +1610,9 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 5) { //california red tend to come with brown, white, or tan wool
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setWoolVariant(random.nextInt(OSheepWoolLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				int[] variants = {1, 4, 5};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setWoolVariant(variants[randomIndex]);
@@ -1614,9 +1624,9 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 7) { //bunnies tend to come with white wool
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setWoolVariant(random.nextInt(OSheepWoolLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05) {
+			} else if (appearanceRoll > 0.05) {
 				this.setWoolVariant(5);
 			}
 		}
@@ -1625,38 +1635,40 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 
 	public void setMarkingByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getBreed() == 0) { //gulf coast don't often come with markings, and if they do, theyre small
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(OSheepMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05 && random.nextDouble() < 0.20) {
+			} else if (appearanceRoll > 0.05 && appearanceRoll < 0.20) {
 				int[] variants = {2, 8};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
-			} else if (random.nextDouble() > 0.20) {
+			} else if (appearanceRoll > 0.20) {
 				this.setOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 1) { //norfolk don't often come with markings, and if they do, theyre small
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(OSheepMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05 && random.nextDouble() < 0.20) {
+			} else if (appearanceRoll > 0.05 && appearanceRoll < 0.20) {
 				int[] variants = {2, 8};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
-			} else if (random.nextDouble() > 0.20) {
+			} else if (appearanceRoll > 0.20) {
 				this.setOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 2) { //dorset don't often come with markings, and if they do, theyre small
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(OSheepMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05 && random.nextDouble() < 0.20) {
+			} else if (appearanceRoll > 0.05 && appearanceRoll < 0.20) {
 				int[] variants = {2, 8};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
-			} else if (random.nextDouble() > 0.20) {
+			} else if (appearanceRoll > 0.20) {
 				this.setOverlayVariant(0);
 			}
 		}
@@ -1666,33 +1678,33 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 4) { //racka don't often come with markings, and if they do, theyre small
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(OSheepMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05 && random.nextDouble() < 0.20) {
+			} else if (appearanceRoll > 0.05 && appearanceRoll < 0.20) {
 				int[] variants = {2, 8};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
-			} else if (random.nextDouble() > 0.20) {
+			} else if (appearanceRoll > 0.20) {
 				this.setOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 5) { //california red don't often come with markings, and if they do, theyre small
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(OSheepMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05 && random.nextDouble() < 0.20) {
+			} else if (appearanceRoll > 0.05 && appearanceRoll < 0.20) {
 				int[] variants = {2, 8};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
-			} else if (random.nextDouble() > 0.20) {
+			} else if (appearanceRoll > 0.20) {
 				this.setOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 6) { //hair come in the fancy markings and roan
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setOverlayVariant(random.nextInt(OSheepMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			} else if (appearanceRoll > 0.15) {
 				int[] variants = {0, 11, 12, 13, 14, 15, 16};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
@@ -1700,13 +1712,13 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 7) { //bunnies don't often come with markings, and if they do, theyre small
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(OSheepMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.05 && random.nextDouble() < 0.20) {
+			} else if (appearanceRoll > 0.05 && appearanceRoll < 0.20) {
 				int[] variants = {2, 8};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
-			} else if (random.nextDouble() > 0.20) {
+			} else if (appearanceRoll > 0.20) {
 				this.setOverlayVariant(0);
 			}
 		}
@@ -1715,21 +1727,23 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 
 	public void setHornsByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getBreed() == 0) { //gulf coast can come with small, curly horns. usually males, but sometimes females too
 			if (this.isFemale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.30) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.30) {
 					this.setHornVariant(1);
-				} else if (random.nextDouble() > 0.30) {
+				} else if (appearanceRoll > 0.30) {
 					this.setHornVariant(0);
 				}
 			} else if (this.isMale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.15) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.15) {
 					this.setHornVariant(0);
-				} else if (random.nextDouble() > 0.15) {
+				} else if (appearanceRoll > 0.15) {
 					this.setHornVariant(1);
 				}
 			}
@@ -1737,19 +1751,19 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 
 		if (this.getBreed() == 1) { //norfolk can come with large, curly horns. usually males, but sometimes females too
 			if (this.isFemale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.30) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.30) {
 					this.setHornVariant(2);
-				} else if (random.nextDouble() > 0.30) {
+				} else if (appearanceRoll > 0.30) {
 					this.setHornVariant(0);
 				}
 			} else if (this.isMale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.15) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.15) {
 					this.setHornVariant(0);
-				} else if (random.nextDouble() > 0.15) {
+				} else if (appearanceRoll > 0.15) {
 					this.setHornVariant(2);
 				}
 			}
@@ -1757,19 +1771,19 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 
 		if (this.getBreed() == 2) { //dorset can come with large, curly horns. usually males, but sometimes females too
 			if (this.isFemale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.30) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.30) {
 					this.setHornVariant(3);
-				} else if (random.nextDouble() > 0.30) {
+				} else if (appearanceRoll > 0.30) {
 					this.setHornVariant(0);
 				}
 			} else if (this.isMale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.15) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.15) {
 					this.setHornVariant(0);
-				} else if (random.nextDouble() > 0.15) {
+				} else if (appearanceRoll > 0.15) {
 					this.setHornVariant(3);
 				}
 			}
@@ -1777,23 +1791,23 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 
 		if (this.getBreed() == 3) { //jacob can come with two sets of horns. usually males, but sometimes females too
 			if (this.isFemale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.20) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.20) {
 					this.setHornVariant(4);
-				} else if (random.nextDouble() > 0.20 && random.nextDouble() < 0.50) {
+				} else if (appearanceRoll > 0.20 && appearanceRoll < 0.50) {
 					this.setHornVariant(2);
-				} else if (random.nextDouble() > 0.50) {
+				} else if (appearanceRoll > 0.50) {
 					this.setHornVariant(0);
 				}
 			} else if (this.isMale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.10) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.10) {
 					this.setHornVariant(0);
-				} else if (random.nextDouble() > 0.10 && random.nextDouble() < 0.30) {
+				} else if (appearanceRoll > 0.10 && appearanceRoll < 0.30) {
 					this.setHornVariant(2);
-				} else if (random.nextDouble() > 0.30) {
+				} else if (appearanceRoll > 0.30) {
 					this.setHornVariant(4);
 				}
 			}
@@ -1801,60 +1815,60 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 
 		if (this.getBreed() == 4) { //racka can come with long, straight horns. usually males, but sometimes females too
 			if (this.isFemale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.20) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.20) {
 					this.setHornVariant(5);
-				} else if (random.nextDouble() > 0.20 && random.nextDouble() < 0.50) {
+				} else if (appearanceRoll > 0.20 && appearanceRoll < 0.50) {
 					this.setHornVariant(2);
-				} else if (random.nextDouble() > 0.50) {
+				} else if (appearanceRoll > 0.50) {
 					this.setHornVariant(0);
 				}
 			} else if (this.isMale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.10) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.10) {
 					this.setHornVariant(0);
-				} else if (random.nextDouble() > 0.10 && random.nextDouble() < 0.30) {
+				} else if (appearanceRoll > 0.10 && appearanceRoll < 0.30) {
 					this.setHornVariant(2);
-				} else if (random.nextDouble() > 0.30) {
+				} else if (appearanceRoll > 0.30) {
 					this.setHornVariant(5);
 				}
 			}
 		}
 
 		if (this.getBreed() == 5) { //california red dont come with horns
-			if (random.nextDouble() < 0.02) {
+			if (appearanceRoll < 0.02) {
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.15) {
+			} else if (appearanceRoll > 0.02 && appearanceRoll < 0.15) {
 				this.setHornVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 6) { //hair can come with large, curly horns. usually males, and females have short horns
 			if (this.isFemale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.20) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.20) {
 					this.setHornVariant(0);
-				} else if (random.nextDouble() > 0.20) {
+				} else if (appearanceRoll > 0.20) {
 					this.setHornVariant(1);
 				}
 			} else if (this.isMale()) {
-				if (random.nextDouble() < 0.02) {
+				if (appearanceRoll < 0.02) {
 					this.setHornVariant(random.nextInt(BreedHorns.values().length));
-				} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.15) {
+				} else if (appearanceRoll > 0.02 && appearanceRoll < 0.15) {
 					this.setHornVariant(1);
-				} else if (random.nextDouble() > 0.15) {
+				} else if (appearanceRoll > 0.15) {
 					this.setHornVariant(2);
 				}
 			}
 		}
 
 		if (this.getBreed() == 7) { //bunnies dont come with horns
-			if (random.nextDouble() < 0.02) {
+			if (appearanceRoll < 0.02) {
 				this.setHornVariant(random.nextInt(BreedHorns.values().length));
-			} else if (random.nextDouble() > 0.02 && random.nextDouble() < 0.15) {
+			} else if (appearanceRoll > 0.02 && appearanceRoll < 0.15) {
 				this.setHornVariant(0);
 			}
 		}

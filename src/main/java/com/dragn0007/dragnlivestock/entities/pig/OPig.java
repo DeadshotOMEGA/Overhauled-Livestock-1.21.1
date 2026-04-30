@@ -553,20 +553,22 @@ public class OPig extends Animal implements GeoEntity, Taggable {
 
 	public void setColorByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getBreed() == 0) { //yorkshires are pink or sometimes white
-			if (random.nextDouble() < 0.05) {
+			if (appearanceRoll < 0.05) {
 				this.setVariant(random.nextInt(OPigModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.05 && random.nextDouble() < 0.25) {
+			} else if (appearanceRoll > 0.05 && appearanceRoll < 0.25) {
 				this.setVariant(7);
-			} else if (random.nextDouble() > 0.25) {
+			} else if (appearanceRoll > 0.25) {
 				this.setVariant(5);
 			}
 		}
 
 		if (this.getBreed() == 1) { //norfolk are pink, brown, red or black
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setVariant(random.nextInt(OPigModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			} else if (appearanceRoll > 0.15) {
 				int[] variants = {0, 1, 5, 6};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
@@ -574,9 +576,9 @@ public class OPig extends Animal implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 2) { //guinea hogs are black or blue
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setVariant(random.nextInt(OPigModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			} else if (appearanceRoll > 0.15) {
 				int[] variants = {0, 2};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
@@ -584,9 +586,9 @@ public class OPig extends Animal implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 3) { //kunekunes are black, white or red
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setVariant(random.nextInt(OPigModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			} else if (appearanceRoll > 0.15) {
 				int[] variants = {0, 1, 6};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setVariant(variants[randomIndex]);
@@ -594,17 +596,17 @@ public class OPig extends Animal implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 4) { //poland chinas are primarily black
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setVariant(random.nextInt(OPigModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			} else if (appearanceRoll > 0.15) {
 				this.setVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 5) { //berkshires are primarily black
-			if (random.nextDouble() < 0.30) {
+			if (appearanceRoll < 0.30) {
 				this.setVariant(random.nextInt(OPigModel.Variant.values().length));
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				this.setVariant(0);
 			}
 		}
@@ -614,34 +616,36 @@ public class OPig extends Animal implements GeoEntity, Taggable {
 
 	public void setMarkingByBreed() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		if (this.getBreed() == 0) { //yorkshires dont usually come in markings but can
-			if (random.nextDouble() < 0.10) {
+			if (appearanceRoll < 0.10) {
 				this.setOverlayVariant(random.nextInt(OPigMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.10) {
+			} else if (appearanceRoll > 0.10) {
 				this.setOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 1) { //norfolk can come in all sorts of markings
-			if (random.nextDouble() < 0.50) {
+			if (appearanceRoll < 0.50) {
 				this.setOverlayVariant(random.nextInt(OPigMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.50) {
+			} else if (appearanceRoll > 0.50) {
 				this.setOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 2) { //guinea hogs dont usually come in markings but can
-			if (random.nextDouble() < 0.10) {
+			if (appearanceRoll < 0.10) {
 				this.setOverlayVariant(random.nextInt(OPigMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.10) {
+			} else if (appearanceRoll > 0.10) {
 				this.setOverlayVariant(0);
 			}
 		}
 
 		if (this.getBreed() == 3) { //kunekunes have spots or splotches
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setOverlayVariant(random.nextInt(OPigMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			} else if (appearanceRoll > 0.15) {
 				int[] variants = {5, 6, 7, 8, 9, 10, 11, 12};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
@@ -649,9 +653,9 @@ public class OPig extends Animal implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 4) { //poland chinas have socks or stripes
-			if (random.nextDouble() < 0.15) {
+			if (appearanceRoll < 0.15) {
 				this.setOverlayVariant(random.nextInt(OPigMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.15) {
+			} else if (appearanceRoll > 0.15) {
 				int[] variants = {0, 1, 2, 3, 4, 15};
 				int randomIndex = new Random().nextInt(variants.length);
 				this.setOverlayVariant(variants[randomIndex]);
@@ -659,9 +663,9 @@ public class OPig extends Animal implements GeoEntity, Taggable {
 		}
 
 		if (this.getBreed() == 5) { //berkshires can come in all sorts of markings
-			if (random.nextDouble() < 0.50) {
+			if (appearanceRoll < 0.50) {
 				this.setOverlayVariant(random.nextInt(OPigMarkingLayer.Overlay.values().length));
-			} else if (random.nextDouble() > 0.50) {
+			} else if (appearanceRoll > 0.50) {
 				this.setOverlayVariant(0);
 			}
 		}

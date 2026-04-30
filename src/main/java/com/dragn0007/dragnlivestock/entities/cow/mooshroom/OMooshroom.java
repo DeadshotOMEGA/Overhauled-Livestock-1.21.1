@@ -396,9 +396,11 @@ public class OMooshroom extends OCow implements GeoEntity {
 
     public void setColorByBreed() {
 
-        if (random.nextDouble() < 0.05) {
+		final double appearanceRoll = random.nextDouble();
+
+        if (appearanceRoll < 0.05) {
             this.setVariant(random.nextInt(OMooshroomModel.Variant.values().length));
-        } else if (random.nextDouble() > 0.05) {
+        } else if (appearanceRoll > 0.05) {
             int[] variants = {0, 7, 9, 10, 11};
             int randomIndex = new Random().nextInt(variants.length);
             this.setVariant(variants[randomIndex]);

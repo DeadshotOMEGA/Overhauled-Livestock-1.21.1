@@ -24,6 +24,7 @@ import net.minecraft.world.entity.animal.horse.ZombieHorse;
 import net.minecraft.world.entity.animal.MushroomCow;
 import net.minecraft.world.entity.animal.Cod;
 import net.minecraft.world.entity.animal.Salmon;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.EntityJoinLevelEvent;
@@ -148,6 +149,17 @@ public final class SpawnReplacer {
 
         replacement.copyPosition(original);
         replacement.setCustomName(original.getCustomName());
+
+        if (replacement instanceof Mob replacementMob && event.getLevel() instanceof ServerLevelAccessor levelAccessor) {
+            MobSpawnType spawnType = original instanceof Mob originalMob ? originalMob.getSpawnType() : MobSpawnType.CONVERSION;
+            replacementMob.finalizeSpawn(
+                    levelAccessor,
+                    event.getLevel().getCurrentDifficultyAt(replacement.blockPosition()),
+                    spawnType,
+                    null
+            );
+        }
+
         event.getLevel().addFreshEntity(replacement);
         original.discard();
         event.setCanceled(true);

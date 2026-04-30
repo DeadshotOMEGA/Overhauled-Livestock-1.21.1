@@ -760,6 +760,8 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 
 	public void setEyeColorByChance() {
 
+		final double appearanceRoll = random.nextDouble();
+
 		//white, cream and mostly-white or bald caribou have a better chance of gaining blue or green eyes
 		if (this.getVariant() == 6 || this.getVariant() == 16 || this.getOverlayVariant() == 2 || this.getOverlayVariant() == 8
 				|| this.getOverlayVariant() == 9 || this.getOverlayVariant() == 10 || this.getOverlayVariant() == 15
@@ -767,25 +769,25 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 				|| this.getOverlayVariant() == 26 || this.getOverlayVariant() == 32 || this.getOverlayVariant() == 34
 				|| this.getOverlayVariant() == 36 || this.getOverlayVariant() == 37 || this.getOverlayVariant() == 38
 				|| this.getOverlayVariant() == 39) {
-			if (random.nextDouble() < 0.005) {
+			if (appearanceRoll < 0.005) {
 				this.setEyeVariant(7 + this.getRandom().nextInt(9)); //heterochromic
-			} else if (random.nextDouble() < 0.10 && random.nextDouble() > 0.005) {
+			} else if (appearanceRoll < 0.10 && appearanceRoll > 0.005) {
 				this.setEyeVariant(6); //green
-			} else if (random.nextDouble() < 0.30 && random.nextDouble() > 0.10) {
+			} else if (appearanceRoll < 0.30 && appearanceRoll > 0.10) {
 				this.setEyeVariant(5); //blue
-			} else if (random.nextDouble() > 0.30) {
+			} else if (appearanceRoll > 0.30) {
 				this.setEyeVariant(this.getRandom().nextInt(4)); //random (between dark brown and dark blue)
 			} else {
 				this.setEyeVariant(0);
 			}
 		} else {
-			if (random.nextDouble() < 0.005) {
+			if (appearanceRoll < 0.005) {
 				this.setEyeVariant(7 + this.getRandom().nextInt(9));
-			} else if (random.nextDouble() < 0.03 && random.nextDouble() > 0.005) {
+			} else if (appearanceRoll < 0.03 && appearanceRoll > 0.005) {
 				this.setEyeVariant(6);
-			} else if (random.nextDouble() < 0.10 && random.nextDouble() > 0.03) {
+			} else if (appearanceRoll < 0.10 && appearanceRoll > 0.03) {
 				this.setEyeVariant(5);
-			} else if (random.nextDouble() > 0.10) {
+			} else if (appearanceRoll > 0.10) {
 				this.setEyeVariant(this.getRandom().nextInt(4));
 			} else {
 				this.setEyeVariant(0);
@@ -855,11 +857,13 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 
 	public void setFeatheringByChance() {
 
-		if (random.nextDouble() < 0.05) {
+		final double appearanceRoll = random.nextDouble();
+
+		if (appearanceRoll < 0.05) {
 			this.setFeathering(2);
-		} else if (random.nextDouble() < 0.50 && random.nextDouble() > 0.05) {
+		} else if (appearanceRoll < 0.50 && appearanceRoll > 0.05) {
 			this.setFeathering(1);
-		} else if (random.nextDouble() > 0.50) {
+		} else if (appearanceRoll > 0.50) {
 			this.setFeathering(0);
 		} else {
 			this.setFeathering(0);
@@ -868,15 +872,17 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 
 	public void setColorByChance() {
 
-		if (random.nextDouble() < 0.05) {
+		final double appearanceRoll = random.nextDouble();
+
+		if (appearanceRoll < 0.05) {
 			int[] variants = {2, 3, 6, 8, 11, 12};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.setVariant(variants[randomIndex]);
-		} else if (random.nextDouble() < 0.30 && random.nextDouble() > 0.05) {
+		} else if (appearanceRoll < 0.30 && appearanceRoll > 0.05) {
 			int[] variants = {1, 4, 9, 10, 13, 16};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.setVariant(variants[randomIndex]);
-		} else if (random.nextDouble() > 0.30) {
+		} else if (appearanceRoll > 0.30) {
 			int[] variants = {0, 5, 7, 15, 15};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.setVariant(variants[randomIndex]);
@@ -885,12 +891,14 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 
 	public void setMarkingByChance() {
 
-		if (random.nextDouble() < 0.15) {
+		final double appearanceRoll = random.nextDouble();
+
+		if (appearanceRoll < 0.15) {
 			int[] variants = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20,
 					23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.setOverlayVariant(variants[randomIndex]);
-		} else if (random.nextDouble() > 0.15) {
+		} else if (appearanceRoll > 0.15) {
 			int[] variants = {0, 2, 4, 5, 6, 7, 11, 12, 14, 18, 19, 21, 29, 30, 32, 33, 35, 39, 41};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.setOverlayVariant(variants[randomIndex]);
