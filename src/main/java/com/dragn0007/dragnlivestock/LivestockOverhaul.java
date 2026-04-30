@@ -43,6 +43,7 @@ public class LivestockOverhaul {
         LOItems.register(eventBus);
         LOItemGroup.register(eventBus);
         LOBlocks.register(eventBus);
+        LOSoundEvents.register(eventBus);
         LOMenuTypes.register(eventBus);
         eventBus.addListener(LOPackets::register);
         eventBus.addListener(LONetwork::register);
