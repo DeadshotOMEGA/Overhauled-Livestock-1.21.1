@@ -428,20 +428,26 @@ public class OSheep extends Animal implements GeoEntity, Taggable {
 	protected final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
 	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.animation.AnimationState<T> tAnimationState) {
+		double x = this.getX() - this.xo;
+		double z = this.getZ() - this.zo;
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
-		double speedThreshold = 0.01;
+		double speedThreshold = 0.02;
+		boolean isMoving = (x * x + z * z) > 0.0001;
 
 		AnimationController<T> controller = tAnimationState.getController();
 
-		if (tAnimationState.isMoving()) {
+		if (isMoving) {
 			if (currentSpeed > speedThreshold) {
 				controller.setAnimation(RawAnimation.begin().then("run", Animation.LoopType.LOOP));
+				controller.setAnimationSpeed(1.0);
 			} else {
-				controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
-				controller.setAnimationSpeed(1.4);
+				// o_sheep walk clip still contains mismatched horse-only bones; use a slowed run fallback for stable motion.
+				controller.setAnimation(RawAnimation.begin().then("run", Animation.LoopType.LOOP));
+				controller.setAnimationSpeed(0.78);
 			}
 		} else {
 			controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+			controller.setAnimationSpeed(1.0);
 		}
 
 		return PlayState.CONTINUE;

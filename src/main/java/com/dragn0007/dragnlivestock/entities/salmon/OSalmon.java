@@ -102,21 +102,20 @@ public class OSalmon extends AbstractSchoolingOFish implements GeoEntity {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.01;
 		boolean isMoving = (x * x + z * z) > 0.0001;
+		boolean isInWater = this.isInFluidType(Fluids.WATER.getFluidType());
 
 		AnimationController<T> controller = tAnimationState.getController();
 
-		if(isMoving) {
+		if (isInWater && isMoving) {
 			if (currentSpeed > speedThreshold) {
 				controller.setAnimation(RawAnimation.begin().then("swim_sprint", Animation.LoopType.LOOP));
-			} else if(currentSpeed < speedThreshold) {
-				controller.setAnimation(RawAnimation.begin().then("swim", Animation.LoopType.LOOP));
 			} else {
-				controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+				controller.setAnimation(RawAnimation.begin().then("swim", Animation.LoopType.LOOP));
 			}
-		}
-
-		if(!this.isInFluidType(Fluids.WATER.getFluidType())) {
+		} else if (!isInWater) {
 			controller.setAnimation(RawAnimation.begin().then("flop", Animation.LoopType.LOOP));
+		} else {
+			controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
 		}
 
 		return PlayState.CONTINUE;

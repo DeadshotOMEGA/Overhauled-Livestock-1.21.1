@@ -185,22 +185,20 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 			controller.setAnimationSpeed(1.3);
 		} else {
 			if (isMoving) {
-				if (currentSpeed > speedThreshold) {
-					if (this.isAggressive()) {
-						controller.setAnimation(RawAnimation.begin().then("charge", Animation.LoopType.LOOP));
-						controller.setAnimationSpeed(1.1);
-					} else {
-						controller.setAnimation(RawAnimation.begin().then("run", Animation.LoopType.LOOP));
-						controller.setAnimationSpeed(1.1);
-					}
+				// o_cow run/charge clips contain mismatched horse-only bones; use speed-scaled walk until clips are rebuilt.
+				controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
+				if (this.isAggressive() || currentSpeed > speedThreshold) {
+					controller.setAnimationSpeed(1.1);
 				} else {
-					controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
+					controller.setAnimationSpeed(1.0);
 				}
 			} else {
 				if (this.isAggressive()) {
 					controller.setAnimation(RawAnimation.begin().then("posture", Animation.LoopType.LOOP));
+					controller.setAnimationSpeed(1.0);
 				} else {
 					controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+					controller.setAnimationSpeed(1.0);
 				}
 			}
 		}

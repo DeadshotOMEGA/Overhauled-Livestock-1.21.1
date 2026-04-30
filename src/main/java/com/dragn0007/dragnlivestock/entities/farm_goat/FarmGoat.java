@@ -425,9 +425,11 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		if (isMoving) {
 			if (currentSpeed > speedThreshold) {
 				controller.setAnimation(RawAnimation.begin().then("run", Animation.LoopType.LOOP));
+				controller.setAnimationSpeed(1.0);
 			} else {
-				controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
-				controller.setAnimationSpeed(1.6);
+				// o_goat walk clip still contains mismatched horse-only bones; use a slowed run fallback for stable motion.
+				controller.setAnimation(RawAnimation.begin().then("run", Animation.LoopType.LOOP));
+				controller.setAnimationSpeed(0.82);
 			}
 		} else {
 			controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));

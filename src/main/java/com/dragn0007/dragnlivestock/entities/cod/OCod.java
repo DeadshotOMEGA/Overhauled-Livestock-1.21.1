@@ -98,22 +98,21 @@ public class OCod extends AbstractSchoolingOFish implements GeoEntity {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.01;
 		boolean isMoving = (x * x + z * z) > 0.0001;
+		boolean isInWater = this.isInWater();
 
 		AnimationController<T> controller = tAnimationState.getController();
 
-		if(!this.isInWater()) {
-				controller.setAnimation(RawAnimation.begin().then("flop", Animation.LoopType.LOOP));
-		}
-
-		if(isMoving) {
+		if (!isInWater) {
+			controller.setAnimation(RawAnimation.begin().then("flop", Animation.LoopType.LOOP));
+		} else if (isMoving) {
 			if (currentSpeed > speedThreshold) {
 				controller.setAnimation(RawAnimation.begin().then("swim_sprint", Animation.LoopType.LOOP));
-			} else if(currentSpeed < speedThreshold) {
-					controller.setAnimation(RawAnimation.begin().then("swim", Animation.LoopType.LOOP));
-				} else {
-					controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
-				}
+			} else {
+				controller.setAnimation(RawAnimation.begin().then("swim", Animation.LoopType.LOOP));
 			}
+		} else {
+			controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+		}
 
 		return PlayState.CONTINUE;
 	}

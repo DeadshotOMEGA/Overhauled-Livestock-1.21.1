@@ -39,11 +39,11 @@ public class OCowModel extends DefaultedEntityGeoModel<OCow> {
 
         if (!LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
             if (animatable.getBreed() == 2) {
-                left_ear.setRotZ(-10);
-                right_ear.setRotZ(10);
+                left_ear.setRotZ(-10 * Mth.DEG_TO_RAD);
+                right_ear.setRotZ(10 * Mth.DEG_TO_RAD);
             } else {
-                left_ear.setRotZ(-5);
-                right_ear.setRotZ(5);
+                left_ear.setRotZ(-5 * Mth.DEG_TO_RAD);
+                right_ear.setRotZ(5 * Mth.DEG_TO_RAD);
             }
         }
     }
@@ -160,4 +160,3 @@ public class OCowModel extends DefaultedEntityGeoModel<OCow> {
         }
     }
 }
-

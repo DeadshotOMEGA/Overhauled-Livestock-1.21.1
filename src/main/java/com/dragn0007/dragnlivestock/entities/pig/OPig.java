@@ -108,20 +108,24 @@ public class OPig extends Animal implements GeoEntity, Taggable {
 	protected final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
 	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.animation.AnimationState<T> tAnimationState) {
+		double x = this.getX() - this.xo;
+		double z = this.getZ() - this.zo;
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
-		double speedThreshold = 0.01;
+		double speedThreshold = 0.015;
+		boolean isMoving = (x * x + z * z) > 0.0001;
 
 		AnimationController<T> controller = tAnimationState.getController();
 
-		if (tAnimationState.isMoving()) {
+		if (isMoving) {
+			controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
 			if (currentSpeed > speedThreshold) {
-				controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
 				controller.setAnimationSpeed(2.0);
 			} else {
-				controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
+				controller.setAnimationSpeed(1.2);
 			}
 		} else {
 			controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+			controller.setAnimationSpeed(1.0);
 		}
 
 		return PlayState.CONTINUE;

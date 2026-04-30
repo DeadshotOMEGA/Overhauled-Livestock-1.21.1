@@ -55,7 +55,7 @@ public class OBee extends Bee implements GeoEntity {
 		if(isMoving) {
 				controller.setAnimation(RawAnimation.begin().then("flap", Animation.LoopType.LOOP));
 		} else {
-				if (!tAnimationState.isMoving() && !this.onGround()) {
+				if (!isMoving && !this.onGround()) {
 					controller.setAnimation(RawAnimation.begin().then("idle_flap", Animation.LoopType.LOOP));
 				} else {
 					controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));

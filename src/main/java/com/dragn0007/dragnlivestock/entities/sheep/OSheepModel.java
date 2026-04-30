@@ -45,8 +45,8 @@ public class OSheepModel extends DefaultedEntityGeoModel<OSheep> {
                 left_ear.setScaleY(1.5F);
                 right_ear.setScaleY(1.5F);
             } else {
-                left_ear.setRotZ(7.5F);
-                right_ear.setRotZ(-7.5F);
+                left_ear.setRotZ(7.5F * Mth.DEG_TO_RAD);
+                right_ear.setRotZ(-7.5F * Mth.DEG_TO_RAD);
                 left_ear.setScaleY(1);
                 right_ear.setScaleY(1);
             }
@@ -131,4 +131,3 @@ public class OSheepModel extends DefaultedEntityGeoModel<OSheep> {
         }
     }
 }
-
