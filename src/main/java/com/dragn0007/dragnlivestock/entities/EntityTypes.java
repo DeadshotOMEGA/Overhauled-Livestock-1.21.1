@@ -69,7 +69,7 @@ public class EntityTypes {
                     .build("dragnlivestock:o_llama_entity"));
 
     public static final Supplier<EntityType<OBee>> O_BEE_ENTITY = ENTITY_TYPES.register("o_bee_entity",
-            () -> EntityType.Builder.of(OBee::new, MobCategory.AMBIENT)
+            () -> EntityType.Builder.of(OBee::new, MobCategory.CREATURE)
                     .sized(0.7F, 0.6F)
                     .build("dragnlivestock:o_bee_entity"));
 
