@@ -63,7 +63,7 @@ public class CaribouCarpetLayer extends GeoRenderLayer<Caribou> {
                 } else if (itemStack.getItem() instanceof BlanketItem blanketItem) {
                     String name = blanketItem.toString();
                     String noSuffix = name.replaceAll("_.+", "");
-                    resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/special/" + noSuffix + "_armor_blanket.png");
+                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/special/" + noSuffix + "_armor_blanket.png");
                 }
             }
         }
@@ -80,7 +80,7 @@ public class CaribouCarpetLayer extends GeoRenderLayer<Caribou> {
             } else if (itemStack.is(LOTags.Items.WESTERN_BLANKETS)) {
                 resourceLocation = OHorseCarpetLayer.WESTERN_COLOR[((BlanketItem) itemStack.getItem()).getColor().getId()];
             } else if (itemStack.getItem() instanceof BlanketItem blanketItem) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/special/" + blanketItem + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/special/" + blanketItem + ".png");
             }
         }
 
@@ -95,8 +95,7 @@ public class CaribouCarpetLayer extends GeoRenderLayer<Caribou> {
                     bufferSource,
                     animatable,
                     renderType1,
-                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                    1, 1, 1, 1);
+                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
         }
     }
 }

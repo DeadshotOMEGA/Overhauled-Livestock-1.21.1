@@ -10,10 +10,13 @@ import com.dragn0007.dragnlivestock.util.LivestockOverhaulClientConfig;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -34,8 +37,10 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
@@ -45,11 +50,14 @@ import net.neoforged.neoforge.event.entity.living.BabyEntitySpawnEvent;
 import net.neoforged.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -71,11 +79,11 @@ public class OChicken extends Animal implements GeoEntity, Taggable {
 		super(type, level);
 	}
 
-	protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_chicken");
-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/chicken");
-	protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/chicken");
+	protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/o_chicken"));
+	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/chicken"));
+	protected static final ResourceKey<LootTable> TFC_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("tfc", "entities/chicken"));
 	@Override
-	public @NotNull ResourceLocation getDefaultLootTable() {
+	public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
 		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
 			return VANILLA_LOOT_TABLE;
 		} else if (ModList.get().isLoaded("tfc")) {
@@ -138,7 +146,6 @@ public class OChicken extends Animal implements GeoEntity, Taggable {
 		));
 	}
 
-	@Override
 	public float getStepHeight() {
 		return 1F;
 	}
@@ -475,8 +482,8 @@ public class OChicken extends Animal implements GeoEntity, Taggable {
 		return FOOD_ITEMS.test(p_28271_);
 	}
 
-	public int getExperienceReward() {
-		return this.isChickenJockey() ? 10 : super.getExperienceReward();
+	protected int getBaseExperienceReward() {
+		return this.isChickenJockey() ? 10 : super.getBaseExperienceReward();
 	}
 
 	// Generates the base texture
@@ -607,7 +614,7 @@ public class OChicken extends Animal implements GeoEntity, Taggable {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
 		if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
@@ -627,19 +634,19 @@ public class OChicken extends Animal implements GeoEntity, Taggable {
 			this.setOverlayVariant(random.nextInt(OChickenMarkingLayer.Overlay.values().length));
 		}
 
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(QUALITY, 0);
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(BREED, 0);
-		this.entityData.define(GENDER, 0);
-		this.entityData.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
-		this.entityData.define(TAGGED, false);
+	protected void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(QUALITY, 0);
+		builder.define(VARIANT, 0);
+		builder.define(OVERLAY, 0);
+		builder.define(BREED, 0);
+		builder.define(GENDER, 0);
+		builder.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
+		builder.define(TAGGED, false);
 	}
 
 	public void setColorByBreed() {
@@ -920,9 +927,9 @@ public class OChicken extends Animal implements GeoEntity, Taggable {
             for (int i = 0; i < eggCount; i++) {
                 OChicken child = (OChicken) this.getBreedOffspring(pLevel, father);
                 final BabyEntitySpawnEvent event = new BabyEntitySpawnEvent(this, father, child);
-                final boolean cancelled = NeoForge.EVENT_BUS.post(event);
+                NeoForge.EVENT_BUS.post(event);
                 child = (OChicken) event.getChild();
-                if (cancelled) {
+                if (event.isCanceled()) {
                     this.setAge(6000);
                     father.setAge(6000);
 					this.resetLove();
@@ -1039,7 +1046,7 @@ public class OChicken extends Animal implements GeoEntity, Taggable {
             CompoundTag childNBT = new CompoundTag();
             child.save(childNBT);
             childNBT.remove("UUID");
-            fertilizedEgg.setTag(childNBT);
+            fertilizedEgg.set(DataComponents.ENTITY_DATA, CustomData.of(childNBT));
 
             ItemEntity eggEntity = new ItemEntity(serverLevel, this.getX(), this.getY(), this.getZ(), fertilizedEgg);
             serverLevel.addFreshEntity(eggEntity);
@@ -1056,7 +1063,7 @@ public class OChicken extends Animal implements GeoEntity, Taggable {
 		super.positionRider(p_289537_, p_289541_);
 		float f = Mth.sin(this.yBodyRot * ((float)Math.PI / 180F));
 		float f1 = Mth.cos(this.yBodyRot * ((float)Math.PI / 180F));
-		p_289541_.accept(p_289537_, this.getX() + (double)(0.1F * f), this.getY(0.15D) + p_289537_.getMyRidingOffset() + 0.0D, this.getZ() - (double)(0.1F * f1));
+		p_289541_.accept(p_289537_, this.getX() + (double)(0.1F * f), this.getY(0.15D), this.getZ() - (double)(0.1F * f1));
 		if (p_289537_ instanceof LivingEntity) {
 			((LivingEntity)p_289537_).yBodyRot = this.yBodyRot;
 		}
@@ -1072,8 +1079,8 @@ public class OChicken extends Animal implements GeoEntity, Taggable {
 	}
 
 	@Override
-	public void dropCustomDeathLoot(DamageSource p_33574_, int p_33575_, boolean p_33576_) {
-		super.dropCustomDeathLoot(p_33574_, p_33575_, p_33576_);
+	protected void dropCustomDeathLoot(ServerLevel pLevel, DamageSource p_33574_, boolean p_33576_) {
+		super.dropCustomDeathLoot(pLevel, p_33574_, p_33576_);
 		Random random = new Random();
 
 		if (!LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get() || !ModList.get().isLoaded("tfc")) {

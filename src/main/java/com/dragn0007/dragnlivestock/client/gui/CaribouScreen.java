@@ -18,7 +18,7 @@ import java.text.DecimalFormat;
 
 public class CaribouScreen extends AbstractContainerScreen<CaribouMenu> {
 
-    public static final ResourceLocation CARIBOU_INVENTORY_LOCATION = new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/o_horse.png");
+    public static final ResourceLocation CARIBOU_INVENTORY_LOCATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/o_horse.png");
     public final Caribou caribou;
     public int baseColorLabelX;
     public int baseColorLabelY;
@@ -102,7 +102,7 @@ public class CaribouScreen extends AbstractContainerScreen<CaribouMenu> {
             }
         }
 
-        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x + 51, y + 60, 17, (float)(x + 51), (float)(y + 75 - 50), this.caribou);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x + 51, y + 60, 17, x + 51, y + 75 - 50, 0.0F, 0.0F, 0.0F, this.caribou);
 
         if (LivestockOverhaulClientConfig.HORSE_COAT_GUI.get()) {
             renderBaseCoatLabel(graphics);
@@ -119,7 +119,7 @@ public class CaribouScreen extends AbstractContainerScreen<CaribouMenu> {
 
     @Override
     public void render(GuiGraphics graphics, int i, int i1, float v) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, i, i1, v);
         super.render(graphics, i, i1, v);
         this.renderTooltip(graphics, i, i1);
     }
@@ -215,5 +215,4 @@ public class CaribouScreen extends AbstractContainerScreen<CaribouMenu> {
         graphics.drawString(this.font, labelText, healthLabelX, healthLabelY, 0xFFFFFF, false);
     }
 }
-
 

@@ -28,17 +28,16 @@ public class OFrogMarkingLayer extends GeoRenderLayer<OFrog> {
                 bufferSource,
                 animatable,
                 renderMarkingType,
-                bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 
     public enum Overlay {
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/none.png")),
-        BLUE_LEGS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_blue_legs.png")),
-        DART(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_dart.png")),
-        DART_PURPLE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_dart_purple.png")),
-        DART_YELLOW(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_dart_yellow.png")),
-        STRIPED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_striped.png"));
+        NONE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/none.png")),
+        BLUE_LEGS(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_blue_legs.png")),
+        DART(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_dart.png")),
+        DART_PURPLE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_dart_purple.png")),
+        DART_YELLOW(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_dart_yellow.png")),
+        STRIPED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_striped.png"));
 
         //Add new entries to bottom when mod is public, else frogs will change textures during update.
 

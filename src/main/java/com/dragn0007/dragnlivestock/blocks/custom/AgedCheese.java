@@ -8,8 +8,16 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import com.mojang.serialization.MapCodec;
 
 public class AgedCheese extends Block {
+
+    public static final MapCodec<AgedCheese> CODEC = simpleCodec(properties -> new AgedCheese());
+
+    @Override
+    protected MapCodec<? extends Block> codec() {
+        return CODEC;
+    }
 
     public VoxelShape getShape(BlockState state, BlockGetter blockReader, BlockPos pos, CollisionContext context) {
         return Block.box(2, 0, 2, 14, 6, 14);
@@ -21,6 +29,6 @@ public class AgedCheese extends Block {
     }
 
     public AgedCheese() {
-        super(Properties.copy(Blocks.OAK_PLANKS).strength(0.1F).noOcclusion().pushReaction(PushReaction.IGNORE));
+        super(Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(0.1F).noOcclusion().pushReaction(PushReaction.IGNORE));
     }
 }

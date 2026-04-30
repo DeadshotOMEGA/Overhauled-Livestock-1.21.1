@@ -17,7 +17,21 @@
     "dragnlivestock:game_jerky",
     "dragnlivestock:generic_jerky",
 
-    "#forge:raw_meats",
-    "#forge:cooked_meats"
+    {
+      "id": "#c:raw_meats",
+      "required": false
+    },
+    {
+      "id": "#c:cooked_meats",
+      "required": false
+    },
+    {
+      "id": "#forge:raw_meats",
+      "required": false
+    },
+    {
+      "id": "#forge:cooked_meats",
+      "required": false
+    }
   ]
 }

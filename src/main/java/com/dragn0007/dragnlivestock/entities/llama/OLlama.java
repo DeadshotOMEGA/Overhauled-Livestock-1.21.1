@@ -17,6 +17,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -42,25 +43,26 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WoolCarpetBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.registries.Registries;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.Animation;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -85,11 +87,11 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 		super(type, level);
 	}
 
-	protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_llama");
-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/llama");
-	protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/llama");
+	protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/o_llama"));
+	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/llama"));
+	protected static final ResourceKey<LootTable> TFC_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("tfc", "entities/llama"));
 	@Override
-	public @NotNull ResourceLocation getDefaultLootTable() {
+	public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
 		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
 			return VANILLA_LOOT_TABLE;
 		} else if (ModList.get().isLoaded("tfc")) {
@@ -128,13 +130,13 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 		this.goalSelector.addGoal(2, new OLlamaFollowCaravanGoal(this, (double)2.1F));
 	}
 
-	public LazyOptional<?> itemHandler = null;
+	public Object itemHandler = null;
 	public OLlama leader;
 	public int herdSize = 1;
 
 	protected final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.core.animation.AnimationState<T> tAnimationState) {
+	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.animation.AnimationState<T> tAnimationState) {
 		double movementSpeed = this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
 		double animationSpeed = Math.max(0.1, movementSpeed);
 		double x = this.getX() - this.xo;
@@ -308,17 +310,7 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 			}
 		}
 		this.inventory.addListener(this);
-		this.itemHandler = LazyOptional.of(() -> new InvWrapper(this.inventory));
-	}
-
-	@Override
-	public void invalidateCaps() {
-		super.invalidateCaps();
-		if(this.itemHandler != null) {
-			LazyOptional<?> oldHandler = this.itemHandler;
-			this.itemHandler = null;
-			oldHandler.invalidate();
-		}
+		this.itemHandler = new InvWrapper(this.inventory);
 	}
 
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -373,7 +365,7 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 			if (!wasMilked() || replenishMilkCounter >= LivestockOverhaulCommonConfig.MILKING_COOLDOWN.get()) {
 				if ((!LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get()) || (LivestockOverhaulCommonConfig.GENDERS_AFFECT_BIPRODUCTS.get() && this.isFemale())) {
 					player.playSound(SoundEvents.COW_MILK, 1.0F, 1.0F);
-					ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, LOItems.LLAMA_MILK_BUCKET.get().getDefaultInstance());
+					ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, Items.MILK_BUCKET.getDefaultInstance());
 					player.setItemInHand(hand, itemstack1);
 					replenishMilkCounter = 0;
 					setMilked(true);
@@ -465,7 +457,7 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 		this.setStrength(tag.getInt("Strength"));
 
 		if (tag.contains("DecorItem", 10)) {
-			this.inventory.setItem(1, ItemStack.of(tag.getCompound("DecorItem")));
+			this.inventory.setItem(1, ItemStack.parseOptional(this.registryAccess(), tag.getCompound("DecorItem")));
 		}
 
 		if (tag.contains("Gender")) {
@@ -512,13 +504,13 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 		tag.putInt("ShearedTime", this.regrowWoolCounter);
 
 		if (!this.inventory.getItem(1).isEmpty()) {
-			tag.put("DecorItem", this.inventory.getItem(1).save(new CompoundTag()));
+			tag.put("DecorItem", this.inventory.getItem(1).save(this.registryAccess()));
 		}
 	}
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
 		if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
@@ -531,7 +523,7 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 		this.setGender(random.nextInt(OLlama.Gender.values().length));
 		this.setRandomStrength();
 
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
 	}
 
 	public void spawnByBiome(Holder<Biome> biome) {
@@ -548,17 +540,17 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(GENDER, 0);
-		this.entityData.define(WOOLY, 0);
-		this.entityData.define(CHESTED, false);
-		this.entityData.define(DATA_STRENGTH_ID, 0);
-		this.entityData.define(DATA_SWAG_ID, -1);
-		this.entityData.define(SHEARED, false);
-		this.entityData.define(MILKED, false);
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(VARIANT, 0);
+		builder.define(OVERLAY, 0);
+		builder.define(GENDER, 0);
+		builder.define(WOOLY, 0);
+		builder.define(CHESTED, false);
+		builder.define(DATA_STRENGTH_ID, 0);
+		builder.define(DATA_SWAG_ID, -1);
+		builder.define(SHEARED, false);
+		builder.define(MILKED, false);
 	}
 
 	public enum Gender {
@@ -605,48 +597,51 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
 		OLlama oLlama = (OLlama) ageableMob;
 		if (ageableMob instanceof OLlama) {
-			OLlama oLlama1 = (OLlama) ageableMob;
+			OLlama partner = (OLlama) ageableMob;
 			oLlama = EntityTypes.O_LLAMA_ENTITY.get().create(serverLevel);
+			if (oLlama == null) {
+				return null;
+			}
 
 			int breedChance = this.random.nextInt(100);
 			int breed;
 			if (breedChance < ((100 - LivestockOverhaulCommonConfig.BREED_CHANCE.get()) / 2)) {
 				breed = this.getWooly();
 			} else if (breedChance < (100 - LivestockOverhaulCommonConfig.BREED_CHANCE.get())) {
-				breed = oLlama1.getWooly();
+				breed = partner.getWooly();
 			} else {
 				breed = this.random.nextInt(Wooly.values().length);
 			}
 			oLlama.setWooly(breed);
 
-			int i = this.random.nextInt(100);
+			int variantChance = this.random.nextInt(100);
 			int variant;
-			if (i < ((100 - LivestockOverhaulCommonConfig.COAT_CHANCE.get()) / 2)) {
+			if (variantChance < ((100 - LivestockOverhaulCommonConfig.COAT_CHANCE.get()) / 2)) {
 				variant = this.getVariant();
-			} else if (i < (100 - LivestockOverhaulCommonConfig.COAT_CHANCE.get())) {
-				variant = oLlama1.getVariant();
+			} else if (variantChance < (100 - LivestockOverhaulCommonConfig.COAT_CHANCE.get())) {
+				variant = partner.getVariant();
 			} else {
 				int variantCount = OLlamaModel.Variant.values().length;
 				variant = variantCount > 0 ? this.random.nextInt(variantCount) : 0;
 			}
 
-			int j = this.random.nextInt(100);
+			int overlayChance = this.random.nextInt(100);
 			int overlay;
-			if (j < ((100 - LivestockOverhaulCommonConfig.MARKING_CHANCE.get()) / 2)) {
+			if (overlayChance < ((100 - LivestockOverhaulCommonConfig.MARKING_CHANCE.get()) / 2)) {
 				overlay = this.getOverlayVariant();
-			} else if (j < (100 - LivestockOverhaulCommonConfig.MARKING_CHANCE.get())) {
-				overlay = oLlama1.getOverlayVariant();
+			} else if (overlayChance < (100 - LivestockOverhaulCommonConfig.MARKING_CHANCE.get())) {
+				overlay = partner.getOverlayVariant();
 			} else {
 				int overlayCount = OLlamaMarkingLayer.Overlay.values().length;
 				overlay = overlayCount > 0 ? this.random.nextInt(overlayCount) : 0;
 			}
 
-			int k = this.random.nextInt(Math.max(this.getStrength(), oLlama1.getStrength()) + 1);
+			int strength = this.random.nextInt(Math.max(this.getStrength(), partner.getStrength()) + 1);
 			if (this.random.nextFloat() < 0.03F) {
-				++k;
+				++strength;
 			}
 
-			oLlama.setStrength(k);
+			oLlama.setStrength(strength);
 			oLlama.setVariant(variant);
 			oLlama.setOverlayVariant(overlay);
 			oLlama.setGender(random.nextInt(Gender.values().length));
@@ -656,7 +651,7 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 	}
 
 	@Override
-	public void dropCustomDeathLoot(DamageSource p_33574_, int p_33575_, boolean p_33576_) {
+	public void dropCustomDeathLoot(ServerLevel p_33574_, DamageSource p_33575_, boolean p_33576_) {
 		super.dropCustomDeathLoot(p_33574_, p_33575_, p_33576_);
 		Random random = new Random();
 
@@ -787,10 +782,6 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 		return this.entityData.get(DATA_STRENGTH_ID);
 	}
 
-	public int getInventorySize() {
-		return this.hasChest() ? 2 + 3 * this.getInventoryColumns() : super.getInventorySize();
-	}
-
 	public double getPassengersRidingOffset() {
 		return (double)this.getBbHeight() * 0.6D;
 	}
@@ -916,14 +907,13 @@ public class OLlama extends AbstractChestedHorse implements GeoEntity, Chestable
 		super.containerChanged(p_30760_);
 		DyeColor dyecolor1 = this.getSwag();
 		if (this.tickCount > 20 && dyecolor1 != null && dyecolor1 != dyecolor) {
-			this.playSound(SoundEvents.LLAMA_SWAG, 0.5F, 1.0F);
+			this.playSound(SoundEvents.LLAMA_SWAG.value(), 0.5F, 1.0F);
 		}
 
 	}
 
 	public void updateContainerEquipment() {
 		if (!this.level().isClientSide) {
-			super.updateContainerEquipment();
 			this.setSwag(getDyeColor(this.inventory.getItem(1)));
 		}
 	}

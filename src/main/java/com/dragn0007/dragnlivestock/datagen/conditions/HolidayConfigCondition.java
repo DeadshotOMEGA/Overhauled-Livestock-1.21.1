@@ -1,47 +1,22 @@
 package com.dragn0007.dragnlivestock.datagen.conditions;
 
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
-import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.crafting.conditions.ICondition;
-import net.neoforged.neoforge.common.crafting.conditions.IConditionSerializer;
+import com.mojang.serialization.MapCodec;
+import net.neoforged.neoforge.common.conditions.ICondition;
 
-public class HolidayConfigCondition implements ICondition {
-    private final ResourceLocation conditionId;
+public final class HolidayConfigCondition implements ICondition {
+    public static final HolidayConfigCondition INSTANCE = new HolidayConfigCondition();
+    public static final MapCodec<HolidayConfigCondition> CODEC = MapCodec.unit(INSTANCE).stable();
 
-    public HolidayConfigCondition(ResourceLocation id) {
-        this.conditionId = id;
-    }
-
-    @Override
-    public ResourceLocation getID() {
-        return this.conditionId;
-    }
+    private HolidayConfigCondition() {}
 
     @Override
     public boolean test(IContext context) {
         return LivestockOverhaulCommonConfig.ALLOW_HOLIDAY_EVENTS.get();
     }
 
-    public static class Serializer implements IConditionSerializer<HolidayConfigCondition> {
-        private final ResourceLocation conditionId;
-
-        public Serializer(ResourceLocation id) {
-            this.conditionId = id;
-        }
-
-        @Override
-        public void write(JsonObject json, HolidayConfigCondition condition) {
-        }
-
-        @Override
-        public HolidayConfigCondition read(JsonObject json) {
-            return new HolidayConfigCondition(this.conditionId);
-        }
-
-        @Override
-        public ResourceLocation getID() {
-            return this.conditionId;
-        }
+    @Override
+    public MapCodec<? extends ICondition> codec() {
+        return CODEC;
     }
 }

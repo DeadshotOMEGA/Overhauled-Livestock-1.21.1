@@ -7,8 +7,8 @@ import software.bernie.geckolib.model.GeoModel;
 public class OSalmonModel extends GeoModel<OSalmon> {
 
     public enum Variant {
-        NORMAL(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/fish/salmon_normal.png")),
-        SPAWNING(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/fish/salmon_spawning.png"));
+        NORMAL(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/fish/salmon_normal.png")),
+        SPAWNING(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/fish/salmon_spawning.png"));
 
         public final ResourceLocation resourceLocation;
         Variant(ResourceLocation resourceLocation) {
@@ -19,8 +19,8 @@ public class OSalmonModel extends GeoModel<OSalmon> {
         }
     }
 
-    public static final ResourceLocation MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/overhauled_salmon.geo.json");
-    public static final ResourceLocation ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/o_fish.animation.json");
+    public static final ResourceLocation MODEL = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/overhauled_salmon.geo.json");
+    public static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "animations/o_fish.animation.json");
 
     @Override
     public ResourceLocation getModelResource(OSalmon object) {

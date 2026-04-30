@@ -9,7 +9,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -38,23 +37,23 @@ public class CaribouArmorLayer extends GeoRenderLayer<Caribou> {
 
         if (!armorItemStack.isEmpty()) {
             if (armorItemStack.getItem() == LOItems.OBSIDIAN_HORSE_ARMOR.get()) {
-                resourceLocation = new ResourceLocation("medievalembroidery", "textures/entity/horse/armor/obsidian_horse_armor.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath("medievalembroidery", "textures/entity/horse/armor/obsidian_horse_armor.png");
             } else if (armorItemStack.getItem() == LOItems.MINIMAL_OBSIDIAN_HORSE_ARMOR.get()) {
-                resourceLocation = new ResourceLocation("medievalembroidery", "textures/entity/horse/armor/minimal_obsidian_horse_armor.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath("medievalembroidery", "textures/entity/horse/armor/minimal_obsidian_horse_armor.png");
             } else if (armorItemStack.getItem() == LOItems.RIOT_HORSE_ARMOR.get()) {
-                resourceLocation = new ResourceLocation("deadlydinos", "textures/entity/horse/armor/riot_horse_armor.png");
-            } else if (armorItemStack.getItem() instanceof HorseArmorItem horseArmorItem) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/" + horseArmorItem + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath("deadlydinos", "textures/entity/horse/armor/riot_horse_armor.png");
+            } else if (armorItemStack.is(com.dragn0007.dragnlivestock.util.LOTags.Items.ARMOR_SLOT_OTHER)) {
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/" + armorItemStack.getItem() + ".png");
             } else if (armorItemStack.getItem() instanceof LightHorseArmorItem horseArmorItem) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/" + horseArmorItem + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/" + horseArmorItem + ".png");
             } else if ((armorItemStack.getItem() instanceof RumpStrapItem rumpStrapItem) && !armorItemStack.isEmpty()) {
-                resourceLocation = new ResourceLocation("medievalembroidery", "textures/entity/horse/caparison/" + rumpStrapItem + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath("medievalembroidery", "textures/entity/horse/caparison/" + rumpStrapItem + ".png");
             } else if ((armorItemStack.getItem() instanceof CaparisonItem caparisonItem) && !armorItemStack.isEmpty()) {
-                resourceLocation = new ResourceLocation("medievalembroidery", "textures/entity/horse/caparison/" + caparisonItem + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath("medievalembroidery", "textures/entity/horse/caparison/" + caparisonItem + ".png");
             } else if (armorItemStack.getItem() instanceof CosmeticsItem item) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + item + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + item + ".png");
             } else if (armorItemStack.getItem() instanceof HarnessItem item) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + item + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + item + ".png");
             } else {
                 return;
             }
@@ -70,7 +69,6 @@ public class CaribouArmorLayer extends GeoRenderLayer<Caribou> {
                 bufferSource,
                 animatable,
                 renderType1,
-                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 }

@@ -10,7 +10,7 @@ import java.util.Map;
 public class HeadlessHorsemanModel extends GeoModel<HeadlessHorseman> {
 
     public enum Variant {
-        HEADLESS_HORSEMAN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/horseman_horse.png"));
+        HEADLESS_HORSEMAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/horseman_horse.png"));
 
         public final ResourceLocation resourceLocation;
         Variant(ResourceLocation resourceLocation) {
@@ -21,8 +21,8 @@ public class HeadlessHorsemanModel extends GeoModel<HeadlessHorseman> {
         }
     }
 
-    public static final ResourceLocation MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/headless_horseman.geo.json");
-    public static final ResourceLocation ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/headless_horseman.animation.json");
+    public static final ResourceLocation MODEL = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/headless_horseman.geo.json");
+    public static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "animations/headless_horseman.animation.json");
     @Override
     public ResourceLocation getModelResource(HeadlessHorseman object) {
         return MODEL;

@@ -10,8 +10,7 @@ import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
-import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
+import net.minecraft.world.level.pathfinder.PathType;
 
 import java.util.EnumSet;
 
@@ -77,14 +76,14 @@ public class GoatFollowOwnerGoal extends Goal {
 
    public void start() {
       this.timeToRecalcPath = 0;
-      this.oldWaterCost = this.tamable.getPathfindingMalus(BlockPathTypes.WATER);
-      this.tamable.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
+      this.oldWaterCost = this.tamable.getPathfindingMalus(PathType.WATER);
+      this.tamable.setPathfindingMalus(PathType.WATER, 0.0F);
    }
 
    public void stop() {
       this.owner = null;
       this.navigation.stop();
-      this.tamable.setPathfindingMalus(BlockPathTypes.WATER, this.oldWaterCost);
+      this.tamable.setPathfindingMalus(PathType.WATER, this.oldWaterCost);
    }
 
    public void tick() {
@@ -128,18 +127,12 @@ public class GoatFollowOwnerGoal extends Goal {
    }
 
    public boolean canTeleportTo(BlockPos p_25308_) {
-      BlockPathTypes blockpathtypes = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, p_25308_.mutable());
-      if (blockpathtypes != BlockPathTypes.WALKABLE) {
+      BlockState blockstate = this.level.getBlockState(p_25308_.below());
+      if (!this.canFly && blockstate.getBlock() instanceof LeavesBlock) {
          return false;
-      } else {
-         BlockState blockstate = this.level.getBlockState(p_25308_.below());
-         if (!this.canFly && blockstate.getBlock() instanceof LeavesBlock) {
-            return false;
-         } else {
-            BlockPos blockpos = p_25308_.subtract(this.tamable.blockPosition());
-            return this.level.noCollision(this.tamable, this.tamable.getBoundingBox().move(blockpos));
-         }
       }
+      BlockPos blockpos = p_25308_.subtract(this.tamable.blockPosition());
+      return this.level.noCollision(this.tamable, this.tamable.getBoundingBox().move(blockpos));
    }
 
    public int randomIntInclusive(int p_25301_, int p_25302_) {

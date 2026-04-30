@@ -53,6 +53,6 @@ public class HorseBreedTooltip implements IEntityComponentProvider {
 
     @Override
     public ResourceLocation getUid() {
-        return new ResourceLocation(LivestockOverhaul.MODID, "o_tooltips");
+        return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "o_tooltips");
     }
 }

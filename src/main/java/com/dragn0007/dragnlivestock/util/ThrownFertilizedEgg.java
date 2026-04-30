@@ -4,11 +4,14 @@ import com.dragn0007.dragnlivestock.entities.chicken.OChicken;
 import com.dragn0007.dragnlivestock.items.LOItems;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -52,9 +55,11 @@ public class ThrownFertilizedEgg extends ThrowableItemProjectile {
          }
 
          ItemStack stack = getItem();
-         if (!stack.isEmpty() && stack.hasTag() && stack.getTag() != null) {
+         CustomData entityData = stack.get(DataComponents.ENTITY_DATA);
+         CompoundTag tag = entityData != null ? entityData.copyTag() : null;
+         if (!stack.isEmpty() && tag != null) {
             for (int j = 0; j < i; ++j) {
-               OChicken chicken = (OChicken) EntityType.loadEntityRecursive(stack.getTag(), level(), entity -> entity);
+               OChicken chicken = (OChicken) EntityType.loadEntityRecursive(tag.copy(), level(), entity -> entity);
                if (chicken != null) {
                   chicken.absMoveTo(this.getX(), this.getY(), this.getZ(), this.getYRot(), 0.0F);
                   this.level().addFreshEntity(chicken);

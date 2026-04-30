@@ -85,7 +85,7 @@ public class ORunAroundLikeCrazyGoal extends Goal {
          if (entity instanceof Player) {
             int i = this.mount.getTemper();
             int j = this.mount.getMaxTemper();
-            if (j > 0 && this.mount.getRandom().nextInt(j) < i && !net.neoforged.neoforge.event.ForgeEventFactory.onAnimalTame(mount, (Player)entity)) {
+            if (j > 0 && this.mount.getRandom().nextInt(j) < i && !net.neoforged.neoforge.event.EventHooks.onAnimalTame(mount, (Player)entity)) {
                this.mount.tameWithName((Player)entity);
                return;
             }

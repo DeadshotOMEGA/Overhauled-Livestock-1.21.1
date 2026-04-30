@@ -6,17 +6,17 @@ import net.minecraft.resources.ResourceLocation;
 public class ChickenBreed {
 
     public enum Breed {
-        LEGHORN(new ResourceLocation(LivestockOverhaul.MODID, "geo/chicken/o_chicken.geo.json")),
-        AMERAUCANA(new ResourceLocation(LivestockOverhaul.MODID, "geo/chicken/ameraucana.geo.json")),
-        CREAM_LEGBAR(new ResourceLocation(LivestockOverhaul.MODID, "geo/chicken/cream_legbar.geo.json")),
-        MARANS(new ResourceLocation(LivestockOverhaul.MODID, "geo/chicken/marans.geo.json")),
-        OLIVE_EGGER(new ResourceLocation(LivestockOverhaul.MODID, "geo/chicken/olive_egger.geo.json")),
-        SUSSEX_SILKIE(new ResourceLocation(LivestockOverhaul.MODID, "geo/chicken/sussex_silkie.geo.json")),
-        AYAM_CEMANI(new ResourceLocation(LivestockOverhaul.MODID, "geo/chicken/o_chicken.geo.json")),
-        ORPINGTON(new ResourceLocation(LivestockOverhaul.MODID, "geo/chicken/orpington.geo.json")),
-        POLISH(new ResourceLocation(LivestockOverhaul.MODID, "geo/chicken/polish.geo.json")),
-        WYANDOTTE(new ResourceLocation(LivestockOverhaul.MODID, "geo/chicken/wyandotte.geo.json")),
-        BRAHMA(new ResourceLocation(LivestockOverhaul.MODID, "geo/chicken/brahma.geo.json")),
+        LEGHORN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/chicken/o_chicken.geo.json")),
+        AMERAUCANA(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/chicken/ameraucana.geo.json")),
+        CREAM_LEGBAR(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/chicken/cream_legbar.geo.json")),
+        MARANS(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/chicken/marans.geo.json")),
+        OLIVE_EGGER(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/chicken/olive_egger.geo.json")),
+        SUSSEX_SILKIE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/chicken/sussex_silkie.geo.json")),
+        AYAM_CEMANI(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/chicken/o_chicken.geo.json")),
+        ORPINGTON(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/chicken/orpington.geo.json")),
+        POLISH(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/chicken/polish.geo.json")),
+        WYANDOTTE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/chicken/wyandotte.geo.json")),
+        BRAHMA(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/chicken/brahma.geo.json")),
         ;
 
         public final ResourceLocation resourceLocation;

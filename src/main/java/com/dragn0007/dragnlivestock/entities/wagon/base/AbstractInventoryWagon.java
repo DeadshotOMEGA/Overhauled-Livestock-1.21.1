@@ -1,6 +1,5 @@
 package com.dragn0007.dragnlivestock.entities.wagon.base;
 
-import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
@@ -10,26 +9,18 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import net.neoforged.neoforge.common.capabilities.Capability;
-import net.neoforged.neoforge.common.capabilities.ForgeCapabilities;
-import net.neoforged.neoforge.common.util.LazyOptional;
 import net.neoforged.neoforge.items.ItemStackHandler;
-import net.neoforged.neoforge.network.NetworkHooks;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class AbstractInventoryWagon extends AbstractWagon implements MenuProvider {
 
     protected final NonNullList<ItemStack> inventory;
     protected final ItemStackHandler itemHandler;
-    protected final LazyOptional<ItemStackHandler> itemHandlerOptional;
 
     public AbstractInventoryWagon(EntityType<? extends AbstractWagon> type, Level level, double maxSpeed, double acceleration, float turnRate,
                                   int maxHealth, int capacity, Vec3[] draughtAnimalPositions, double wheelWidth, double wheelLength, Vec3[] riders) {
         super(type, level, maxSpeed, acceleration, turnRate, maxHealth, draughtAnimalPositions, wheelWidth, wheelLength, riders);
         this.inventory = NonNullList.withSize(capacity, ItemStack.EMPTY);
         this.itemHandler = new ItemStackHandler(inventory);
-        this.itemHandlerOptional = LazyOptional.of(() -> itemHandler);
     }
 
     @Override
@@ -39,7 +30,7 @@ public abstract class AbstractInventoryWagon extends AbstractWagon implements Me
             return superResult;
 
         if (isAlive() && !level().isClientSide && player.isSecondaryUseActive()) {
-            NetworkHooks.openScreen((ServerPlayer) player, this, buf -> buf.writeInt(getId()));
+            ((ServerPlayer) player).openMenu(this, buf -> buf.writeInt(getId()));
             return InteractionResult.CONSUME;
         }
 
@@ -53,18 +44,13 @@ public abstract class AbstractInventoryWagon extends AbstractWagon implements Me
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        ContainerHelper.saveAllItems(tag, inventory);
+        ContainerHelper.saveAllItems(tag, inventory, registryAccess());
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        ContainerHelper.loadAllItems(tag, inventory);
-    }
-
-    @Override
-    public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
-        return cap == ForgeCapabilities.ITEM_HANDLER ? itemHandlerOptional.cast() : super.getCapability(cap, side);
+        ContainerHelper.loadAllItems(tag, inventory, registryAccess());
     }
 
     @Override

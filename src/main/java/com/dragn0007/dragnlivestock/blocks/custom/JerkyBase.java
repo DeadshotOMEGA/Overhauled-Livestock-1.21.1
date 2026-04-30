@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class JerkyBase extends HorizontalDirectionalBlock {
+public abstract class JerkyBase extends HorizontalDirectionalBlock {
 
     public static final IntegerProperty DRY_TIME = IntegerProperty.create("dry_time", 0, 33);
 

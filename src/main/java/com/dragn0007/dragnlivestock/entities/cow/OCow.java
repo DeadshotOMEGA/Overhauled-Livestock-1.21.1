@@ -22,6 +22,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -34,7 +35,6 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
@@ -47,20 +47,21 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.network.NetworkHooks;
+import net.minecraft.core.registries.Registries;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.Animation;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -78,11 +79,11 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		setMilked(false);
 	}
 
-	protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_cow");
-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/cow");
-	protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/cow");
+	protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/o_cow"));
+	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/cow"));
+	protected static final ResourceKey<LootTable> TFC_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("tfc", "entities/cow"));
 	@Override
-	public @NotNull ResourceLocation getDefaultLootTable() {
+	public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
 		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
 			return VANILLA_LOOT_TABLE;
 		} else if (ModList.get().isLoaded("tfc")) {
@@ -164,14 +165,13 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		));
 	}
 
-	@Override
 	public float getStepHeight() {
 		return 1F;
 	}
 
 	protected final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.core.animation.AnimationState<T> tAnimationState) {
+	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.animation.AnimationState<T> tAnimationState) {
 		double x = this.getX() - this.xo;
 		double z = this.getZ() - this.zo;
 		boolean isMoving = (x * x + z * z) > 0.0001;
@@ -546,7 +546,7 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 				itemStack.shrink(1);
 			}
 
-			if (!this.isTamed() && this.random.nextInt(3) == 0 && !net.neoforged.neoforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+			if (!this.isTamed() && this.random.nextInt(3) == 0 && !net.neoforged.neoforge.event.EventHooks.onAnimalTame(this, player)) {
 				this.setTamed(true);
 			}
 
@@ -773,7 +773,7 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
 		if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
@@ -802,23 +802,23 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		this.setAttackDamage();
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(QUALITY, 0);
-		this.entityData.define(BREED, 0);
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(GENDER, 0);
-		this.entityData.define(HORN_TYPE, 0);
-		this.entityData.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
-		this.entityData.define(TAGGED, false);
-		this.entityData.define(MILKED, false);
-		this.entityData.define(HARNESSED, false);
-		this.entityData.define(BELLED, false);
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(QUALITY, 0);
+		builder.define(BREED, 0);
+		builder.define(VARIANT, 0);
+		builder.define(OVERLAY, 0);
+		builder.define(GENDER, 0);
+		builder.define(HORN_TYPE, 0);
+		builder.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
+		builder.define(TAGGED, false);
+		builder.define(MILKED, false);
+		builder.define(HARNESSED, false);
+		builder.define(BELLED, false);
 	}
 
 	public enum Gender {
@@ -865,6 +865,9 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		OCow calf;
 		OCow partner = (OCow) ageableMob;
 		calf = EntityTypes.O_COW_ENTITY.get().create(serverLevel);
+		if (calf == null) {
+			return null;
+		}
 
 		int breedChance = this.random.nextInt(100);
 		int breed;
@@ -929,19 +932,20 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		if (LivestockOverhaulCommonConfig.QUALITY.get()) {
-			int qual_avg = (this.getQuality() + partner.getQuality()) / 2;
+			int qualAvg = (this.getQuality() + partner.getQuality()) / 2;
 			if (random.nextDouble() <= 0.05) {
-				calf.setQuality(qual_avg + random.nextInt(50));
+				calf.setQuality(qualAvg + random.nextInt(50));
 			} else if (random.nextDouble() >= 0.05 && random.nextDouble() <= 0.25) {
-				calf.setQuality(qual_avg + random.nextInt(25));
+				calf.setQuality(qualAvg + random.nextInt(25));
 			} else if (random.nextDouble() >= 0.25 && random.nextDouble() <= 0.60) {
-				calf.setQuality(qual_avg + random.nextInt(10));
+				calf.setQuality(qualAvg + random.nextInt(10));
 			} else {
-				calf.setQuality(qual_avg + random.nextInt(5));
+				calf.setQuality(qualAvg + random.nextInt(5));
 			}
 		}
 
-		if (calf.getQuality() > 100) { //makes sure the baby doesn't go over 100%, since when it does, it loops back to "Fine" rather than "Exquisite"
+		// Prevent quality overflow from wrapping tier buckets.
+		if (calf.getQuality() > 100) {
 			calf.setQuality(100);
 		}
 
@@ -950,7 +954,7 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 	}
 
 	@Override
-	public void dropCustomDeathLoot(DamageSource p_33574_, int p_33575_, boolean p_33576_) {
+	public void dropCustomDeathLoot(ServerLevel p_33574_, DamageSource p_33575_, boolean p_33576_) {
 		super.dropCustomDeathLoot(p_33574_, p_33575_, p_33576_);
 		Random random = new Random();
 
@@ -1336,20 +1340,11 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
 
 
 	//ox stuff
-	public static final AttributeModifier WALK_SPEED_MOD = new AttributeModifier(WALK_SPEED_MOD_UUID, "Walk speed mod", -0.8D, AttributeModifier.Operation.MULTIPLY_TOTAL);
-
-	@Override
-	public int getInventorySize() {
-		if (this.getBreed() == 10) {
-			return this.hasChest() ? 26 : super.getInventorySize();
-		}
-		return super.getInventorySize();
-	}
 
 	@Override
 	public void openInventory(Player player) {
 		if(player instanceof ServerPlayer serverPlayer && this.isTamed() && this.getBreed() == 10) {
-			NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((containerId, inventory, p) -> {
+			serverPlayer.openMenu(new SimpleMenuProvider((containerId, inventory, p) -> {
 				return new OxMenu(containerId, inventory, this.inventory, this);
 			}, this.getDisplayName()), (data) -> {
 				data.writeInt(this.getInventorySize());

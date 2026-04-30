@@ -18,7 +18,7 @@ import java.text.DecimalFormat;
 
 public class UnicornScreen extends AbstractContainerScreen<UnicornMenu> {
 
-    public static final ResourceLocation RESOURCE_LOCATION = new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/o_horse.png");
+    public static final ResourceLocation RESOURCE_LOCATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/o_horse.png");
 
     public final Unicorn unicorn;
     public int breedLabelX;
@@ -118,7 +118,7 @@ public class UnicornScreen extends AbstractContainerScreen<UnicornMenu> {
             }
         }
 
-        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x + 51, y + 60, 17, (float)(x + 51), (float)(y + 75 - 50), this.unicorn);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x + 51, y + 60, 17, x + 51, y + 75 - 50, 0.0F, 0.0F, 0.0F, this.unicorn);
 
         renderBreedLabel(graphics);
 
@@ -138,7 +138,7 @@ public class UnicornScreen extends AbstractContainerScreen<UnicornMenu> {
 
     @Override
     public void render(GuiGraphics graphics, int i, int i1, float v) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, i, i1, v);
         super.render(graphics, i, i1, v);
         this.renderTooltip(graphics, i, i1);
     }
@@ -268,5 +268,4 @@ public class UnicornScreen extends AbstractContainerScreen<UnicornMenu> {
     }
 
 }
-
 

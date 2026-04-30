@@ -1,47 +1,22 @@
 package com.dragn0007.dragnlivestock.datagen.conditions;
 
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
-import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.crafting.conditions.ICondition;
-import net.neoforged.neoforge.common.crafting.conditions.IConditionSerializer;
+import com.mojang.serialization.MapCodec;
+import net.neoforged.neoforge.common.conditions.ICondition;
 
-public class BlanketConfigCondition implements ICondition {
-    private final ResourceLocation conditionId;
+public final class BlanketConfigCondition implements ICondition {
+    public static final BlanketConfigCondition INSTANCE = new BlanketConfigCondition();
+    public static final MapCodec<BlanketConfigCondition> CODEC = MapCodec.unit(INSTANCE).stable();
 
-    public BlanketConfigCondition(ResourceLocation id) {
-        this.conditionId = id;
-    }
-
-    @Override
-    public ResourceLocation getID() {
-        return this.conditionId;
-    }
+    private BlanketConfigCondition() {}
 
     @Override
     public boolean test(IContext context) {
         return LivestockOverhaulCommonConfig.ALLOW_SPECIAL_BLANKET_CRAFTING.get();
     }
 
-    public static class Serializer implements IConditionSerializer<BlanketConfigCondition> {
-        private final ResourceLocation conditionId;
-
-        public Serializer(ResourceLocation id) {
-            this.conditionId = id;
-        }
-
-        @Override
-        public void write(JsonObject json, BlanketConfigCondition condition) {
-        }
-
-        @Override
-        public BlanketConfigCondition read(JsonObject json) {
-            return new BlanketConfigCondition(this.conditionId);
-        }
-
-        @Override
-        public ResourceLocation getID() {
-            return this.conditionId;
-        }
+    @Override
+    public MapCodec<? extends ICondition> codec() {
+        return CODEC;
     }
 }

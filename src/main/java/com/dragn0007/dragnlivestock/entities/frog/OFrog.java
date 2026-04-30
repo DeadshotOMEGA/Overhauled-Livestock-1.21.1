@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -34,17 +35,18 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.Animation;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -56,11 +58,11 @@ public class OFrog extends Animal implements GeoEntity {
 		super(type, level);
 	}
 
-	protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_frog");
-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/frog");
-	protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/frog");
+	protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/o_frog"));
+	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/frog"));
+	protected static final ResourceKey<LootTable> TFC_LOOT_TABLE = ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("tfc", "entities/frog"));
 	@Override
-	public @NotNull ResourceLocation getDefaultLootTable() {
+	public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
 		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
 			return VANILLA_LOOT_TABLE;
 		} else if (ModList.get().isLoaded("tfc")) {
@@ -120,14 +122,9 @@ public class OFrog extends Animal implements GeoEntity {
 		return super.hurt(damageSource, v);
 	}
 
-	@Override
-	public float getStepHeight() {
-		return 2F;
-	}
-
 	protected final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.core.animation.AnimationState<T> tAnimationState) {
+	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.animation.AnimationState<T> tAnimationState) {
 		double x = this.getX() - this.xo;
 		double z = this.getZ() - this.zo;
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
@@ -292,7 +289,7 @@ public class OFrog extends Animal implements GeoEntity {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
 		if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
@@ -301,15 +298,15 @@ public class OFrog extends Animal implements GeoEntity {
 		setOverlayVariant(random.nextInt(OFrogMarkingLayer.Overlay.values().length));
 		setEyesVariant(random.nextInt(OFrogEyeLayer.Overlay.values().length));
 
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(EYES, 0);
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(VARIANT, 0);
+		builder.define(OVERLAY, 0);
+		builder.define(EYES, 0);
 	}
 
 	public boolean canParent() {

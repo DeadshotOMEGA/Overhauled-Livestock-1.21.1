@@ -5,8 +5,16 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.block.state.BlockState;
+import com.mojang.serialization.MapCodec;
 
 public class RawSheepCheese extends CheeseBase {
+
+    public static final MapCodec<RawSheepCheese> CODEC = simpleCodec(properties -> new RawSheepCheese());
+
+    @Override
+    protected MapCodec<? extends CheeseBase> codec() {
+        return CODEC;
+    }
 
     public RawSheepCheese() {
         super();

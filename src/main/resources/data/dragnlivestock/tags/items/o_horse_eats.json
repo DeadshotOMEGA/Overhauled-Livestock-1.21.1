@@ -9,7 +9,17 @@
     "minecraft:sugar",
 
     {
+      "id": "#c:vegetables",
+      "required": false
+    },
+
+    {
       "id": "#forge:vegetables",
+      "required": false
+    },
+
+    {
+      "id": "#c:fruits",
       "required": false
     },
 

@@ -18,7 +18,7 @@ import java.text.DecimalFormat;
 
 public class OCamelScreen extends AbstractContainerScreen<OCamelMenu> {
 
-    public static final ResourceLocation CAMEL_INVENTORY_LOCATION = new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/o_horse.png");
+    public static final ResourceLocation CAMEL_INVENTORY_LOCATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/o_horse.png");
     public final OCamel oCamel;
     public int baseColorLabelX;
     public int baseColorLabelY;
@@ -105,7 +105,7 @@ public class OCamelScreen extends AbstractContainerScreen<OCamelMenu> {
             }
         }
 
-        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x + 51, y + 60, 17, (float)(x + 51), (float)(y + 75 - 50), this.oCamel);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x + 51, y + 60, 17, x + 51, y + 75 - 50, 0.0F, 0.0F, 0.0F, this.oCamel);
 
         if (LivestockOverhaulClientConfig.HORSE_COAT_GUI.get()) {
             renderBaseCoatLabel(graphics);
@@ -122,7 +122,7 @@ public class OCamelScreen extends AbstractContainerScreen<OCamelMenu> {
 
     @Override
     public void render(GuiGraphics graphics, int i, int i1, float v) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, i, i1, v);
         super.render(graphics, i, i1, v);
         this.renderTooltip(graphics, i, i1);
     }
@@ -219,5 +219,4 @@ public class OCamelScreen extends AbstractContainerScreen<OCamelMenu> {
     }
 
 }
-
 

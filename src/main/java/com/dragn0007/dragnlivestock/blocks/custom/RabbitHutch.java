@@ -9,8 +9,16 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.stream.Stream;
+import com.mojang.serialization.MapCodec;
 
 public class RabbitHutch extends RabbitHutchBase {
+
+    public static final MapCodec<RabbitHutch> CODEC = simpleCodec(properties -> new RabbitHutch());
+
+    @Override
+    protected MapCodec<? extends RabbitHutchBase> codec() {
+        return CODEC;
+    }
 
     public static final VoxelShape NORTH = Stream.of(
             box(0, 15, 0, 16, 16, 16),
@@ -65,7 +73,7 @@ public class RabbitHutch extends RabbitHutchBase {
     ).reduce((v1, v2) -> Shapes.join(v1, v2,BooleanOp.OR)).get();
 
     public RabbitHutch() {
-        super(NORTH, EAST, SOUTH, WEST, Properties.copy(Blocks.OAK_PLANKS).noOcclusion().pushReaction(PushReaction.IGNORE), SoundEvents.CHERRY_WOOD_FENCE_GATE_CLOSE, SoundEvents.CHERRY_WOOD_FENCE_GATE_OPEN);
+        super(NORTH, EAST, SOUTH, WEST, Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().pushReaction(PushReaction.IGNORE), SoundEvents.CHERRY_WOOD_FENCE_GATE_CLOSE, SoundEvents.CHERRY_WOOD_FENCE_GATE_OPEN);
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 
 public class CaribouMenu extends AbstractContainerMenu {
@@ -45,7 +44,7 @@ public class CaribouMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.container, caribouSlots++, 8, 36) {
             @Override
             public boolean mayPlace(ItemStack itemStack) {
-                if (itemStack.getItem() instanceof HorseArmorItem || itemStack.getItem() instanceof LightHorseArmorItem ||
+                if (itemStack.getItem() instanceof LightHorseArmorItem ||
                         itemStack.getItem() instanceof CaparisonItem || itemStack.getItem() instanceof RumpStrapItem) {
                     return !this.hasItem() && CaribouMenu.this.caribou.canWearArmor();
                 }

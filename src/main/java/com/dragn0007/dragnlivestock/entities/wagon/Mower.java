@@ -78,9 +78,9 @@ public class Mower extends AbstractWagon {
     public Vec3 lastServerPos = Vec3.ZERO;
 
     public enum Mode {
-        NO(new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/nomode.png")),
-        MOW(new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/mowmode.png")),
-        PATH(new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/pathmode.png"));
+        NO(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/nomode.png")),
+        MOW(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/mowmode.png")),
+        PATH(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/pathmode.png"));
 
         public final ResourceLocation texture;
 
@@ -121,7 +121,7 @@ public class Mower extends AbstractWagon {
 
     protected void destroyFoliage(BlockPos pos) {
         BlockState blockState = this.level().getBlockState(pos);
-        if (blockState.is(Blocks.GRASS) || blockState.is(Blocks.TALL_GRASS) ||
+        if (blockState.is(Blocks.SHORT_GRASS) || blockState.is(Blocks.TALL_GRASS) ||
                 blockState.is(Blocks.DEAD_BUSH) || blockState.is(Blocks.FERN) || blockState.is(Blocks.LARGE_FERN)
                 || blockState.is(BlockTags.FLOWERS) || blockState.is(BlockTags.SNOW)) {
             blockState.getBlock().getDrops(blockState, (ServerLevel) level(), pos, null).forEach
@@ -210,11 +210,11 @@ public class Mower extends AbstractWagon {
     protected static final EntityDataAccessor<Integer> DATA_TYPE = SynchedEntityData.defineId(Mower.class, EntityDataSerializers.INT);
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(MODE, 0);
-        entityData.define(DATA_TYPE, 0);
-        entityData.define(DATA_HEALTH, (float)maxHealth);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(MODE, 0);
+        builder.define(DATA_TYPE, 0);
+        builder.define(DATA_HEALTH, (float)maxHealth);
     }
 
     @Override

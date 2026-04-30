@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_base_item": {
+      "conditions": {
+        "items": [
+          {
+            "items": "dragnlivestock:netherite_horse_armor"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "dragnlivestock:minimal_netherite_horse_armor_smithing"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_base_item"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "dragnlivestock:minimal_netherite_horse_armor_smithing"
+    ]
+  }
+}

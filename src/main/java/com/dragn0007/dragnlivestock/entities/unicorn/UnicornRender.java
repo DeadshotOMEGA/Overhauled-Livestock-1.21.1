@@ -21,7 +21,7 @@ public class UnicornRender extends GeoEntityRenderer<Unicorn> {
     }
 
     @Override
-    public void preRender(PoseStack poseStack, Unicorn entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void preRender(PoseStack poseStack, Unicorn entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
 
         if (!entity.isBaby()) {
             if (entity.hasChest()) {
@@ -53,7 +53,7 @@ public class UnicornRender extends GeoEntityRenderer<Unicorn> {
                 model.getBone("back_left_shoe").ifPresent(b -> b.setHidden(true));
             }
 
-            if (animatable.isWearingPullingHarness()) {
+            if (entity.isWearingPullingHarness()) {
                 model.getBone("wagon_harness").ifPresent(b -> b.setHidden(false));
             } else {
                 model.getBone("wagon_harness").ifPresent(b -> b.setHidden(true));
@@ -131,8 +131,7 @@ public class UnicornRender extends GeoEntityRenderer<Unicorn> {
             model.getBone("back_left_feathering").ifPresent(b -> b.setScaleY(1F));
         }
 
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(poseStack, entity, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
     }
 }
-
 

@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.items.custom;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -40,9 +41,9 @@ public class BrandTagItem extends Item {
    }
 
    public InteractionResult interactLivingEntity(ItemStack pStack, Player pPlayer, LivingEntity pTarget, InteractionHand pHand) {
-      if (pStack.hasCustomHoverName() && !(pTarget instanceof Player)) {
+      if (pStack.has(DataComponents.CUSTOM_NAME) && !(pTarget instanceof Player)) {
          if (!pPlayer.level().isClientSide && pTarget.isAlive()) {
-            if (pStack.hasCustomHoverName()) {
+            if (pTarget.hasCustomName()) {
                pTarget.setCustomName(pTarget.getCustomName().copy().append(Component.literal(" ")).append(pStack.getHoverName()));
             } else {
                pTarget.setCustomName(pStack.getHoverName());
@@ -61,7 +62,7 @@ public class BrandTagItem extends Item {
    }
 
    @Override
-   public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+   public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
       pTooltipComponents.add(Component.translatable("tooltip.dragnlivestock.brand_tag.tooltip").withStyle(ChatFormatting.GOLD));
    }
 }

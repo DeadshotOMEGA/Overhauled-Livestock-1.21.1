@@ -29,17 +29,16 @@ public class FarmGoatEyeLayer extends GeoRenderLayer<FarmGoat> {
                     bufferSource,
                     animatable,
                     renderMarkingType,
-                    bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                    1, 1, 1, 1);
+                    bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             super.render(poseStack, animatable, bakedModel, renderType, bufferSource, buffer, partialTick, packedLight, packedOverlay);
         }
     }
 
     public enum Overlay {
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/sheep/overlay/none.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/eye/brown.png")),
-        AMBER(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/eye/amber.png")),
-        BLUE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/eye/blue.png")),
+        NONE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/sheep/overlay/none.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/eye/brown.png")),
+        AMBER(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/eye/amber.png")),
+        BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/eye/blue.png")),
         ;
 
         //Add new entries to bottom when mod is public, else goats will change textures during update.

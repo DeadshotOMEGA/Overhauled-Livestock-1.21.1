@@ -19,6 +19,6 @@ public class LOPoiTags extends PoiTypeTagsProvider {
     @Override
     public void addTags(HolderLookup.Provider pProvider) {
         tag(PoiTypeTags.ACQUIRABLE_JOB_SITE)
-                .addOptional(new ResourceLocation(LivestockOverhaul.MODID, "livestock_trader_poi"));
+                .addOptional(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "livestock_trader_poi"));
     }
 }

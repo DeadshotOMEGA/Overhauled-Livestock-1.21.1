@@ -6,8 +6,8 @@ import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
-import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
@@ -19,13 +19,13 @@ import java.util.Map;
 public class OHorseModel extends DefaultedEntityGeoModel<OHorse> {
 
     public OHorseModel() {
-        super(new ResourceLocation(LivestockOverhaul.MODID, "o_horse"), true);
+        super(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "o_horse"), true);
     }
 
     @Override
     public void setCustomAnimations(OHorse animatable, long instanceId, AnimationState<OHorse> animationState) {
 
-        CoreGeoBone neck = getAnimationProcessor().getBone("neck");
+        GeoBone neck = getAnimationProcessor().getBone("neck");
 
         EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
         float targetYaw = entityData.netHeadYaw();
@@ -49,42 +49,42 @@ public class OHorseModel extends DefaultedEntityGeoModel<OHorse> {
     public static String config_simplified_path = "textures/entity/config_simplified/horse/";
 
     public enum Variant {
-        BAY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "bay.png")),
-        BAY_ROAN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "bay_roan.png")),
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, default_path + "black.png")),
-        BLOOD_BAY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "blood_bay.png")),
-        BLUE(new ResourceLocation(LivestockOverhaul.MODID, default_path + "blue.png")),
-        BLUE_ROAN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "blue_roan.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "brown.png")),
-        BUCKSKIN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "buckskin.png")),
-        CHAMPAGNE(new ResourceLocation(LivestockOverhaul.MODID, default_path + "champagne.png")),
-        CHOCOLATE_ROAN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "chocolate_roan.png")),
-        CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, default_path + "chestnut.png")),
-        CREAMY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "creamy.png")),
-        DARK_BAY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "dark_bay.png")),
-        DARK_BROWN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "dark_brown.png")),
-        FJORD(new ResourceLocation(LivestockOverhaul.MODID, default_path + "fjord.png")),
-        GREY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "grey.png")),
-        IVORY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "ivory.png")),
-        LIVER_CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, default_path + "liver_chestnut.png")),
-        PALAMINO(new ResourceLocation(LivestockOverhaul.MODID, default_path + "palamino.png")),
-        PALAMINO_ORANGE(new ResourceLocation(LivestockOverhaul.MODID, default_path + "palamino_orange.png")),
-        SEAL_BAY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "seal_bay.png")),
-        STRAWBERRY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "strawberry.png")),
-        WARM_BLACK(new ResourceLocation(LivestockOverhaul.MODID, default_path + "warm_black.png")),
-        WARM_GREY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "warm_grey.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, default_path + "white.png")),
-        CREAM(new ResourceLocation(LivestockOverhaul.MODID, default_path + "cream.png")),
-        RED_DUN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "red_dun.png")),
-        BAY_DUN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "bay_dun.png")),
-        GRULLA(new ResourceLocation(LivestockOverhaul.MODID, default_path + "grulla.png")),
-        BLUE_DUN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "blue_dun.png")),
-        CINNAMON(new ResourceLocation(LivestockOverhaul.MODID, default_path + "cinnamon.png")),
-        STRAWBERRY_ROAN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "strawberry_roan.png")),
-        GOLD(new ResourceLocation(LivestockOverhaul.MODID, default_path + "gold.png")),
-        SILVER(new ResourceLocation(LivestockOverhaul.MODID, default_path + "silver.png")),
-        GRULLO_DUN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "grullo_dun.png")),
-        STEEL_GREY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "steel_grey.png")),
+        BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "bay.png")),
+        BAY_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "bay_roan.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "black.png")),
+        BLOOD_BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "blood_bay.png")),
+        BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "blue.png")),
+        BLUE_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "blue_roan.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "brown.png")),
+        BUCKSKIN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "buckskin.png")),
+        CHAMPAGNE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "champagne.png")),
+        CHOCOLATE_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "chocolate_roan.png")),
+        CHESTNUT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "chestnut.png")),
+        CREAMY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "creamy.png")),
+        DARK_BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "dark_bay.png")),
+        DARK_BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "dark_brown.png")),
+        FJORD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "fjord.png")),
+        GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "grey.png")),
+        IVORY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "ivory.png")),
+        LIVER_CHESTNUT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "liver_chestnut.png")),
+        PALAMINO(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "palamino.png")),
+        PALAMINO_ORANGE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "palamino_orange.png")),
+        SEAL_BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "seal_bay.png")),
+        STRAWBERRY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "strawberry.png")),
+        WARM_BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "warm_black.png")),
+        WARM_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "warm_grey.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "white.png")),
+        CREAM(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "cream.png")),
+        RED_DUN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "red_dun.png")),
+        BAY_DUN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "bay_dun.png")),
+        GRULLA(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "grulla.png")),
+        BLUE_DUN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "blue_dun.png")),
+        CINNAMON(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "cinnamon.png")),
+        STRAWBERRY_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "strawberry_roan.png")),
+        GOLD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "gold.png")),
+        SILVER(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "silver.png")),
+        GRULLO_DUN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "grullo_dun.png")),
+        STEEL_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "steel_grey.png")),
         ;
 
         public final ResourceLocation resourceLocation;
@@ -97,42 +97,42 @@ public class OHorseModel extends DefaultedEntityGeoModel<OHorse> {
     }
 
     public enum SVariant {
-        BAY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "bay.png")),
-        BAY_ROAN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "bay_roan.png")),
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "black.png")),
-        BLOOD_BAY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "blood_bay.png")),
-        BLUE(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "blue.png")),
-        BLUE_ROAN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "blue_roan.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "brown.png")),
-        BUCKSKIN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "buckskin.png")),
-        CHAMPAGNE(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "champagne.png")),
-        CHOCOLATE_ROAN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "chocolate_roan.png")),
-        CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "chestnut.png")),
-        CREAMY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "creamy.png")),
-        DARK_BAY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "dark_bay.png")),
-        DARK_BROWN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "dark_brown.png")),
-        FJORD(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "fjord.png")),
-        GREY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "grey.png")),
-        IVORY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "ivory.png")),
-        LIVER_CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "liver_chestnut.png")),
-        PALAMINO(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "palamino.png")),
-        PALAMINO_ORANGE(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "palamino_orange.png")),
-        SEAL_BAY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "seal_bay.png")),
-        STRAWBERRY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "strawberry.png")),
-        WARM_BLACK(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "warm_black.png")),
-        WARM_GREY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "warm_grey.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "white.png")),
-        CREAM(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "cream.png")),
-        RED_DUN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "red_dun.png")),
-        BAY_DUN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "bay_dun.png")),
-        GRULLA(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "grulla.png")),
-        BLUE_DUN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "blue_dun.png")),
-        CINNAMON(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "cinnamon.png")),
-        STRAWBERRY_ROAN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "strawberry_roan.png")),
-        GOLD(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "gold.png")),
-        SILVER(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "silver.png")),
-        GRULLO_DUN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "grullo_dun.png")),
-        STEEL_GREY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "steel_grey.png")),
+        BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "bay.png")),
+        BAY_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "bay_roan.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "black.png")),
+        BLOOD_BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "blood_bay.png")),
+        BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "blue.png")),
+        BLUE_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "blue_roan.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "brown.png")),
+        BUCKSKIN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "buckskin.png")),
+        CHAMPAGNE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "champagne.png")),
+        CHOCOLATE_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "chocolate_roan.png")),
+        CHESTNUT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "chestnut.png")),
+        CREAMY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "creamy.png")),
+        DARK_BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "dark_bay.png")),
+        DARK_BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "dark_brown.png")),
+        FJORD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "fjord.png")),
+        GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "grey.png")),
+        IVORY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "ivory.png")),
+        LIVER_CHESTNUT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "liver_chestnut.png")),
+        PALAMINO(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "palamino.png")),
+        PALAMINO_ORANGE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "palamino_orange.png")),
+        SEAL_BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "seal_bay.png")),
+        STRAWBERRY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "strawberry.png")),
+        WARM_BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "warm_black.png")),
+        WARM_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "warm_grey.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "white.png")),
+        CREAM(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "cream.png")),
+        RED_DUN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "red_dun.png")),
+        BAY_DUN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "bay_dun.png")),
+        GRULLA(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "grulla.png")),
+        BLUE_DUN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "blue_dun.png")),
+        CINNAMON(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "cinnamon.png")),
+        STRAWBERRY_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "strawberry_roan.png")),
+        GOLD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "gold.png")),
+        SILVER(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "silver.png")),
+        GRULLO_DUN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "grullo_dun.png")),
+        STEEL_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "steel_grey.png")),
         ;
 
         public final ResourceLocation resourceLocation;
@@ -145,23 +145,23 @@ public class OHorseModel extends DefaultedEntityGeoModel<OHorse> {
     }
 
     public enum ReindeerVariant {
-        BAY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/bay.png")),
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/black.png")),
-        BLUE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/blue.png")),
-        CHAMPAGNE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/champagne.png")),
-        CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/chestnut.png")),
-        CHOCOLATE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/chocolate.png")),
-        CREAM(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/cream.png")),
-        GREY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/grey.png")),
-        IVORY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/ivory.png")),
-        LIGHT_GREY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/light_grey.png")),
-        LIVER(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/liver_chestnut.png")),
-        PALAMINO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/palamino.png")),
-        RED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/red.png")),
-        SEAL(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/seal.png")),
-        STRAWBERRY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/strawberry.png")),
-        TAN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/tan.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/reindeer/white.png"));
+        BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/bay.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/black.png")),
+        BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/blue.png")),
+        CHAMPAGNE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/champagne.png")),
+        CHESTNUT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/chestnut.png")),
+        CHOCOLATE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/chocolate.png")),
+        CREAM(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/cream.png")),
+        GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/grey.png")),
+        IVORY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/ivory.png")),
+        LIGHT_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/light_grey.png")),
+        LIVER(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/liver_chestnut.png")),
+        PALAMINO(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/palamino.png")),
+        RED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/red.png")),
+        SEAL(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/seal.png")),
+        STRAWBERRY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/strawberry.png")),
+        TAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/tan.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/white.png"));
 
         public final ResourceLocation resourceLocation;
         ReindeerVariant(ResourceLocation resourceLocation) {
@@ -172,11 +172,11 @@ public class OHorseModel extends DefaultedEntityGeoModel<OHorse> {
         }
     }
 
-    public static final ResourceLocation ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/o_horse.animation.json");
-    public static final ResourceLocation BABY_MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/horse/baby_o_horse.geo.json");
-    public static final ResourceLocation REINDEER_MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/caribou.geo.json");
-    public static final ResourceLocation SIMPLIFIED_MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/config_simplified/horse.geo.json");
-    public static final ResourceLocation SIMPLIFIED_ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/config_simplified/horse.animation.json");
+    public static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "animations/o_horse.animation.json");
+    public static final ResourceLocation BABY_MODEL = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/baby_o_horse.geo.json");
+    public static final ResourceLocation REINDEER_MODEL = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/caribou.geo.json");
+    public static final ResourceLocation SIMPLIFIED_MODEL = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/config_simplified/horse.geo.json");
+    public static final ResourceLocation SIMPLIFIED_ANIMATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "animations/config_simplified/horse.animation.json");
 
     LocalDate date = LocalDate.now();
     Month month = date.getMonth();

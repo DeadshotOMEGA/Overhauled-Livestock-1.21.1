@@ -62,16 +62,14 @@ public class LlamaFollowHerdLeaderGoal extends Goal {
          this.timeToRecalcPath = this.adjustedTickDelay(10);
 
          OLlama leader = this.mob.leader;
-         if (mob.goalSelector.getRunningGoals().noneMatch(goal -> goal.getGoal() instanceof OAvoidEntityGoal<?>)) {
-            if (leader != null) {
-               double distanceSq = this.mob.distanceToSqr(leader);
-               double minDistanceSq = 3.0D * 3.0D;
+         if (leader != null) {
+            double distanceSq = this.mob.distanceToSqr(leader);
+            double minDistanceSq = 3.0D * 3.0D;
 
-               if (distanceSq > minDistanceSq) {
-                  this.mob.pathToLeader();
-               } else {
-                  this.mob.getNavigation().stop();
-               }
+            if (distanceSq > minDistanceSq) {
+               this.mob.pathToLeader();
+            } else {
+               this.mob.getNavigation().stop();
             }
          }
       }

@@ -43,7 +43,7 @@ public class OSheepWoolLayer extends GeoRenderLayer<OSheep> {
                     animatable,
                     renderMarkingType,
                     bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                    1, 1, 1, 1);
+                    0xFFFFFFFF);
             super.render(poseStack, animatable, bakedModel, renderType, bufferSource, buffer, partialTick, packedLight, packedOverlay);
         } else {
             RenderType renderMarkingType = RenderType.entityCutout(animatable.getWoolDyeLocation());
@@ -57,7 +57,7 @@ public class OSheepWoolLayer extends GeoRenderLayer<OSheep> {
                     animatable,
                     renderMarkingType,
                     bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                    1, 1, 1, 1);
+                    0xFFFFFFFF);
             super.render(poseStack, animatable, bakedModel, renderType, bufferSource, buffer, partialTick, packedLight, packedOverlay);
         }
     }
@@ -66,13 +66,13 @@ public class OSheepWoolLayer extends GeoRenderLayer<OSheep> {
     public static String config_simplified_path = "textures/entity/config_simplified/sheep/wool/";
 
     public enum Overlay {
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, default_path + "black.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "brown.png")),
-        GREY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "grey.png")),
-        LIGHT_GREY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "light_grey.png")),
-        TAN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "tan.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, default_path + "white.png")),
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/sheep/overlay/none.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "black.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "brown.png")),
+        GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "grey.png")),
+        LIGHT_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "light_grey.png")),
+        TAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "tan.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "white.png")),
+        NONE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/sheep/overlay/none.png")),
         ;
 
         public final ResourceLocation resourceLocation;
@@ -85,13 +85,13 @@ public class OSheepWoolLayer extends GeoRenderLayer<OSheep> {
     }
 
     public enum SOverlay {
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "black.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "brown.png")),
-        GREY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "grey.png")),
-        LIGHT_GREY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "light_grey.png")),
-        TAN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "tan.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "white.png")),
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/sheep/overlay/none.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "black.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "brown.png")),
+        GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "grey.png")),
+        LIGHT_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "light_grey.png")),
+        TAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "tan.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "white.png")),
+        NONE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/sheep/overlay/none.png")),
         ;
 
         public final ResourceLocation resourceLocation;
@@ -107,23 +107,23 @@ public class OSheepWoolLayer extends GeoRenderLayer<OSheep> {
     public static String dye_config_simplified_path = "textures/entity/config_simplified/sheep/wool/";
 
     public enum DyeOverlay {
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/sheep/overlay/none.png")),
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "black.png")),
-        BLUE(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "blue.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "brown.png")),
-        CYAN(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "cyan.png")),
-        GREEN(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "green.png")),
-        GREY(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "grey.png")),
-        LIGHT_BLUE(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "light_blue.png")),
-        LIGHT_GREY(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "light_grey.png")),
-        LIME(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "lime.png")),
-        MAGENTA(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "magenta.png")),
-        ORANGE(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "orange.png")),
-        PINK(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "pink.png")),
-        PURPLE(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "purple.png")),
-        RED(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "red.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "white.png")),
-        YELLOW(new ResourceLocation(LivestockOverhaul.MODID, dye_default_path + "yellow.png")),
+        NONE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/sheep/overlay/none.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "black.png")),
+        BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "blue.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "brown.png")),
+        CYAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "cyan.png")),
+        GREEN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "green.png")),
+        GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "grey.png")),
+        LIGHT_BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "light_blue.png")),
+        LIGHT_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "light_grey.png")),
+        LIME(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "lime.png")),
+        MAGENTA(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "magenta.png")),
+        ORANGE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "orange.png")),
+        PINK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "pink.png")),
+        PURPLE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "purple.png")),
+        RED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "red.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "white.png")),
+        YELLOW(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_default_path + "yellow.png")),
         ;
 
         public final ResourceLocation resourceLocation;
@@ -136,23 +136,23 @@ public class OSheepWoolLayer extends GeoRenderLayer<OSheep> {
     }
 
     public enum SDyeOverlay {
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/sheep/overlay/none.png")),
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "black.png")),
-        BLUE(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "blue.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "brown.png")),
-        CYAN(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "cyan.png")),
-        GREEN(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "green.png")),
-        GREY(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "grey.png")),
-        LIGHT_BLUE(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "light_blue.png")),
-        LIGHT_GREY(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "light_grey.png")),
-        LIME(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "lime.png")),
-        MAGENTA(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "magenta.png")),
-        ORANGE(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "orange.png")),
-        PINK(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "pink.png")),
-        PURPLE(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "purple.png")),
-        RED(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "red.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "white.png")),
-        YELLOW(new ResourceLocation(LivestockOverhaul.MODID, dye_config_simplified_path + "yellow.png")),
+        NONE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/sheep/overlay/none.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "black.png")),
+        BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "blue.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "brown.png")),
+        CYAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "cyan.png")),
+        GREEN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "green.png")),
+        GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "grey.png")),
+        LIGHT_BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "light_blue.png")),
+        LIGHT_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "light_grey.png")),
+        LIME(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "lime.png")),
+        MAGENTA(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "magenta.png")),
+        ORANGE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "orange.png")),
+        PINK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "pink.png")),
+        PURPLE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "purple.png")),
+        RED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "red.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "white.png")),
+        YELLOW(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, dye_config_simplified_path + "yellow.png")),
         ;
 
         public final ResourceLocation resourceLocation;

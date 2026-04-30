@@ -7,6 +7,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BoneMealItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
@@ -24,7 +25,7 @@ public class RabbitPoopItem extends BoneMealItem {
     }
 
     @Override
-    public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+    public void appendHoverText(ItemStack pStack, Item.TooltipContext pContext, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
         pTooltipComponents.add(Component.translatable("tooltip.dragnlivestock.rabbit_poop.tooltip").withStyle(ChatFormatting.GOLD));
     }
 
@@ -57,11 +58,11 @@ public class RabbitPoopItem extends BoneMealItem {
         BlockState state = level.getBlockState(pos);
 
         if (state.getBlock() instanceof BonemealableBlock bonemealable) {
-            if (bonemealable.isValidBonemealTarget(level, pos, state, level.isClientSide())) {
+            if (bonemealable.isValidBonemealTarget(level, pos, state)) {
                 if (!level.isClientSide) {
 
                     for (int i = 0; i < 2; i++) {
-                        if (bonemealable.isValidBonemealTarget(level, pos, state, false)) {
+                        if (bonemealable.isValidBonemealTarget(level, pos, state)) {
                             bonemealable.performBonemeal((ServerLevel) level, level.random, pos, state);
                             state = level.getBlockState(pos);
                         }

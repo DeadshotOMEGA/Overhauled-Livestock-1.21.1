@@ -2,6 +2,7 @@ package com.dragn0007.dragnlivestock.entities.llama;
 
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -32,7 +33,7 @@ public class OLlamaSpit extends Projectile {
       super.tick();
       Vec3 vec3 = this.getDeltaMovement();
       HitResult hitresult = ProjectileUtil.getHitResultOnMoveVector(this, this::canHitEntity);
-      if (hitresult.getType() != HitResult.Type.MISS && !net.neoforged.neoforge.event.ForgeEventFactory.onProjectileImpact(this, hitresult))
+      if (hitresult.getType() != HitResult.Type.MISS && !net.neoforged.neoforge.event.EventHooks.onProjectileImpact(this, hitresult))
          this.onHit(hitresult);
       double d0 = this.getX() + vec3.x;
       double d1 = this.getY() + vec3.y;
@@ -71,7 +72,7 @@ public class OLlamaSpit extends Projectile {
 
    }
 
-   public void defineSynchedData() {
+   public void defineSynchedData(SynchedEntityData.Builder builder) {
    }
 
    public void recreateFromPacket(ClientboundAddEntityPacket p_150162_) {

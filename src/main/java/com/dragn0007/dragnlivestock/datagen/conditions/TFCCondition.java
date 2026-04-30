@@ -1,47 +1,22 @@
 package com.dragn0007.dragnlivestock.datagen.conditions;
 
-import com.google.gson.JsonObject;
-import net.minecraft.resources.ResourceLocation;
-import net.neoforged.neoforge.common.crafting.conditions.ICondition;
-import net.neoforged.neoforge.common.crafting.conditions.IConditionSerializer;
+import com.mojang.serialization.MapCodec;
+import net.neoforged.neoforge.common.conditions.ICondition;
 import net.neoforged.fml.ModList;
 
-public class TFCCondition implements ICondition {
-    private final ResourceLocation conditionId;
+public final class TFCCondition implements ICondition {
+    public static final TFCCondition INSTANCE = new TFCCondition();
+    public static final MapCodec<TFCCondition> CODEC = MapCodec.unit(INSTANCE).stable();
 
-    public TFCCondition(ResourceLocation id) {
-        this.conditionId = id;
-    }
-
-    @Override
-    public ResourceLocation getID() {
-        return this.conditionId;
-    }
+    private TFCCondition() {}
 
     @Override
     public boolean test(IContext context) {
         return ModList.get().isLoaded("tfc");
     }
 
-    public static class Serializer implements IConditionSerializer<TFCCondition> {
-        private final ResourceLocation conditionId;
-
-        public Serializer(ResourceLocation id) {
-            this.conditionId = id;
-        }
-
-        @Override
-        public void write(JsonObject json, TFCCondition condition) {
-        }
-
-        @Override
-        public TFCCondition read(JsonObject json) {
-            return new TFCCondition(this.conditionId);
-        }
-
-        @Override
-        public ResourceLocation getID() {
-            return this.conditionId;
-        }
+    @Override
+    public MapCodec<? extends ICondition> codec() {
+        return CODEC;
     }
 }

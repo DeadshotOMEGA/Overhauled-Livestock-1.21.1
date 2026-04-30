@@ -9,7 +9,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 
 public class OMountMenu extends AbstractContainerMenu {
@@ -42,9 +41,7 @@ public class OMountMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.container, oMountSlots++, 8, 36) {
             @Override
             public boolean mayPlace(ItemStack itemStack) {
-                if (itemStack.getItem() instanceof HorseArmorItem) {
-                    return !this.hasItem() && OMountMenu.this.oMount.canWearArmor();
-                } else if (itemStack.is(LOTags.Items.DECOR_FOR_O_MOUNTS)) {
+                if (itemStack.is(LOTags.Items.DECOR_FOR_O_MOUNTS)) {
                     return !this.hasItem() && OMountMenu.this.oMount.canWearArmor();
                 }
                 return false;

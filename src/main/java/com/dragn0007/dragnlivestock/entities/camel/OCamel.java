@@ -1,16 +1,14 @@
 package com.dragn0007.dragnlivestock.entities.camel;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
-import com.dragn0007.dragnlivestock.client.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.common.gui.OCamelMenu;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.entities.ai.GroundTieGoal;
-import com.dragn0007.dragnlivestock.entities.ai.OCamelFollowCaravanGoal;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOMount;
 import com.dragn0007.dragnlivestock.entities.util.LOAnimations;
 import com.dragn0007.dragnlivestock.entities.util.Taggable;
 import com.dragn0007.dragnlivestock.items.custom.BrandTagItem;
 import com.dragn0007.dragnlivestock.util.LOTags;
+import com.dragn0007.dragnlivestock.client.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulClientConfig;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,6 +17,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -45,20 +44,21 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.network.NetworkHooks;
+import net.minecraft.core.registries.Registries;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -70,11 +70,11 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 		super(type, level);
 	}
 
-	protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_camel");
-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/camel");
-	protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/camel");
+	protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/o_camel"));
+	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/camel"));
+	protected static final ResourceKey<LootTable> TFC_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("tfc", "entities/camel"));
 	@Override
-	public @NotNull ResourceLocation getDefaultLootTable() {
+	public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
 		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
 			return VANILLA_LOOT_TABLE;
 		} else if (ModList.get().isLoaded("tfc")) {
@@ -87,9 +87,8 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 	@Override
 	public void openInventory(Player player) {
 		if(player instanceof ServerPlayer serverPlayer && this.isTamed()) {
-			NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((containerId, inventory, p) -> {
-				return new OCamelMenu(containerId, inventory, this.inventory, this);
-			}, this.getDisplayName()), (data) -> {
+			serverPlayer.openMenu(new SimpleMenuProvider((containerId, inventory, p) ->
+					new OCamelMenu(containerId, inventory, this.inventory, this), this.getDisplayName()), data -> {
 				data.writeInt(this.getInventorySize());
 				data.writeInt(this.getId());
 			});
@@ -181,7 +180,6 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 	@Override
 	public void registerGoals() {
 		super.registerGoals();
-		this.goalSelector.addGoal(0, new GroundTieGoal(this));
 
 		this.goalSelector.addGoal(1, new HurtByTargetGoal(this));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.7D));
@@ -192,7 +190,6 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
 		this.goalSelector.addGoal(5, new TemptGoal(this, 1.25D, Ingredient.of(Items.CACTUS), false));
 		this.targetSelector.addGoal(7, new NearestAttackableTargetGoal<>(this, Wolf.class, false));
-		this.goalSelector.addGoal(2, new OCamelFollowCaravanGoal(this, (double)1.5F));
 
 		this.goalSelector.addGoal(1, new NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false, entity ->
 				entity.getType().is(LOTags.Entity_Types.WOLVES) && (entity instanceof TamableAnimal && !((TamableAnimal) entity).isTame()) && !this.isBaby()
@@ -239,11 +236,11 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 
 			if (isMoving) {
 				if (!LivestockOverhaulClientEvent.HORSE_WALK_BACKWARDS.isDown()) {
-					if (this.isAggressive() || (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD)) || (!this.isVehicle() && currentSpeed > speedThreshold)) {
+					if (this.isAggressive() || (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD_ID)) || (!this.isVehicle() && currentSpeed > speedThreshold)) {
 						controller.setAnimation(RawAnimation.begin().then("trot_sprint", Animation.LoopType.LOOP));
 						controller.setAnimationSpeed(Math.max(0.1, 0.84 * controller.getAnimationSpeed() + animationSpeed));
 
-					} else if ((this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD))
+					} else if ((this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD_ID) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD_ID))
 							|| (!this.isVehicle() && currentSpeed > speedRunThreshold && currentSpeed < speedThreshold)) {
 						if (this.isOnSand()) {
 							controller.setAnimation(RawAnimation.begin().then("trot", Animation.LoopType.LOOP));
@@ -253,7 +250,7 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 							controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
 						}
 
-					} else if (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD)) {
+					} else if (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID)) {
 						if (this.isOnSand()) {
 							controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
 							controller.setAnimationSpeed(Math.max(0.1, 0.88 * controller.getAnimationSpeed() + animationSpeed));
@@ -268,7 +265,7 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 					}
 
 				} else if (this.isVehicle() && LivestockOverhaulClientEvent.HORSE_WALK_BACKWARDS.isDown()) {
-					if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD)) {
+					if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID)) {
 						controller.setAnimation(RawAnimation.begin().then("walk_back", Animation.LoopType.LOOP));
 						controller.setAnimationSpeed(Math.max(0.1, 0.76 * controller.getAnimationSpeed() + animationSpeed));
 					} else {
@@ -290,7 +287,7 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 	}
 
 
-	protected <T extends GeoAnimatable> PlayState emotePredicate(software.bernie.geckolib.core.animation.AnimationState<T> tAnimationState) {
+	protected <T extends GeoAnimatable> PlayState emotePredicate(software.bernie.geckolib.animation.AnimationState<T> tAnimationState) {
 		AnimationController<T> controller = tAnimationState.getController();
 
 		if(tAnimationState.isMoving() || !this.shouldEmote) {
@@ -749,7 +746,7 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
 		if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
@@ -760,7 +757,7 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 		this.setBreed(random.nextInt(CamelBreed.Breed.values().length));
 
 		this.randomizeAttributes();
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
 	}
 
 	@Override
@@ -773,17 +770,17 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(BREED, 0);
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(VARIANT_TEXTURE, OCamelModel.Variant.DESERT.resourceLocation.toString());
-		this.entityData.define(OVERLAY_TEXTURE, OCamelMarkingLayer.Overlay.NONE.resourceLocation.toString());
-		this.entityData.define(GENDER, 0);
-		this.entityData.define(MANE, 0);
-		this.entityData.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
-		this.entityData.define(TAGGED, false);
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(BREED, 0);
+		builder.define(VARIANT, 0);
+		builder.define(OVERLAY, 0);
+		builder.define(VARIANT_TEXTURE, OCamelModel.Variant.DESERT.resourceLocation.toString());
+		builder.define(OVERLAY_TEXTURE, OCamelMarkingLayer.Overlay.NONE.resourceLocation.toString());
+		builder.define(GENDER, 0);
+		builder.define(MANE, 0);
+		builder.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
+		builder.define(TAGGED, false);
 	}
 
 	public boolean canMate(Animal animal) {
@@ -811,7 +808,7 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 		OCamel calf = (OCamel) ageableMob;
 		if (ageableMob instanceof OCamel) {
 			OCamel partnerCamel = (OCamel) ageableMob;
-			calf = EntityTypes.O_CAMEL_ENTITY.get().create(serverLevel);
+			calf = new OCamel((EntityType<? extends OCamel>) this.getType(), serverLevel);
 
 			int i = this.random.nextInt(100);
 			int variant;

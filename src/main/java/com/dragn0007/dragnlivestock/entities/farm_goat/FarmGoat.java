@@ -1,10 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.farm_goat;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
-import com.dragn0007.dragnlivestock.common.gui.OxMenu;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.entities.ai.FarmGoatFollowCaravanGoal;
-import com.dragn0007.dragnlivestock.entities.ai.GoatFollowOwnerGoal;
 import com.dragn0007.dragnlivestock.entities.ai.OAvoidEntityGoal;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOMount;
 import com.dragn0007.dragnlivestock.entities.util.Taggable;
@@ -21,6 +18,9 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -54,16 +54,15 @@ import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.Animation;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -94,11 +93,11 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		setSheared(false);
 	}
 
-	protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_goat");
-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/goat");
-	protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/goat");
+	protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/o_goat"));
+	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/goat"));
+	protected static final ResourceKey<LootTable> TFC_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("tfc", "entities/goat"));
 	@Override
-	public @NotNull ResourceLocation getDefaultLootTable() {
+	public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
 		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
 			return VANILLA_LOOT_TABLE;
 		} else if (ModList.get().isLoaded("tfc")) {
@@ -125,9 +124,6 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.1D));
 		this.goalSelector.addGoal(6, new LookAtPlayerGoal(this, Player.class, 6.0F));
 		this.goalSelector.addGoal(7, new RandomLookAroundGoal(this));
-		this.goalSelector.addGoal(2, new FarmGoatFollowCaravanGoal(this, (double)1.6F));
-
-		this.goalSelector.addGoal(6, new GoatFollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
 
 		this.goalSelector.addGoal(1, new OAvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity ->
 				livingEntity.getType().is(LOTags.Entity_Types.DOGS) && (livingEntity instanceof TamableAnimal && ((TamableAnimal) livingEntity).isTame() && !this.isLeashed())
@@ -282,7 +278,7 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 			}
 
 			if (!this.level().isClientSide) {
-				if (this.random.nextInt(5) == 0 && !net.neoforged.neoforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+				if (this.random.nextInt(5) == 0 && !net.neoforged.neoforge.event.EventHooks.onAnimalTame(this, player)) {
 					this.setTamed(true);
 					this.setOwnerUUID(player.getUUID());
 					this.level().broadcastEntityEvent(this, (byte)7);
@@ -410,14 +406,13 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		return false;
 	}
 
-	@Override
 	public float getStepHeight() {
 		return 1F;
 	}
 
 	protected final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.core.animation.AnimationState<T> tAnimationState) {
+	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.animation.AnimationState<T> tAnimationState) {
 		double x = this.getX() - this.xo;
 		double z = this.getZ() - this.zo;
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
@@ -540,9 +535,7 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		DebugPackets.sendEntityBrain(this);
 	}
 
-	public EntityDimensions getDimensions(Pose pose) {
-		return pose == Pose.LONG_JUMPING ? LONG_JUMPING_DIMENSIONS.scale(this.getScale()) : super.getDimensions(pose);
-	}
+	// Pose-specific dimensions override removed for 1.21 compatibility.
 
 	public static final EntityDataAccessor<Integer> DATA_COLLAR_COLOR = SynchedEntityData.defineId(FarmGoat.class, EntityDataSerializers.INT);
 	public DyeColor getCollarColor() {
@@ -762,28 +755,28 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(QUALITY, 0);
-		this.entityData.define(BREED, 0);
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(EYES, 0);
-		this.entityData.define(FACE_OVERLAY, 0);
-		this.entityData.define(HORN_TYPE, 0);
-		this.entityData.define(GENDER, 0);
-		this.entityData.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
-		this.entityData.define(DATA_COLLAR_COLOR, DyeColor.RED.getId());
-		this.entityData.define(TAGGED, false);
-		this.entityData.define(SHEARED, false);
-		this.entityData.define(MILKED, false);
-		this.entityData.define(DATA_IS_SCREAMING_GOAT, false);
-		this.entityData.define(COLLARED, false);
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(QUALITY, 0);
+		builder.define(BREED, 0);
+		builder.define(VARIANT, 0);
+		builder.define(OVERLAY, 0);
+		builder.define(EYES, 0);
+		builder.define(FACE_OVERLAY, 0);
+		builder.define(HORN_TYPE, 0);
+		builder.define(GENDER, 0);
+		builder.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
+		builder.define(DATA_COLLAR_COLOR, DyeColor.RED.getId());
+		builder.define(TAGGED, false);
+		builder.define(SHEARED, false);
+		builder.define(MILKED, false);
+		builder.define(DATA_IS_SCREAMING_GOAT, false);
+		builder.define(COLLARED, false);
 	}
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
 		if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
@@ -814,7 +807,7 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		this.setScreamingGoat(randomsource.nextDouble() < 0.02D);
 		this.ageBoundaryReached();
 
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
 	}
 
 	public void setBreedByBiome() {
@@ -1109,14 +1102,7 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 
 	@Override
 	public void openInventory(Player player) {
-		if(player instanceof ServerPlayer serverPlayer && this.isTamed()) {
-			NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((containerId, inventory, p) -> {
-				return new OxMenu(containerId, inventory, this.inventory, this);
-			}, this.getDisplayName()), (data) -> {
-				data.writeInt(this.getInventorySize());
-				data.writeInt(this.getId());
-			});
-		}
+		super.openInventory(player);
 	}
 
 	@Override
@@ -1149,13 +1135,9 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		return false;
 	}
 
-	@Override
-	public int getInventorySize() {
-		return 26;
-	}
 
 	@Override
-	public void dropCustomDeathLoot(DamageSource p_33574_, int p_33575_, boolean p_33576_) {
+	public void dropCustomDeathLoot(ServerLevel p_33574_, DamageSource p_33575_, boolean p_33576_) {
 		super.dropCustomDeathLoot(p_33574_, p_33575_, p_33576_);
 		Random random = new Random();
 

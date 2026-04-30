@@ -28,38 +28,37 @@ public class UnicornHornLayer extends GeoRenderLayer<Unicorn> {
                 bufferSource,
                 animatable,
                 renderMarkingType,
-                bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 
     public enum Overlay {
 
-        BLUE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/blue.png")),
-        DIAMOND(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/diamond.png")),
-        EMERALD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/emerald.png")),
-        GREEN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/green.png")),
-        LAPIS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/lapis.png")),
-        PEARL(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/pearl.png")),
-        PINK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/pink.png")),
-        YELLOW(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/yellow.png")),
+        BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/blue.png")),
+        DIAMOND(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/diamond.png")),
+        EMERALD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/emerald.png")),
+        GREEN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/green.png")),
+        LAPIS(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/lapis.png")),
+        PEARL(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/pearl.png")),
+        PINK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/pink.png")),
+        YELLOW(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/yellow.png")),
 
-        FIRE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/fire.png")),
-        GOLD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/gold.png")),
-        MANGROVE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/mangrove.png")),
-        NETHERITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/netherite.png")),
-        RED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/red.png")),
-        REDSTONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/redstone.png")),
-        WARPED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/warped.png")),
-        NAVY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/navy.png")),
+        FIRE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/fire.png")),
+        GOLD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/gold.png")),
+        MANGROVE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/mangrove.png")),
+        NETHERITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/netherite.png")),
+        RED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/red.png")),
+        REDSTONE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/redstone.png")),
+        WARPED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/warped.png")),
+        NAVY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/navy.png")),
 
-        END_CRYSTAL(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/end_crystal.png")),
-        ENDER_DRAGON(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/ender_dragon.png")),
-        ENDER_EYE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/ender_eye.png")),
-        ENDER_PEARL(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/ender_pearl.png")),
-        END_GATEWAY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/end_gateway.png")),
-        END_ROD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/end_rod.png")),
-        PURPUR(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/purpur.png")),
-        VOID(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/void.png"));
+        END_CRYSTAL(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/end_crystal.png")),
+        ENDER_DRAGON(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/ender_dragon.png")),
+        ENDER_EYE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/ender_eye.png")),
+        ENDER_PEARL(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/ender_pearl.png")),
+        END_GATEWAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/end_gateway.png")),
+        END_ROD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/end_rod.png")),
+        PURPUR(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/purpur.png")),
+        VOID(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/horn/void.png"));
 
         public final ResourceLocation resourceLocation;
         Overlay(ResourceLocation resourceLocation) {

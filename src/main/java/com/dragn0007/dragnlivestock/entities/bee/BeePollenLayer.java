@@ -25,7 +25,7 @@ public class BeePollenLayer extends GeoRenderLayer<OBee> {
         ResourceLocation resourceLocation = null;
 
         if (animatable.hasNectar()) {
-            resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/bee/pollen_layer.png");
+            resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/bee/pollen_layer.png");
         } else {
             return;
         }
@@ -40,7 +40,6 @@ public class BeePollenLayer extends GeoRenderLayer<OBee> {
                 bufferSource,
                 animatable,
                 renderType1,
-                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 }

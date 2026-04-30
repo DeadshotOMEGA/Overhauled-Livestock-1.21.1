@@ -1,7 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.caribou;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
-import com.dragn0007.dragnlivestock.client.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.common.gui.CaribouMenu;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.GroundTieGoal;
@@ -15,6 +14,7 @@ import com.dragn0007.dragnlivestock.entities.util.marking_layer.EquineEyeColorOv
 import com.dragn0007.dragnlivestock.entities.util.marking_layer.EquineMarkingOverlay;
 import com.dragn0007.dragnlivestock.items.custom.BrandTagItem;
 import com.dragn0007.dragnlivestock.util.LOTags;
+import com.dragn0007.dragnlivestock.client.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulClientConfig;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.ChatFormatting;
@@ -25,6 +25,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -36,8 +37,8 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -52,17 +53,18 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.network.NetworkHooks;
+import net.minecraft.core.registries.Registries;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -70,11 +72,11 @@ import java.util.Random;
 
 public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 
-	protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/caribou");
-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/horse");
-	protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/caribou");
+	protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/caribou"));
+	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/horse"));
+	protected static final ResourceKey<LootTable> TFC_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("tfc", "entities/caribou"));
 	@Override
-	public @NotNull ResourceLocation getDefaultLootTable() {
+	public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
 		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
 			return VANILLA_LOOT_TABLE;
 		} else if (ModList.get().isLoaded("tfc")) {
@@ -161,10 +163,6 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 		return baseSpeed + multiplier;
 	}
 
-	public int getInventorySize() {
-		return 18;
-	}
-
 	@Override
 	public void positionRider(Entity entity, MoveFunction moveFunction) {
 		if (this.hasPassenger(entity)) {
@@ -190,7 +188,7 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 	@Override
 	public void openInventory(Player player) {
 		if(player instanceof ServerPlayer serverPlayer && this.isTamed()) {
-			NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((containerId, inventory, p) -> {
+			serverPlayer.openMenu(new SimpleMenuProvider((containerId, inventory, p) -> {
 				return new CaribouMenu(containerId, inventory, this.inventory, this);
 			}, this.getDisplayName()), (data) -> {
 				data.writeInt(this.getInventorySize());
@@ -304,7 +302,7 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 							controller.setAnimationSpeed(Math.max(0.1, 0.82 * controller.getAnimationSpeed() + animationSpeed));
 						}
 
-					} else if (this.isAggressive() || (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD)) || (!this.isVehicle() && currentSpeed > speedThreshold)) {
+					} else if (this.isAggressive() || (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD_ID)) || (!this.isVehicle() && currentSpeed > speedThreshold)) {
 					controller.setAnimation(RawAnimation.begin().then("sprint", Animation.LoopType.LOOP));
 					if (this.isOnSand()) {
 						controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
@@ -314,7 +312,7 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 						controller.setAnimationSpeed(Math.max(0.1, 0.82 * controller.getAnimationSpeed() + animationSpeed));
 					}
 
-				} else if ((this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD)) || (!this.isVehicle() && currentSpeed > speedTrotThreshold)) {
+				} else if ((this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD_ID)) || (!this.isVehicle() && currentSpeed > speedTrotThreshold)) {
 					controller.setAnimation(RawAnimation.begin().then("trot", Animation.LoopType.LOOP));
 					if (this.isOnSand()) {
 						controller.setAnimationSpeed(Math.max(0.1, 0.76 * controller.getAnimationSpeed() + animationSpeed));
@@ -324,7 +322,7 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 						controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
 					}
 
-				} else if ((this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD))
+				} else if ((this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD_ID) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD_ID))
 						|| (!this.isVehicle() && currentSpeed > speedRunThreshold && currentSpeed < speedThreshold)) {
 					controller.setAnimation(RawAnimation.begin().then("run", Animation.LoopType.LOOP));
 					if (this.isOnSand()) {
@@ -335,25 +333,26 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 						controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
 					}
 
-				} else if (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD)) {
-					controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
-					if (this.isOnSand()) {
-						controller.setAnimationSpeed(Math.max(0.1, 0.79 * controller.getAnimationSpeed() + animationSpeed));
-					} else if (this.isOnSnow()) {
-						controller.setAnimationSpeed(Math.max(0.1, 0.83 * controller.getAnimationSpeed() + animationSpeed));
+				} else if (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID)) {
+					if (LivestockOverhaulClientEvent.HORSE_SPANISH_WALK_TOGGLE.isDown()) {
+						controller.setAnimation(RawAnimation.begin().then("spanish_walk", Animation.LoopType.LOOP));
+						controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
 					} else {
-						controller.setAnimationSpeed(Math.max(0.1, 0.81 * controller.getAnimationSpeed() + animationSpeed));
+						controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
+						if (this.isOnSand()) {
+							controller.setAnimationSpeed(Math.max(0.1, 0.79 * controller.getAnimationSpeed() + animationSpeed));
+						} else if (this.isOnSnow()) {
+							controller.setAnimationSpeed(Math.max(0.1, 0.83 * controller.getAnimationSpeed() + animationSpeed));
+						} else {
+							controller.setAnimationSpeed(Math.max(0.1, 0.81 * controller.getAnimationSpeed() + animationSpeed));
+						}
 					}
-
-				} else if (this.isVehicle() && LivestockOverhaulClientEvent.HORSE_SPANISH_WALK_TOGGLE.isDown() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD)) {
-					controller.setAnimation(RawAnimation.begin().then("spanish_walk", Animation.LoopType.LOOP));
-					controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
 				} else {
 					controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
 					controller.setAnimationSpeed(Math.max(0.1, 0.80 * controller.getAnimationSpeed() + animationSpeed));
 					}
 				} else if (this.isVehicle() && LivestockOverhaulClientEvent.HORSE_WALK_BACKWARDS.isDown()) {
-					if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD)) {
+					if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID)) {
 						controller.setAnimation(RawAnimation.begin().then("walk_back", Animation.LoopType.LOOP));
 						controller.setAnimationSpeed(Math.max(0.1, 0.76 * controller.getAnimationSpeed() + animationSpeed));
 					} else {
@@ -402,17 +401,16 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 	}
 
 	protected void applySpeedEffect() {
-		MobEffect speedEffect = MobEffect.byId(1);
-		MobEffectInstance speedEffectInstance = new MobEffectInstance(speedEffect, 200, 0, false, false);
+		MobEffectInstance speedEffectInstance = new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 200, 0, false, false);
 		this.addEffect(speedEffectInstance);
 	}
 
 	protected boolean hasSpeedEffect() {
-		return this.hasEffect(MobEffect.byId(1));
+		return this.hasEffect(MobEffects.MOVEMENT_SPEED);
 	}
 
 	protected void removeSpeedEffect() {
-		this.removeEffect(MobEffect.byId(1));
+		this.removeEffect(MobEffects.MOVEMENT_SPEED);
 	}
 
 	public InteractionResult mobInteract(Player player, InteractionHand hand) {
@@ -478,7 +476,7 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 		double z = this.getZ() - this.zo;
 		boolean isMoving = (x * x + z * z) > 0.0001;
 
-		if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD) && !(sprintTick <= 0) && this.hasControllingPassenger() && isMoving) {
+		if (false && !(sprintTick <= 0) && this.hasControllingPassenger() && isMoving) {
 			sprintTick--;
 			if (controllingPassenger != null && !(sprintTick <= 0)) {
 				if (controllingPassenger instanceof Player player && LivestockOverhaulClientConfig.HORSE_SPRINT_TIMER.get()) {
@@ -487,7 +485,7 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 			}
 		}
 
-		if ((!this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD) || !isMoving)) {
+		if ((true || !isMoving)) {
 			if ((sprintTick < maxSprint) && isMoving) {
 				sprintTick++;
 			} else if ((sprintTick < maxSprint) && !isMoving) {
@@ -499,7 +497,6 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 		if (sprintTick <= 0 && controllingPassenger != null) {
 			AttributeInstance movementSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED);
 			this.handleSpeedRequest(-1);
-			movementSpeed.removeModifier(SPRINT_SPEED_MOD);
 			if (controllingPassenger != null) {
 				if (controllingPassenger instanceof Player player && LivestockOverhaulClientConfig.HORSE_SPRINT_TIMER.get()) {
 					player.displayClientMessage(Component.translatable("Sprint Depleted").withStyle(ChatFormatting.DARK_RED), true);
@@ -695,7 +692,7 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
 		if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
@@ -720,21 +717,21 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 		}
 
 		this.randomizeAttributes();
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(GENDER, 0);
-		this.entityData.define(VARIANT_TEXTURE, CaribouModel.Variant.BAY.resourceLocation.toString());
-		this.entityData.define(OVERLAY_TEXTURE, EquineMarkingOverlay.NONE.resourceLocation.toString());
-		this.entityData.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
-		this.entityData.define(TAGGED, false);
-		this.entityData.define(FEATHERING, 0);
-		this.entityData.define(EYES, 0);
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(VARIANT, 0);
+		builder.define(OVERLAY, 0);
+		builder.define(GENDER, 0);
+		builder.define(VARIANT_TEXTURE, CaribouModel.Variant.BAY.resourceLocation.toString());
+		builder.define(OVERLAY_TEXTURE, EquineMarkingOverlay.NONE.resourceLocation.toString());
+		builder.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
+		builder.define(TAGGED, false);
+		builder.define(FEATHERING, 0);
+		builder.define(EYES, 0);
 	}
 
 	@Override
@@ -803,6 +800,9 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 		Caribou calf;
 		Caribou partner = (Caribou) ageableMob;
 		calf = EntityTypes.CARIBOU_ENTITY.get().create(serverLevel);
+		if (calf == null) {
+			return null;
+		}
 
 		int variantChance = this.random.nextInt(100);
 		int variant;
@@ -814,7 +814,7 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 			variant = this.random.nextInt(CaribouModel.Variant.values().length);
 		}
 		calf.setVariant(variant);
-		
+
 		int overlayChance = this.random.nextInt(100);
 		int overlay;
 		if (overlayChance < ((100 - LivestockOverhaulCommonConfig.MARKING_CHANCE.get()) / 2)) {
@@ -840,7 +840,6 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 		calf.setGender(random.nextInt(Gender.values().length));
 		calf.setFeatheringByChance();
 
-
 		if (this.random.nextInt(3) >= 1) {
 			calf.generateRandomJumpStrength();
 
@@ -849,8 +848,6 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 
 			int betterHealth = (int) Math.max(partner.getHealth(), this.random.nextInt(20) + 40);
 			calf.setHealth(betterHealth);
-
-			//generate random stats of the breed standard of the baby if the breed is random
 		}
 
 		this.setOffspringAttributes(ageableMob, calf);

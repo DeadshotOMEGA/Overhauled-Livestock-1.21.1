@@ -17,22 +17,22 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 @OnlyIn(Dist.CLIENT)
 public class FarmGoatCollarLayer extends GeoRenderLayer<FarmGoat> {
     public static final ResourceLocation[] TEXTURE_LOCATION = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/white.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/orange.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/magenta.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/light_blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/yellow.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/lime.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/pink.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/light_grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/cyan.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/purple.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/brown.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/green.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/red.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/black.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/white.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/orange.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/magenta.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/light_blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/yellow.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/lime.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/pink.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/light_grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/cyan.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/purple.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/brown.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/green.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/red.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/collar/black.png")
     };
     
     public FarmGoatCollarLayer(GeoRenderer<FarmGoat> entityRendererIn) {
@@ -62,7 +62,6 @@ public class FarmGoatCollarLayer extends GeoRenderLayer<FarmGoat> {
                 bufferSource,
                 animatable,
                 renderType1,
-                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 }

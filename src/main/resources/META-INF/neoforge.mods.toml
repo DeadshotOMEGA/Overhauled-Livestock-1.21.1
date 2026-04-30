@@ -62,4 +62,4 @@ ordering="NONE"
 side="BOTH"
 
 [[mixins]]
-config="dragnlivestock.mixins.json"
+config="mixins.dragnlivestock.json"

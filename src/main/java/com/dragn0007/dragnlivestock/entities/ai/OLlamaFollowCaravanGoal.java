@@ -1,9 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.ai;
 
-import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.llama.OLlama;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.phys.Vec3;
@@ -26,8 +24,7 @@ public class OLlamaFollowCaravanGoal extends Goal {
    public boolean canUse() {
       if (!this.llama.isLeashed() && !this.llama.inCaravan()) {
          List<Entity> list = this.llama.level().getEntities(this.llama, this.llama.getBoundingBox().inflate(9.0D, 4.0D, 9.0D), (p_25505_) -> {
-            EntityType<?> entitytype = p_25505_.getType();
-            return entitytype == EntityTypes.O_LLAMA_ENTITY.get();
+            return p_25505_ instanceof OLlama;
          });
          OLlama llama = null;
          double d0 = Double.MAX_VALUE;

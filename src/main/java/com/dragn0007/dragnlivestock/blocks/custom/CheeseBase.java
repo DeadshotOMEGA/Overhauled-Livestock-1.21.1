@@ -14,7 +14,7 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class CheeseBase extends HorizontalDirectionalBlock {
+public abstract class CheeseBase extends HorizontalDirectionalBlock {
 
     public static final IntegerProperty AGE_TIME = IntegerProperty.create("age_time", 0, 33);
 
@@ -42,7 +42,7 @@ public class CheeseBase extends HorizontalDirectionalBlock {
         builder.add(AGE_TIME);
     }
     public CheeseBase() {
-        super (Properties.copy(Blocks.OAK_PLANKS).strength(0.3F).noOcclusion().pushReaction(PushReaction.IGNORE));
+        super (Properties.ofFullCopy(Blocks.OAK_PLANKS).strength(0.3F).noOcclusion().pushReaction(PushReaction.IGNORE));
     }
 
     public VoxelShape getShape(BlockState state, BlockGetter blockReader, BlockPos pos, CollisionContext context) {

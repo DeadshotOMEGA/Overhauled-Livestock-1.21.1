@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "dragnlivestock:wagon_wheel"
+  },
+  "base": {
+    "item": "dragnlivestock:wagon_wheel"
+  },
+  "result": {
+    "count": 1,
+    "id": "dragnlivestock:wagon_axel"
+  },
+  "template": {
+    "item": "minecraft:iron_ingot"
+  }
+}

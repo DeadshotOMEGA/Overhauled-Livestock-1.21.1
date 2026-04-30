@@ -30,155 +30,155 @@ import java.util.List;
 public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
 
     public static final ResourceLocation[] CARPET_COLOR = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/white.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/orange.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/magenta.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/light_blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/yellow.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/lime.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/pink.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/light_grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/cyan.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/purple.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/brown.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/green.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/red.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/black.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/white.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/orange.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/magenta.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/light_blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/yellow.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/lime.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/pink.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/light_grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/cyan.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/purple.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/brown.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/green.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/red.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/classic/black.png")
     };
 
     public static final ResourceLocation[] MEDIEVAL_COLOR = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/white.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/orange.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/magenta.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/light_blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/yellow.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/lime.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/pink.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/light_grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/cyan.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/purple.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/brown.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/green.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/red.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/black.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/white.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/orange.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/magenta.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/light_blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/yellow.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/lime.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/pink.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/light_grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/cyan.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/purple.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/brown.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/green.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/red.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/medieval/black.png")
     };
 
     public static final ResourceLocation[] MODERN_COLOR = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/white.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/orange.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/magenta.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/light_blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/yellow.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/lime.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/pink.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/light_grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/cyan.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/purple.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/brown.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/green.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/red.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/black.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/white.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/orange.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/magenta.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/light_blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/yellow.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/lime.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/pink.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/light_grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/cyan.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/purple.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/brown.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/green.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/red.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/modern/black.png")
     };
 
     public static final ResourceLocation[] RACING_COLOR = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/white.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/orange.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/magenta.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/light_blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/yellow.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/lime.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/pink.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/light_grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/cyan.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/purple.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/brown.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/green.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/red.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/black.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/white.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/orange.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/magenta.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/light_blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/yellow.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/lime.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/pink.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/light_grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/cyan.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/purple.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/brown.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/green.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/red.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/racing/black.png")
     };
 
     public static final ResourceLocation[] WESTERN_COLOR = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/white.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/orange.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/magenta.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/light_blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/yellow.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/lime.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/pink.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/light_grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/cyan.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/purple.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/brown.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/green.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/red.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/black.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/white.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/orange.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/magenta.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/light_blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/yellow.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/lime.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/pink.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/light_grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/cyan.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/purple.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/brown.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/green.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/red.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/western/black.png")
     };
 
     public static final ResourceLocation[] ARMOR_COLOR = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/white.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/orange.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/magenta.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/light_blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/yellow.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/lime.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/pink.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/light_grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/cyan.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/purple.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/brown.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/green.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/red.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/black.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/white.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/orange.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/magenta.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/light_blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/yellow.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/lime.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/pink.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/light_grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/cyan.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/purple.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/brown.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/green.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/red.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/black.png")
     };
 
     public static final ResourceLocation[] LEATHER_ARMOR_COLOR = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/white.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/orange.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/magenta.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/light_blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/yellow.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/lime.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/pink.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/light_grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/cyan.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/purple.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/brown.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/green.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/red.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/black.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/white.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/orange.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/magenta.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/light_blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/yellow.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/lime.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/pink.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/light_grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/cyan.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/purple.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/brown.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/green.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/red.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/black.png")
     };
 
     public static final ResourceLocation[] MINIMAL_LEATHER_ARMOR_COLOR = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/white_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/orange_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/magenta_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/light_blue_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/yellow_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/lime_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/pink_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/grey_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/light_grey_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/cyan_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/purple_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/blue_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/brown_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/green_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/red_minimal.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/black_minimal.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/white_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/orange_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/magenta_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/light_blue_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/yellow_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/lime_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/pink_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/grey_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/light_grey_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/cyan_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/purple_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/blue_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/brown_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/green_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/red_minimal.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/leather/black_minimal.png")
     };
 
     public OHorseCarpetLayer(GeoRenderer<OHorse> entityRendererIn) {
@@ -230,7 +230,7 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
                         // in this case, "american" is your one word. if you do multiple words, the code will snip out any past the first one and
                         // the armor variant of your carpet may not work. To get your armor variant for your carpet, just copy what
                         // ive done in textures/entity/horse/armor/carpet/special
-                        resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/special/" + noSuffix + "_armor_blanket.png");
+                        resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/special/" + noSuffix + "_armor_blanket.png");
                     }
                 }
             }
@@ -251,7 +251,7 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
                     // make sure to put your blanket in the dragnlivestock:special_blankets tag so you can actually put it in the slot
                     // this works for all equines and caribou too, no extra steps required
                 } else if (itemStack.getItem() instanceof BlanketItem blanketItem) {
-                    resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/special/" + blanketItem + ".png");
+                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/special/" + blanketItem + ".png");
                 }
             }
 
@@ -266,8 +266,7 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
                         bufferSource,
                         animatable,
                         renderType1,
-                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                        1, 1, 1, 1);
+                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
         }
 
@@ -275,7 +274,7 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
         if (!(animatable.getDecompVariant() == 4) && !(animatable.getDecompVariant() == 5) && !(animatable.getDecompVariant() == 6)) {
             if (animatable.getFlowerItem() != null && animatable.getFlowerItem().is(LOTags.Items.HAIR_FLOWERS)) {
                 if (animatable.getFlowerType() == 0) {
-                    resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_mane.png");
+                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_mane.png");
                     RenderType renderType1 = RenderType.entityCutout(resourceLocation);
                     poseStack.pushPose();
                     poseStack.scale(1.0f, 1.0f, 1.0f);
@@ -286,12 +285,11 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
                             bufferSource,
                             animatable,
                             renderType1,
-                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                            1, 1, 1, 1);
+                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
                 }
 
                 if (animatable.getFlowerType() == 1) {
-                    resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_tail.png");
+                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_tail.png");
                     RenderType renderType1 = RenderType.entityCutout(resourceLocation);
                     poseStack.pushPose();
                     poseStack.scale(1.0f, 1.0f, 1.0f);
@@ -302,12 +300,11 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
                             bufferSource,
                             animatable,
                             renderType1,
-                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                            1, 1, 1, 1);
+                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
                 }
 
                 if (animatable.getFlowerType() == 2) {
-                    resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_tail.png");
+                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_tail.png");
                     RenderType renderType1 = RenderType.entityCutout(resourceLocation);
                     poseStack.pushPose();
                     poseStack.scale(1.0f, 1.0f, 1.0f);
@@ -318,10 +315,9 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
                             bufferSource,
                             animatable,
                             renderType1,
-                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                            1, 1, 1, 1);
+                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 
-                    resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_mane.png");
+                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_mane.png");
                     RenderType renderType2 = RenderType.entityCutout(resourceLocation);
                     poseStack.pushPose();
                     poseStack.scale(1.0f, 1.0f, 1.0f);
@@ -332,15 +328,14 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
                             bufferSource,
                             animatable,
                             renderType2,
-                            bufferSource.getBuffer(renderType2), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                            1, 1, 1, 1);
+                            bufferSource.getBuffer(renderType2), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
                 }
             }
         }
 
         if (!(animatable.getDecompVariant() == 4) && !(animatable.getDecompVariant() == 5) && !(animatable.getDecompVariant() == 6)) {
             if (animatable.isBranded()) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/decor/mustang_brand.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/decor/mustang_brand.png");
                 RenderType renderType1 = RenderType.entityCutout(resourceLocation);
                 poseStack.pushPose();
                 poseStack.scale(1.0f, 1.0f, 1.0f);
@@ -351,8 +346,7 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
                         bufferSource,
                         animatable,
                         renderType1,
-                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                        1, 1, 1, 1);
+                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
         }
 

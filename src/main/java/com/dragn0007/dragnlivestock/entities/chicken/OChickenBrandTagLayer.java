@@ -18,22 +18,22 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 @OnlyIn(Dist.CLIENT)
 public class OChickenBrandTagLayer extends GeoRenderLayer<OChicken> {
     public static final ResourceLocation[] TEXTURE_LOCATION = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/white_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/orange_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/magenta_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/light_blue_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/yellow_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/lime_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/pink_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/grey_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/light_grey_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/cyan_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/purple_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/blue_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/brown_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/green_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/red_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/chicken/black_brand_tag.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/white_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/orange_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/magenta_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/light_blue_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/yellow_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/lime_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/pink_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/grey_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/light_grey_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/cyan_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/purple_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/blue_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/brown_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/green_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/red_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/chicken/black_brand_tag.png")
     };
 
     public OChickenBrandTagLayer(GeoRenderer<OChicken> entityRendererIn) {
@@ -71,7 +71,6 @@ public class OChickenBrandTagLayer extends GeoRenderLayer<OChicken> {
                 bufferSource,
                 animatable,
                 renderType1,
-                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 }

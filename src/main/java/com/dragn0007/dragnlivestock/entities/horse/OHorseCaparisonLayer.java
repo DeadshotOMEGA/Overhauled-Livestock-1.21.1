@@ -37,9 +37,9 @@ public class OHorseCaparisonLayer extends GeoRenderLayer<OHorse> {
         // it'll find the name for you so long as your registry item is named the same as your texture AND it's a CaparisonItem
         // instead of making a  dragnlivestock > textures > ... , youd make a  medievalembroidery > textures > ...  instead for this pathway
         if ((itemStack.getItem() instanceof CaparisonItem caparisonItem) && !itemStack.isEmpty()) {
-            resourceLocation = new ResourceLocation("medievalembroidery", "textures/entity/horse/caparison/" + caparisonItem + ".png");
+            resourceLocation = ResourceLocation.fromNamespaceAndPath("medievalembroidery", "textures/entity/horse/caparison/" + caparisonItem + ".png");
         } else if ((itemStack.getItem() instanceof RumpStrapItem rumpStrapItem) && !itemStack.isEmpty()) {
-            resourceLocation = new ResourceLocation("medievalembroidery", "textures/entity/horse/caparison/" + rumpStrapItem + ".png");
+            resourceLocation = ResourceLocation.fromNamespaceAndPath("medievalembroidery", "textures/entity/horse/caparison/" + rumpStrapItem + ".png");
         }
 
         if(resourceLocation != null) {
@@ -53,8 +53,7 @@ public class OHorseCaparisonLayer extends GeoRenderLayer<OHorse> {
                     bufferSource,
                     animatable,
                     renderType1,
-                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                    1, 1, 1, 1);
+                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
         }
     }
 }

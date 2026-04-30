@@ -19,7 +19,7 @@ import java.text.DecimalFormat;
 
 public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
 
-    public static final ResourceLocation HORSE_INVENTORY_LOCATION = new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/o_horse.png");
+    public static final ResourceLocation HORSE_INVENTORY_LOCATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/o_horse.png");
 
     public final OHorse oHorse;
     public int breedLabelX;
@@ -127,7 +127,7 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
             }
         }
 
-        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x + 51, y + 60, 17, (float)(x + 51), (float)(y + 75 - 50), this.oHorse);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x + 51, y + 60, 17, x + 51, y + 75 - 50, 0.0F, 0.0F, 0.0F, this.oHorse);
 
         renderBreedLabel(graphics);
 
@@ -149,7 +149,7 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
 
     @Override
     public void render(GuiGraphics graphics, int i, int i1, float v) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, i, i1, v);
         super.render(graphics, i, i1, v);
         this.renderTooltip(graphics, i, i1);
     }
@@ -335,5 +335,4 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
     }
 
 }
-
 

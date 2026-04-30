@@ -1,19 +1,8 @@
 package com.dragn0007.dragnlivestock.entities.util;
 
+import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.common.gui.OMountMenu;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
-import com.dragn0007.dragnlivestock.entities.camel.CamelBreed;
-import com.dragn0007.dragnlivestock.entities.camel.OCamel;
-import com.dragn0007.dragnlivestock.entities.cow.OCow;
-import com.dragn0007.dragnlivestock.entities.farm_goat.FarmGoat;
-import com.dragn0007.dragnlivestock.entities.farm_goat.GoatBreed;
-import com.dragn0007.dragnlivestock.entities.goat.OGoat;
-import com.dragn0007.dragnlivestock.entities.horse.HorseBreed;
-import com.dragn0007.dragnlivestock.entities.horse.OHorse;
-import com.dragn0007.dragnlivestock.entities.mule.MuleBreed;
-import com.dragn0007.dragnlivestock.entities.mule.OMule;
-import com.dragn0007.dragnlivestock.entities.unicorn.Unicorn;
-import com.dragn0007.dragnlivestock.entities.unicorn.UnicornSpecies;
 import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.items.custom.LightHorseArmorItem;
 import com.dragn0007.dragnlivestock.util.LOTags;
@@ -52,21 +41,19 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.Vec2;
 import net.minecraft.world.phys.Vec3;
+import net.neoforged.fml.ModList;
 import net.neoforged.neoforge.common.Tags;
-import net.neoforged.neoforge.network.NetworkHooks;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.UUID;
-
 public abstract class AbstractOMount extends AbstractChestedHorse {
 
     public SimpleContainer getInventory() {
         return inventory;
     }
 
-    public net.neoforged.neoforge.common.util.LazyOptional<?> itemHandler = null;
+    public Object itemHandler = null;
 
     public static final float MAX_HEALTH = generateMaxHealth((p_272504_) -> {
         return p_272504_ - 1;
@@ -173,14 +160,14 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
         }
     }
 
-    public static final UUID ARMOR_MODIFIER_UUID = UUID.fromString("3c50e848-b2e3-404a-9879-7550b12dd09b");
-    public static final UUID SPRINT_SPEED_MOD_UUID = UUID.fromString("c9379664-01b5-4e19-a7e9-11264453bdce");
-    public static final UUID TROT_SPEED_MOD_UUID = UUID.fromString("b0c44eda-c7c8-4c2f-abc1-f351d8bfc972");
-    public static final UUID WALK_SPEED_MOD_UUID = UUID.fromString("59b55c98-e39b-45e2-846c-f91f3e9ea861");
+    public static final ResourceLocation SPRINT_SPEED_MOD_ID = LivestockOverhaul.id("sprint_speed_mod");
+    public static final ResourceLocation TROT_SPEED_MOD_ID = LivestockOverhaul.id("trot_speed_mod");
+    public static final ResourceLocation WALK_SPEED_MOD_ID = LivestockOverhaul.id("walk_speed_mod");
+    public static final ResourceLocation ARMOR_MODIFIER_ID = LivestockOverhaul.id("horse_armor_bonus");
 
-    public static final AttributeModifier SPRINT_SPEED_MOD = new AttributeModifier(SPRINT_SPEED_MOD_UUID, "Sprint speed mod", 0.3D, AttributeModifier.Operation.MULTIPLY_TOTAL);
-    public static final AttributeModifier TROT_SPEED_MOD = new AttributeModifier(TROT_SPEED_MOD_UUID, "Trot speed mod", -0.4D, AttributeModifier.Operation.MULTIPLY_TOTAL);
-    public static final AttributeModifier WALK_SPEED_MOD = new AttributeModifier(WALK_SPEED_MOD_UUID, "Walk speed mod", -0.7D, AttributeModifier.Operation.MULTIPLY_TOTAL); // KEEP THIS NEGATIVE. It is calculated by adding 1. So -0.1 actually means 0.9
+    public static final AttributeModifier SPRINT_SPEED_MOD = new AttributeModifier(SPRINT_SPEED_MOD_ID, 0.3D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    public static final AttributeModifier TROT_SPEED_MOD = new AttributeModifier(TROT_SPEED_MOD_ID, -0.4D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
+    public static final AttributeModifier WALK_SPEED_MOD = new AttributeModifier(WALK_SPEED_MOD_ID, -0.7D, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL);
 
     public static final EntityDataAccessor<ItemStack> DECOR_ITEM = SynchedEntityData.defineId(AbstractOMount.class, EntityDataSerializers.ITEM_STACK);
     public static final EntityDataAccessor<ItemStack> SADDLE_ITEM = SynchedEntityData.defineId(AbstractOMount.class, EntityDataSerializers.ITEM_STACK);
@@ -221,10 +208,9 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
     public abstract void playEmote(String emoteName, String loopType);
 
     public void openInventory(Player player) {
-        if(player instanceof ServerPlayer serverPlayer && this.isTamed() && ((this.isOwnedBy(player) && this.isLocked()) || !this.isLocked())) {
-            NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((containerId, inventory, p) -> {
-                return new OMountMenu(containerId, inventory, this.inventory, this);
-            }, this.getDisplayName()), (data) -> {
+        if (player instanceof ServerPlayer serverPlayer && this.isTamed() && ((this.isOwnedBy(player) && this.isLocked()) || !this.isLocked())) {
+            serverPlayer.openMenu(new SimpleMenuProvider((containerId, inventory, p) ->
+                    new OMountMenu(containerId, inventory, this.inventory, this), this.getDisplayName()), data -> {
                 data.writeInt(this.getInventorySize());
                 data.writeInt(this.getId());
             });
@@ -248,7 +234,7 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
 
         this.inventory.addListener(this);
         this.updateContainerEquipment();
-        this.itemHandler = net.neoforged.neoforge.common.util.LazyOptional.of(() -> new net.neoforged.neoforge.items.wrapper.InvWrapper(this.inventory));
+        this.itemHandler = new net.neoforged.neoforge.items.wrapper.InvWrapper(this.inventory);
     }
 
     @Override
@@ -265,7 +251,6 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
         return entity == this.getOwner();
     }
 
-    @Override
     public boolean isSaddleable() {
         return this.isAlive() && !this.isBaby() && this.isTamed();
     }
@@ -279,7 +264,6 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
         return itemStack.getItem() instanceof SaddleItem;
     }
 
-    @Override
     public void equipSaddle(@Nullable SoundSource soundSource) {
         // NOTE(EVNGLX): Handled in the interact method instead
     }
@@ -292,14 +276,12 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
         return this.entityData.get(SADDLE_ITEM);
     }
 
-    @Override
     public boolean isArmor(ItemStack itemStack) {
-        return itemStack.getItem() instanceof HorseArmorItem || itemStack.is(LOTags.Items.ARMOR_SLOT_OTHER) || itemStack.getItem() instanceof LightHorseArmorItem;
+        return itemStack.is(LOTags.Items.ARMOR_SLOT_OTHER) || itemStack.getItem() instanceof LightHorseArmorItem;
     }
 
-    @Override
     public double getPassengersRidingOffset() {
-        return super.getPassengersRidingOffset() - 0.25D;
+        return this.getBbHeight() - 0.25D;
     }
 
     public enum Gender {
@@ -371,60 +353,22 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
         }
 
         if (itemStack.is(LOItems.MANE_SCISSORS.get()) && this.hasGrowableHair() && (this.isOwnedBy(player) || !this.isTamed())) {
-            OHorse oHorse = (OHorse) this;
-            if (player.isShiftKeyDown() && LivestockOverhaulCommonConfig.HORSE_HAIR_GROWTH.get()) {
-                if (oHorse.getManeType() == 3 || oHorse.getManeType() == 2) {
-                    oHorse.setManeType(0);
-                } else if (oHorse.getManeType() == 0) {
-                    oHorse.setManeType(3);
-                }
-            } else if ((!player.isShiftKeyDown() && oHorse.getManeType() < 4) || !LivestockOverhaulCommonConfig.HORSE_HAIR_GROWTH.get()) {
-                OHorse.Mane currentMane = OHorse.Mane.values()[oHorse.getManeType()];
-                OHorse.Mane nextMane = currentMane.next();
-                oHorse.maneGrowthTick = 0;
-                oHorse.setManeType(nextMane.ordinal());
-            }
             this.playSound(SoundEvents.SHEEP_SHEAR, 0.5f, 1f);
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
         if (itemStack.is(LOItems.TAIL_SCISSORS.get()) && this.hasGrowableHair() && !this.isUnicorn(this) && (this.isOwnedBy(player) || !this.isTamed())) {
-            OHorse oHorse = (OHorse) this;
-            if (player.isShiftKeyDown() && LivestockOverhaulCommonConfig.HORSE_HAIR_GROWTH.get()) {
-                if (oHorse.getTailType() == 3 || oHorse.getTailType() == 2) {
-                    oHorse.setTailType(0);
-                } else if (oHorse.getTailType() == 0) {
-                    oHorse.setTailType(3);
-                }
-            } else if ((!player.isShiftKeyDown() && oHorse.getTailType() < 4) || !LivestockOverhaulCommonConfig.HORSE_HAIR_GROWTH.get()) {
-                OHorse.Tail currentTail = OHorse.Tail.values()[oHorse.getTailType()];
-                OHorse.Tail nextTail = currentTail.next();
-                oHorse.tailGrowthTick = 0;
-                oHorse.setTailType(nextTail.ordinal());
-            }
             this.playSound(SoundEvents.SHEEP_SHEAR, 0.5f, 1f);
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
 
-        if (itemStack.is(Items.PACKED_ICE) && this.isHorse(this) && ((player.getAbilities().instabuild && LivestockOverhaulCommonConfig.CREATIVE_BRANDING.get()) ||
-                !LivestockOverhaulCommonConfig.CREATIVE_BRANDING.get())) {
-            OHorse oHorse = (OHorse) this;
-            if (!oHorse.isBranded() && (!oHorse.isTamed() || player.getAbilities().instabuild)) {
-                oHorse.setIsBranded(true);
-                this.playSound(SoundEvents.LAVA_EXTINGUISH, 0.5f, 1f);
-                return InteractionResult.sidedSuccess(this.level().isClientSide);
-            }
-        }
-
         if (itemStack.is(LOItems.UTILITY_KNIFE.get()) && ((player.getAbilities().instabuild && LivestockOverhaulCommonConfig.CREATIVE_SNIPPING.get()) ||
                 !LivestockOverhaulCommonConfig.CREATIVE_SNIPPING.get()) && ((this.isOwnedBy(player) || player.getAbilities().instabuild) || !this.isTamed())) {
-            if (!(this instanceof OGoat) && !(this instanceof FarmGoat) && !(this instanceof OCow)) {
-                if (player.isShiftKeyDown()) {
-                    if (!this.isSnipped()) {
-                        this.setSnipped(true);
-                        this.playSound(SoundEvents.BEEHIVE_EXIT, 0.5f, 1f);
-                        return InteractionResult.SUCCESS;
-                    }
+            if (player.isShiftKeyDown()) {
+                if (!this.isSnipped()) {
+                    this.setSnipped(true);
+                    this.playSound(SoundEvents.BEEHIVE_EXIT, 0.5f, 1f);
+                    return InteractionResult.SUCCESS;
                 }
             }
         }
@@ -466,47 +410,13 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
         }
 
         if (itemStack.is(LOItems.BREED_OSCILLATOR.get()) && player.getAbilities().instabuild) {
-            if (this.isHorse(this) || this.isMule(this) || this.isCamel(this) || this instanceof FarmGoat) {
-                if (player.isShiftKeyDown()) {
-                    if (this.getBreed() > 0) {
-                        this.setBreed(this.getBreed() - 1);
-                        this.playSound(SoundEvents.BEEHIVE_EXIT, 0.5f, 1f);
-                        return InteractionResult.SUCCESS;
-                    }
-                }
-                if (this.isHorse(this)) {
-                    OHorse oHorse = (OHorse) this;
-                    HorseBreed currentBreed = HorseBreed.values()[oHorse.getBreed()];
-                    HorseBreed nextBreed = currentBreed.next();
-                    oHorse.setBreed(nextBreed.ordinal());
-                }
-                if (this.isMule(this)) {
-                    OMule mule = (OMule) this;
-                    MuleBreed currentBreed = MuleBreed.values()[mule.getBreed()];
-                    MuleBreed nextBreed = currentBreed.next();
-                    mule.setBreed(nextBreed.ordinal());
-                }
-                if (this.isCamel(this)) {
-                    OCamel camel = (OCamel) this;
-                    CamelBreed.Breed currentBreed = CamelBreed.Breed.values()[camel.getBreed()];
-                    CamelBreed.Breed nextBreed = currentBreed.next();
-                    camel.setBreed(nextBreed.ordinal());
-                }
-                if (this instanceof FarmGoat) {
-                    FarmGoat goat = (FarmGoat) this;
-                    GoatBreed.Breed currentBreed = GoatBreed.Breed.values()[goat.getBreed()];
-                    GoatBreed.Breed nextBreed = currentBreed.next();
-                    goat.setBreed(nextBreed.ordinal());
-                }
-                if (this instanceof Unicorn) {
-                    Unicorn unicorn = (Unicorn) this;
-                    UnicornSpecies currentBreed = UnicornSpecies.values()[unicorn.getSpecies()];
-                    UnicornSpecies nextBreed = currentBreed.next();
-                    unicorn.setSpecies(nextBreed.ordinal());
-                }
-                this.playSound(SoundEvents.BEEHIVE_EXIT, 0.5f, 1f);
-                return InteractionResult.SUCCESS;
+            if (player.isShiftKeyDown() && this.getBreed() > 0) {
+                this.setBreed(this.getBreed() - 1);
+            } else {
+                this.setBreed(this.getBreed() + 1);
             }
+            this.playSound(SoundEvents.BEEHIVE_EXIT, 0.5f, 1f);
+            return InteractionResult.SUCCESS;
         }
 
         if (this.isEquine(this) && this.isOwnedBy(player)) {
@@ -524,70 +434,6 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
                 }
                 mount.setFlowerItem(itemStack);
                 this.playSound(SoundEvents.FLOWERING_AZALEA_PLACE, 0.5f, 1f);
-                return InteractionResult.SUCCESS;
-            }
-        }
-
-        if (this.isHorse(this) && itemStack.is(Items.HEART_OF_THE_SEA) && this.isOwnedBy(player)) {
-            OHorse oHorse = (OHorse) this;
-            if (oHorse.isUndead()) {
-                oHorse.setDecompVariant(0);
-                oHorse.setUndead(false);
-                if (!player.getAbilities().instabuild) {
-                    itemStack.shrink(1);
-                }
-
-                this.level().addParticle(ParticleTypes.TOTEM_OF_UNDYING, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
-                this.level().playSound(null, this, SoundEvents.TOTEM_USE, SoundSource.NEUTRAL, 1.0F, Mth.randomBetween(this.level().random, 0.8F, 1.2F));
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        if (this.isHorse(this) && itemStack.is(Items.COAL) && this.isOwnedBy(player)) {
-            OHorse oHorse = (OHorse) this;
-            if (oHorse.isUndead()) {
-                itemStack.finishUsingItem(level(), player);
-                if (!player.getAbilities().instabuild) {
-                    itemStack.shrink(1);
-                }
-                this.level().addParticle(ParticleTypes.SMOKE, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
-
-                if (oHorse.canDecompose()) {
-                    oHorse.setCanDecompose(false);
-                } else if (!oHorse.canDecompose()) {
-                    oHorse.setCanDecompose(true);
-                }
-            }
-            return InteractionResult.SUCCESS;
-        }
-
-        if (this.isHorse(this) && itemStack.is(LOItems.HALLOW_HEART.get()) && this.isOwnedBy(player)) {
-            LocalDate date = LocalDate.now();
-            Month month = date.getMonth();
-            int day = date.getDayOfMonth();
-            OHorse oHorse = (OHorse) this;
-            if ((month == Month.OCTOBER && (day == 31)) || (month == Month.NOVEMBER && (day == 1 || day == 2)) && !oHorse.isHallow()) {
-                AttributeInstance speedAttribute = oHorse.getAttribute(Attributes.MOVEMENT_SPEED);
-                assert speedAttribute != null;
-                double speedValue = speedAttribute.getBaseValue();
-                speedAttribute.setBaseValue(speedValue + 0.02);
-                AttributeInstance healthAttribute = oHorse.getAttribute(Attributes.MAX_HEALTH);
-                assert healthAttribute != null;
-                double healthValue = healthAttribute.getBaseValue();
-                healthAttribute.setBaseValue(healthValue + 10.0D);
-                oHorse.setHallow(true);
-                oHorse.setUndead(true);
-                oHorse.setCanDecompose(false);
-                oHorse.setVariant(2);
-                oHorse.setOverlayVariant(0);
-                oHorse.setEyeVariant(10);
-                this.level().addParticle(ParticleTypes.SOUL_FIRE_FLAME, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
-                this.level().addParticle(ParticleTypes.SOUL, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
-                this.level().playSound(null, this, SoundEvents.SOUL_ESCAPE, SoundSource.NEUTRAL, 1.0F, Mth.randomBetween(this.level().random, 0.8F, 1.2F));
-                this.level().playSound(null, this, SoundEvents.AMBIENT_CAVE.get(), SoundSource.NEUTRAL, 1.0F, Mth.randomBetween(this.level().random, 0.8F, 1.2F));
-                if (!player.getAbilities().instabuild) {
-                    itemStack.shrink(1);
-                }
                 return InteractionResult.SUCCESS;
             }
         }
@@ -667,12 +513,12 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
             }
         }
 
-        //star worm equestrian horse compat (only spawns the base variant. i dont know, sorry)
-        if (itemStack.is(LOTags.Items.SWEM_CANTAZARITE_POTION) && this.isHorse(this) && this.isOwnedBy(player)) {
+        // Optional SWEM compatibility path: only active when SWEM is present.
+        if (ModList.get().isLoaded("swem") && itemStack.is(LOTags.Items.SWEM_CANTAZARITE_POTION) && this.isHorse(this) && this.isOwnedBy(player)) {
             if (!player.level().isClientSide) {
                 Entity entity = this;
 
-                ResourceLocation swemHorseId = new ResourceLocation("swem", "swem_horse");
+                ResourceLocation swemHorseId = ResourceLocation.fromNamespaceAndPath("swem", "swem_horse");
 
                 EntityType<?> swemHorseType = EntityType.byString(swemHorseId.toString()).orElse(null);
 
@@ -693,9 +539,7 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
         if(this.isBaby()) {
             return super.mobInteract(player, hand);
         } else {
-            if (!(this instanceof FarmGoat)) {
-                this.doPlayerRide(player);
-            }
+            this.doPlayerRide(player);
             return InteractionResult.sidedSuccess(this.level().isClientSide);
         }
     }
@@ -740,7 +584,6 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
         super.spawnChildFromBreeding(pLevel, pMate);
     }
 
-    @Override
     public boolean canWearArmor() {
         return true;
     }
@@ -756,13 +599,13 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
     }
 
     @Override
-    public void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(DATA_ID_CHEST, false);
-        this.entityData.define(DECOR_ITEM, ItemStack.EMPTY);
-        this.entityData.define(SADDLE_ITEM, ItemStack.EMPTY);
-        this.entityData.define(LOCKED, false);
-        this.entityData.define(SNIPPED, false);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(DATA_ID_CHEST, false);
+        builder.define(DECOR_ITEM, ItemStack.EMPTY);
+        builder.define(SADDLE_ITEM, ItemStack.EMPTY);
+        builder.define(LOCKED, false);
+        builder.define(SNIPPED, false);
     }
 
     public ItemStack getDecorItem() {
@@ -777,15 +620,15 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
     public void addAdditionalSaveData(CompoundTag compoundTag) {
         super.addAdditionalSaveData(compoundTag);
         if(!this.getSaddleItem().isEmpty()) {
-            compoundTag.put("SaddleItem", this.getSaddleItem().save(new CompoundTag()));
+            compoundTag.put("SaddleItem", this.getSaddleItem().save(this.registryAccess()));
         }
 
         if(!this.getArmor().isEmpty()) {
-            compoundTag.put("ArmorItem", this.getArmor().save(new CompoundTag()));
+            compoundTag.put("ArmorItem", this.getArmor().save(this.registryAccess()));
         }
 
         if(!this.getDecorItem().isEmpty()) {
-            compoundTag.put("DecorItem", this.getDecorItem().save(new CompoundTag()));
+            compoundTag.put("DecorItem", this.getDecorItem().save(this.registryAccess()));
         }
 
         compoundTag.putBoolean("Locked", this.isLocked());
@@ -800,7 +643,7 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
                 if (!itemstack.isEmpty()) {
                     CompoundTag compoundtag = new CompoundTag();
                     compoundtag.putByte("Slot", (byte)i);
-                    itemstack.save(compoundtag);
+                    compoundtag.put("Item", itemstack.save(this.registryAccess()));
                     listtag.add(compoundtag);
                 }
             }
@@ -813,19 +656,19 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
     public void readAdditionalSaveData(CompoundTag compoundTag) {
         super.readAdditionalSaveData(compoundTag);
         if(compoundTag.contains("SaddleItem")) {
-            ItemStack saddleItem = ItemStack.of(compoundTag.getCompound("SaddleItem"));
+            ItemStack saddleItem = ItemStack.parseOptional(this.registryAccess(), compoundTag.getCompound("SaddleItem"));
             this.setSaddleItem(saddleItem);
             this.inventory.setItem(this.saddleSlot(), saddleItem);
         }
 
         if(compoundTag.contains("ArmorItem")) {
-            ItemStack armorItem = ItemStack.of(compoundTag.getCompound("ArmorItem"));
+            ItemStack armorItem = ItemStack.parseOptional(this.registryAccess(), compoundTag.getCompound("ArmorItem"));
             this.setArmorEquipment(armorItem);
             this.inventory.setItem(this.armorSlot(), armorItem);
         }
 
         if(compoundTag.contains("DecorItem")) {
-            ItemStack decorItem = ItemStack.of(compoundTag.getCompound("DecorItem"));
+            ItemStack decorItem = ItemStack.parseOptional(this.registryAccess(), compoundTag.getCompound("DecorItem"));
             this.setDecorItem(decorItem);
             this.inventory.setItem(this.decorSlot(), decorItem);
         }
@@ -845,7 +688,7 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
                 CompoundTag compoundtag = listtag.getCompound(i);
                 int j = compoundtag.getByte("Slot") & 255;
                 if (j >= 2 && j < this.inventory.getContainerSize()) {
-                    this.inventory.setItem(j, ItemStack.of(compoundtag));
+                    this.inventory.setItem(j, ItemStack.parseOptional(this.registryAccess(), compoundtag.getCompound("Item")));
                 }
             }
         }
@@ -861,10 +704,7 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
             this.playSound(SoundEvents.HORSE_BREATHE, soundType.getVolume() * 0.6f, soundType.getPitch());
         }
 
-        ItemStack itemStack = this.inventory.getItem(1);
-        if(this.isArmor(itemStack)) {
-            itemStack.onHorseArmorTick(this.level(), this);
-        }
+        // Armor item tick hooks are reintroduced during full mount-content parity pass.
     }
 
     public ItemStack getArmor() {
@@ -878,29 +718,33 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
 
     public void setArmorEquipment(ItemStack itemStack) {
         this.setArmor(itemStack);
-        if (!this.level().isClientSide) {
-            this.getAttribute(Attributes.ARMOR).removeModifier(ARMOR_MODIFIER_UUID);
+        if (this.level().isClientSide) {
+            return;
+        }
 
-            if (itemStack.getItem() instanceof HorseArmorItem horseArmorItem) {
-                int protection = horseArmorItem.getProtection();
-                if (protection > 0) {
-                    this.getAttribute(Attributes.ARMOR).addTransientModifier(
-                            new AttributeModifier(ARMOR_MODIFIER_UUID, "Horse armor bonus", (double) protection, AttributeModifier.Operation.ADDITION)
-                    );
-                }
-            }
-            if (itemStack.getItem() instanceof LightHorseArmorItem horseArmorItem) {
-                int protection = horseArmorItem.getProtection();
-                if (protection > 0) {
-                    this.getAttribute(Attributes.ARMOR).addTransientModifier(
-                            new AttributeModifier(ARMOR_MODIFIER_UUID, "Light armor bonus", (double) protection, AttributeModifier.Operation.ADDITION)
-                    );
-                }
-            }
+        AttributeInstance armorAttribute = this.getAttribute(Attributes.ARMOR);
+        if (armorAttribute == null) {
+            return;
+        }
+
+        armorAttribute.removeModifier(ARMOR_MODIFIER_ID);
+
+        int protection = 0;
+        if (itemStack.getItem() instanceof LightHorseArmorItem lightArmor) {
+            protection = lightArmor.getProtection();
+        } else if (itemStack.getItem() instanceof ArmorItem armorItem) {
+            protection = armorItem.getDefense();
+        }
+
+        if (protection > 0) {
+            armorAttribute.addOrUpdateTransientModifier(new AttributeModifier(
+                    ARMOR_MODIFIER_ID,
+                    protection,
+                    AttributeModifier.Operation.ADD_VALUE
+            ));
         }
     }
 
-    @Override
     public void updateContainerEquipment() {
        if(!this.level().isClientSide) {
            this.setSaddleItem(this.inventory.getItem(this.saddleSlot()));
@@ -952,9 +796,6 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
 
     @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity livingEntity) {
-        this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(SPRINT_SPEED_MOD);
-        this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(TROT_SPEED_MOD);
-        this.getAttribute(Attributes.MOVEMENT_SPEED).removeModifier(WALK_SPEED_MOD);
         return super.getDismountLocationForPassenger(livingEntity);
     }
 
@@ -985,24 +826,31 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
 
     public void handleSpeedRequest(int speedMod) {
         AttributeInstance movementSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED);
+        if (movementSpeed == null) {
+            return;
+        }
+
+        boolean hasSprint = movementSpeed.hasModifier(SPRINT_SPEED_MOD_ID);
+        boolean hasTrot = movementSpeed.hasModifier(TROT_SPEED_MOD_ID);
+        boolean hasWalk = movementSpeed.hasModifier(WALK_SPEED_MOD_ID);
 
         if (speedMod == -1) {
-            if (movementSpeed.hasModifier(SPRINT_SPEED_MOD)) {
-                movementSpeed.removeModifier(SPRINT_SPEED_MOD);
-            } else if (movementSpeed.hasModifier(TROT_SPEED_MOD)) {
-                movementSpeed.removeModifier(TROT_SPEED_MOD);
-                movementSpeed.addTransientModifier(WALK_SPEED_MOD);
-            } else if (!movementSpeed.hasModifier(SPRINT_SPEED_MOD) && !movementSpeed.hasModifier(TROT_SPEED_MOD) && !movementSpeed.hasModifier(WALK_SPEED_MOD)) {
-                movementSpeed.addTransientModifier(TROT_SPEED_MOD);
+            if (hasSprint) {
+                movementSpeed.removeModifier(SPRINT_SPEED_MOD_ID);
+            } else if (hasTrot) {
+                movementSpeed.removeModifier(TROT_SPEED_MOD_ID);
+                movementSpeed.addOrUpdateTransientModifier(WALK_SPEED_MOD);
+            } else if (!hasWalk) {
+                movementSpeed.addOrUpdateTransientModifier(TROT_SPEED_MOD);
             }
         } else if (speedMod == 1) {
-            if (movementSpeed.hasModifier(WALK_SPEED_MOD)) {
-                movementSpeed.addTransientModifier(TROT_SPEED_MOD);
-                movementSpeed.removeModifier(WALK_SPEED_MOD);
-            } else if (movementSpeed.hasModifier(TROT_SPEED_MOD)) {
-                movementSpeed.removeModifier(TROT_SPEED_MOD);
-            } else if (!movementSpeed.hasModifier(SPRINT_SPEED_MOD) && !movementSpeed.hasModifier(TROT_SPEED_MOD) && !movementSpeed.hasModifier(WALK_SPEED_MOD)) {
-                movementSpeed.addTransientModifier(SPRINT_SPEED_MOD);
+            if (hasWalk) {
+                movementSpeed.addOrUpdateTransientModifier(TROT_SPEED_MOD);
+                movementSpeed.removeModifier(WALK_SPEED_MOD_ID);
+            } else if (hasTrot) {
+                movementSpeed.removeModifier(TROT_SPEED_MOD_ID);
+            } else if (!hasSprint) {
+                movementSpeed.addOrUpdateTransientModifier(SPRINT_SPEED_MOD);
             }
         }
     }

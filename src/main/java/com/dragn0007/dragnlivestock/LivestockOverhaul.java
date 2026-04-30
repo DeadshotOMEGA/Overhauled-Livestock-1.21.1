@@ -1,5 +1,16 @@
 package com.dragn0007.dragnlivestock;
 
+import com.dragn0007.dragnlivestock.blocks.LOBlocks;
+import com.dragn0007.dragnlivestock.common.event.ForgeEvent;
+import com.dragn0007.dragnlivestock.common.event.LivestockOverhaulCommonEvent;
+import com.dragn0007.dragnlivestock.common.gui.LOMenuTypes;
+import com.dragn0007.dragnlivestock.common.network.LOPackets;
+import com.dragn0007.dragnlivestock.client.event.LivestockOverhaulClientEvent;
+import com.dragn0007.dragnlivestock.datagen.JsonDataGenerator;
+import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.items.LOItemGroup;
+import com.dragn0007.dragnlivestock.items.LOItems;
+import com.dragn0007.dragnlivestock.util.LONetwork;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulClientConfig;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import com.mojang.logging.LogUtils;
@@ -7,11 +18,15 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
+import net.neoforged.api.distmarker.Dist;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
+import net.neoforged.fml.loading.FMLEnvironment;
 import org.slf4j.Logger;
 
 import java.time.LocalDate;
@@ -23,13 +38,25 @@ public class LivestockOverhaul {
     public static final String MODID = "dragnlivestock";
     public static final Logger LOGGER = LogUtils.getLogger();
 
-    public LivestockOverhaul(IEventBus eventBus) {
-        // TODO: Re-enable content/system registration after registry + networking port.
+    public LivestockOverhaul(IEventBus eventBus, ModContainer modContainer) {
+        EntityTypes.register(eventBus);
+        LOItems.register(eventBus);
+        LOItemGroup.register(eventBus);
+        LOBlocks.register(eventBus);
+        LOMenuTypes.register(eventBus);
+        eventBus.addListener(LOPackets::register);
+        eventBus.addListener(LONetwork::register);
+        eventBus.addListener(JsonDataGenerator::gatherData);
+        if (FMLEnvironment.dist == Dist.CLIENT) {
+            LivestockOverhaulClientEvent.register(eventBus);
+        }
+
+        eventBus.register(LivestockOverhaulCommonEvent.class);
+        NeoForge.EVENT_BUS.register(ForgeEvent.class);
         NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent warn) -> warn(warn.getEntity()));
 
-        // TODO: Re-enable config registration once NeoForge 1.21 config bootstrap is reintroduced.
-
-        NeoForge.EVENT_BUS.register(this);
+        modContainer.registerConfig(ModConfig.Type.COMMON, LivestockOverhaulCommonConfig.SPEC, "livestock-overhaul-common.toml");
+        modContainer.registerConfig(ModConfig.Type.CLIENT, LivestockOverhaulClientConfig.SPEC, "livestock-overhaul-client.toml");
 
         System.out.println("[DragN's Livestock Overhaul!] Registered Livestock Overhaul.");
         System.out.println("[DragN's Livestock Overhaul!] Do not remove this mod without running the Failsafe Config!");

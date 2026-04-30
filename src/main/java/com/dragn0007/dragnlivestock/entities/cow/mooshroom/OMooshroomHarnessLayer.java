@@ -26,10 +26,10 @@ public class OMooshroomHarnessLayer extends GeoRenderLayer<OMooshroom> {
 
         if (animatable.isHarnessed() || animatable.isBelled()) {
             if (animatable.isHarnessed()) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/tack/rodeo_harness.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/cow/tack/rodeo_harness.png");
             }
             if (animatable.isBelled()) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/tack/bell.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/cow/tack/bell.png");
             }
         } else {
             return;
@@ -45,7 +45,6 @@ public class OMooshroomHarnessLayer extends GeoRenderLayer<OMooshroom> {
                 bufferSource,
                 animatable,
                 renderType1,
-                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 }

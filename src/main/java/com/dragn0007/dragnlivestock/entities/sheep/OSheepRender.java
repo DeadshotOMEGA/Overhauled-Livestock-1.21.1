@@ -17,7 +17,7 @@ public class OSheepRender extends GeoEntityRenderer<OSheep> {
     }
 
     @Override
-    public void preRender(PoseStack poseStack, OSheep entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void preRender(PoseStack poseStack, OSheep entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
 
         if (entity.getBreed() == 6) {
             if (entity.isFemale()) {
@@ -132,9 +132,8 @@ public class OSheepRender extends GeoEntityRenderer<OSheep> {
 
         }
 
-        super.preRender(poseStack, this.animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(poseStack, this.animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
     }
 
 }
-
 

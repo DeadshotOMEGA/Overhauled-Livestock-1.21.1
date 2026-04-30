@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:leather"
+    },
+    "B": {
+      "tag": "minecraft:wool_carpets"
+    },
+    "C": {
+      "tag": "c:obsidian_shards"
+    }
+  },
+  "pattern": [
+    "  C",
+    "CCC",
+    "ABA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "dragnlivestock:obsidian_horse_armor"
+  }
+}

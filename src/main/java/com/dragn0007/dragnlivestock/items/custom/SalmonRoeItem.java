@@ -4,8 +4,6 @@ import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.salmon.OSalmon;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -22,36 +20,40 @@ public class SalmonRoeItem extends Item {
    }
 
    @Override
-   public InteractionResult useOn(UseOnContext p_43223_) {
-      Level level = p_43223_.getLevel();
-      if (!(level instanceof ServerLevel)) {
+   public InteractionResult useOn(UseOnContext context) {
+      Level level = context.getLevel();
+      if (!(level instanceof ServerLevel serverLevel)) {
          return InteractionResult.SUCCESS;
-      } else {
-         ItemStack itemstack = p_43223_.getItemInHand();
-         Player player = p_43223_.getPlayer();
-         Vec3 targetPos = player.getEyePosition().add(player.getLookAngle().scale(3));
-
-         spawnFishFry(player, null, EntityTypes.O_SALMON_ENTITY.get(), (ServerLevel) level, targetPos, itemstack);
-
-         itemstack.shrink(1);
-         return InteractionResult.CONSUME;
       }
-   }
 
-   public Optional<Mob> spawnFishFry(Player player, Mob mob1, EntityType<? extends Mob> p_43218_, ServerLevel level, Vec3 vec3, ItemStack itemStack) {
-      OSalmon oSalmon = EntityTypes.O_SALMON_ENTITY.get().create(level);
-      if (oSalmon == null) return Optional.empty();
+      Player player = context.getPlayer();
+      if (player == null) {
+         return InteractionResult.PASS;
+      }
 
-      oSalmon.setAge(-24000);
+      ItemStack stack = context.getItemInHand();
+      Vec3 targetPos = player.getEyePosition().add(player.getLookAngle().scale(3.0D));
 
-      oSalmon.moveTo(vec3.x(), vec3.y(), vec3.z(), 0.0F, 0.0F);
-
-      level.addFreshEntity(oSalmon);
+      Optional<OSalmon> spawned = spawnFishFry(serverLevel, targetPos);
+      if (spawned.isEmpty()) {
+         return InteractionResult.PASS;
+      }
 
       if (!player.getAbilities().instabuild) {
-         itemStack.shrink(1);
+         stack.shrink(1);
       }
 
-      return Optional.of(oSalmon);
+      return InteractionResult.CONSUME;
+   }
+
+   private Optional<OSalmon> spawnFishFry(ServerLevel level, Vec3 pos) {
+      OSalmon fish = EntityTypes.O_SALMON_ENTITY.get().create(level);
+      if (fish == null) {
+         return Optional.empty();
+      }
+
+      fish.moveTo(pos.x(), pos.y(), pos.z(), 0.0F, 0.0F);
+      level.addFreshEntity(fish);
+      return Optional.of(fish);
    }
 }

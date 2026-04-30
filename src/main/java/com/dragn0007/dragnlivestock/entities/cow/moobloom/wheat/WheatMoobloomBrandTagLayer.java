@@ -18,22 +18,22 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 @OnlyIn(Dist.CLIENT)
 public class WheatMoobloomBrandTagLayer extends GeoRenderLayer<WheatMoobloom> {
     public static final ResourceLocation[] TEXTURE_LOCATION = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/white_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/orange_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/magenta_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/light_blue_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/yellow_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/lime_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/pink_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/grey_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/light_grey_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/cyan_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/purple_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/blue_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/brown_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/green_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/red_brand_tag.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/tag/black_brand_tag.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/white_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/orange_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/magenta_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/light_blue_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/yellow_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/lime_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/pink_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/grey_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/light_grey_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/cyan_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/purple_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/blue_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/brown_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/green_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/red_brand_tag.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/tag/black_brand_tag.png")
     };
 
     public WheatMoobloomBrandTagLayer(GeoRenderer<WheatMoobloom> entityRendererIn) {
@@ -67,7 +67,6 @@ public class WheatMoobloomBrandTagLayer extends GeoRenderLayer<WheatMoobloom> {
                 bufferSource,
                 animatable,
                 renderType1,
-                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 }

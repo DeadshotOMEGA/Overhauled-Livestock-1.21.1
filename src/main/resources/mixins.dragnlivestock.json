@@ -1,6 +1,6 @@
 {
   "required": true,
-  "minVersion": "0.8",
+  "minVersion": "0.8.5",
   "package": "com.dragn0007.dragnlivestock.mixin",
   "refmap": "dragnlivestock.mixin-refmap.json",
   "compatibilityLevel": "JAVA_17",

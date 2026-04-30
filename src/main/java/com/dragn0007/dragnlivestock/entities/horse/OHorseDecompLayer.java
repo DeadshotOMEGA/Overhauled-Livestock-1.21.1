@@ -36,20 +36,19 @@ public class OHorseDecompLayer extends GeoRenderLayer<OHorse> {
                 bufferSource,
                 animatable,
                 renderMarkingType,
-                bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 
     public enum UndeadStage {
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/overlay/none.png")),
-        MINIMAL(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/undead/undead_stage_1.png")),
-        MODERATE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/undead/undead_stage_2.png")),
-        EXTREME(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/undead/undead_stage_3.png")),
-        SKELETAL(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/undead/undead_stage_4.png")),
-        WITHER(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/undead/wither.png")),
-        STRAY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/undead/stray.png")),
-        DROWNED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/undead/drowned.png")),
-        HUSK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/undead/husk.png")),
+        NONE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/overlay/none.png")),
+        MINIMAL(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/undead/undead_stage_1.png")),
+        MODERATE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/undead/undead_stage_2.png")),
+        EXTREME(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/undead/undead_stage_3.png")),
+        SKELETAL(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/undead/undead_stage_4.png")),
+        WITHER(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/undead/wither.png")),
+        STRAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/undead/stray.png")),
+        DROWNED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/undead/drowned.png")),
+        HUSK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/undead/husk.png")),
         ;
 
         public final ResourceLocation resourceLocation;

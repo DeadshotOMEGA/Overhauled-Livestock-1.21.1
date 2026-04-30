@@ -30,7 +30,7 @@ public class OCamelChestLayer extends GeoRenderLayer<OCamel> {
         }
 
         if (animatable.hasChest()) {
-            resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/tack/saddlebags.png");
+            resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/tack/saddlebags.png");
         } else {
             return;
         }
@@ -46,6 +46,6 @@ public class OCamelChestLayer extends GeoRenderLayer<OCamel> {
                 animatable,
                 renderType1,
                 bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                0xFFFFFFFF);
     }
 }

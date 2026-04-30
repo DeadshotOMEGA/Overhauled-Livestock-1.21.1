@@ -5,9 +5,6 @@ import com.dragn0007.dragnlivestock.client.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.common.gui.OHorseMenu;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.*;
-import com.dragn0007.dragnlivestock.entities.donkey.ODonkey;
-import com.dragn0007.dragnlivestock.entities.mule.OMule;
-import com.dragn0007.dragnlivestock.entities.mule.OMuleModel;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOMount;
 import com.dragn0007.dragnlivestock.entities.util.LOAnimations;
 import com.dragn0007.dragnlivestock.entities.util.marking_layer.EquineEyeColorOverlay;
@@ -25,6 +22,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -44,24 +42,25 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.horse.AbstractHorse;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.HorseArmorItem;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.neoforge.common.Tags;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.network.NetworkHooks;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -73,11 +72,11 @@ import java.util.stream.Stream;
 
 public class OHorse extends AbstractOMount implements GeoEntity {
 
-	protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_horse");
-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/horse");
-	protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/horse");
+	protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/o_horse"));
+	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/horse"));
+	protected static final ResourceKey<LootTable> TFC_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("tfc", "entities/horse"));
 	@Override
-	public @NotNull ResourceLocation getDefaultLootTable() {
+	public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
 		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
 			return VANILLA_LOOT_TABLE;
 		} else if (ModList.get().isLoaded("tfc")) {
@@ -123,17 +122,13 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 	@Override
 	public void registerGoals() {
 		super.registerGoals();
-		this.goalSelector.addGoal(0, new GroundTieGoal(this));
 
 		this.goalSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.goalSelector.addGoal(1, new ORunAroundLikeCrazyGoal(this, 1.3F));
 		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.7D));
 		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.4, true));
 		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(3, new HorseFollowHerdLeaderGoal(this));
 		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D, AbstractOMount.class));
 		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-		this.goalSelector.addGoal(4, new MountLookAtPlayerGoal(this, Player.class, 12.0F));
 
 		this.goalSelector.addGoal(1, new OAvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, entity ->
 				(entity.getType().is(LOTags.Entity_Types.WOLVES) && !this.isTamed()) ||
@@ -144,9 +139,6 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 				livingEntity.getType().is(LOTags.Entity_Types.HORSES) && (livingEntity instanceof AbstractHorse && livingEntity.isVehicle()) && !this.isLeashed() && LivestockOverhaulCommonConfig.HORSE_HERD_ANIMALS.get() && (this.isWearingRodeoHarness() || !this.isTamed())
 		));
 
-		this.goalSelector.addGoal(1, new OAvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.3F, 1.3F, livingEntity ->
-				livingEntity instanceof OMule && livingEntity.isVehicle() && ((OMule) livingEntity).isSaddled() && (this.isWearingRodeoHarness() || !this.isTamed())
-		));
 	}
 
 	public float generateRandomOHorseMaxHealth() {
@@ -276,14 +268,6 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		return null;
 	}
 
-	@Override
-	public int getInventorySize() {
-		if (this.hasChest()) {
-			return 18;
-		} else {
-			return 3;
-		}
-	}
 
 	@Override
 	public void positionRider(Entity entity, Entity.MoveFunction moveFunction) {
@@ -466,8 +450,8 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 	@Override
 	public void openInventory(Player player) {
 		if(player instanceof ServerPlayer serverPlayer && this.isTamed() && ((this.isOwnedBy(player) && this.isLocked()) || !this.isLocked())) {
-			NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((containerId, inventory, p) ->
-					new OHorseMenu(containerId, inventory, this.inventory, this), this.getDisplayName()), (data) -> {
+			serverPlayer.openMenu(new SimpleMenuProvider((containerId, inventory, p) ->
+					new OHorseMenu(containerId, inventory, this.inventory, this), this.getDisplayName()), data -> {
 				data.writeInt(this.getInventorySize());
 				data.writeInt(this.getId());
 			});
@@ -535,15 +519,15 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 							controller.setAnimationSpeed(Math.max(0.1, 0.82 * controller.getAnimationSpeed() + animationSpeed));
 						}
 
-					} else if (this.isAggressive() || (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD)) || (!this.isVehicle() && currentSpeed > speedThreshold)) {
+					} else if (this.isAggressive() || (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD_ID)) || (!this.isVehicle() && currentSpeed > speedThreshold)) {
 						controller.setAnimation(RawAnimation.begin().then("sprint", Animation.LoopType.LOOP));
 						controller.setAnimationSpeed(Math.max(0.1, 0.82 * controller.getAnimationSpeed() + animationSpeed));
 
-					} else if ((this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD)) || (!this.isVehicle() && currentSpeed > speedTrotThreshold)) {
+					} else if ((this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD_ID)) || (!this.isVehicle() && currentSpeed > speedTrotThreshold)) {
 						controller.setAnimation(RawAnimation.begin().then("trot", Animation.LoopType.LOOP));
 						controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
 
-					} else if ((this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD))
+					} else if ((this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD_ID) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD_ID))
 							|| (!this.isVehicle() && currentSpeed > speedRunThreshold && currentSpeed < speedThreshold)) {
 						if (this.isOnSand()) {
 							controller.setAnimation(RawAnimation.begin().then("run", Animation.LoopType.LOOP));
@@ -553,7 +537,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 							controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
 						}
 
-					} else if (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD)) {
+					} else if (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID)) {
 						if (LivestockOverhaulClientEvent.HORSE_SPANISH_WALK_TOGGLE.isDown()) {
 							controller.setAnimation(RawAnimation.begin().then("spanish_walk", Animation.LoopType.LOOP));
 							controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
@@ -568,7 +552,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 					}
 
 				} else if (this.isVehicle() && LivestockOverhaulClientEvent.HORSE_WALK_BACKWARDS.isDown()) {
-					if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD)) {
+					if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID)) {
 						controller.setAnimation(RawAnimation.begin().then("walk_back", Animation.LoopType.LOOP));
 						controller.setAnimationSpeed(Math.max(0.1, 0.76 * controller.getAnimationSpeed() + animationSpeed));
 					} else {
@@ -578,10 +562,10 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 				}
 
 			} else {
-				if (this.isGroundTied() && LivestockOverhaulCommonConfig.GROUND_TIE.get()) {
-					controller.setAnimation(RawAnimation.begin().then("ground_tie", Animation.LoopType.LOOP));
-				} else {
+				if (this.isVehicle() || !LivestockOverhaulCommonConfig.GROUND_TIE.get()) {
 					controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+				} else {
+					controller.setAnimation(RawAnimation.begin().then("ground_tie", Animation.LoopType.LOOP));
 				}
 				controller.setAnimationSpeed(1.0);
 			}
@@ -604,7 +588,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		this.shouldEmote = true;
 	}
 
-	protected <T extends GeoAnimatable> PlayState emotePredicate(software.bernie.geckolib.core.animation.AnimationState<T> tAnimationState) {
+	protected <T extends GeoAnimatable> PlayState emotePredicate(software.bernie.geckolib.animation.AnimationState<T> tAnimationState) {
 		AnimationController<T> controller = tAnimationState.getController();
 
 		if (tAnimationState.isMoving() || !this.shouldEmote) {
@@ -661,7 +645,6 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		}
 	}
 
-	@Override
 	public float getStepHeight() {
 		return 1.0F;
 	}
@@ -713,13 +696,6 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		return super.hurt(damageSource, v);
 	}
 
-	public MobType getMobType() {
-		if (this.isUndead()) {
-			return MobType.UNDEAD;
-		} else {
-			return super.getMobType();
-		}
-	}
 
 	public int maxSprint = 20 * LivestockOverhaulCommonConfig.BASE_HORSE_SPRINT_TIME.get();
 	public int sprintTick = maxSprint;
@@ -794,13 +770,13 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 			if (!this.hasSlownessEffect()) {
 				this.applySlownessEffect();
 			}
-		} else if (!(!this.isDraftBreed() && armorItemStack.getItem() instanceof HorseArmorItem) || !(this.isRacingBreed() && armorItemStack.getItem() instanceof LightHorseArmorItem)){
+		} else if ((!this.isDraftBreed() && armorItemStack.getItem() instanceof ArmorItem) || !(this.isRacingBreed() && armorItemStack.getItem() instanceof LightHorseArmorItem)) {
 			if (this.hasSlownessEffect()) {
 				this.removeSlownessEffect();
 			}
 		}
 
-		if (armorItemStack.getItem() instanceof HorseArmorItem) {
+		if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID)) {
 			if (!this.isDraftBreed()) {
 				if (!this.hasSlownessEffect()) {
 					this.applySlownessEffect();
@@ -862,17 +838,19 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		double x = this.getX() - this.xo;
 		double z = this.getZ() - this.zo;
 		boolean isMoving = (x * x + z * z) > 0.0001;
+		AttributeInstance movementSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED);
+		boolean hasSprintModifier = movementSpeed != null && movementSpeed.hasModifier(SPRINT_SPEED_MOD_ID);
 
-		if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD) && !(sprintTick <= 0) && this.hasControllingPassenger() && isMoving) {
+		if (hasSprintModifier && sprintTick > 0 && this.hasControllingPassenger() && isMoving) {
 			sprintTick--;
-			if (controllingPassenger != null && !(sprintTick <= 0)) {
+			if (controllingPassenger != null && sprintTick > 0) {
 				if (controllingPassenger instanceof Player player && LivestockOverhaulClientConfig.HORSE_SPRINT_TIMER.get()) {
 					player.displayClientMessage(Component.translatable("Sprint Left: " + sprintLeftInSeconds + "s").withStyle(ChatFormatting.GOLD), true);
 				}
 			}
 		}
 
-		if ((!this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD) || !isMoving)) {
+		if (!hasSprintModifier || !isMoving) {
 			if (((this.isWarmbloodedBreed() && sprintTick < (maxSprint + warmbloodSprintAddition)) ||
 					(this.isStockBreed() && sprintTick < (maxSprint + stockSprintAddition)) ||
 					(this.isDraftBreed() && sprintTick < (maxSprint + draftSprintAddition)) ||
@@ -889,10 +867,8 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 			}
 		}
 
-		if (sprintTick <= 0 && controllingPassenger != null) {
-			AttributeInstance movementSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED);
+		if (sprintTick <= 0 && controllingPassenger != null && hasSprintModifier) {
 			this.handleSpeedRequest(-1);
-			movementSpeed.removeModifier(SPRINT_SPEED_MOD);
 			if (controllingPassenger != null) {
 				if (controllingPassenger instanceof Player player && LivestockOverhaulClientConfig.HORSE_SPRINT_TIMER.get()) {
 					player.displayClientMessage(Component.translatable("Sprint Depleted").withStyle(ChatFormatting.DARK_RED), true);
@@ -956,11 +932,11 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 	}
 	public void setVariant(int variant) {
 		this.entityData.set(VARIANT, variant);
-		this.entityData.set(VARIANT_TEXTURE, OHorseModel.Variant.variantFromOrdinal(variant).resourceLocation.toString());
+		this.entityData.set(VARIANT_TEXTURE, this.getHorseVariantTexture(variant).toString());
 	}
 
 	public ResourceLocation getSimplifiedVariantTextureResource() {
-		return OHorseModel.SVariant.variantFromOrdinal(getSimplifiedVariant()).resourceLocation;
+		return this.getSimplifiedHorseVariantTexture(getSimplifiedVariant());
 	}
 	public int getSimplifiedVariant() {
 		return this.entityData.get(VARIANT);
@@ -1000,7 +976,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 
 	public static final EntityDataAccessor<Integer> REINDEER_VARIANT = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
 	public ResourceLocation getReindeerTextureResource() {
-		return OHorseModel.ReindeerVariant.reindeerVariantFromOrdinal(getReindeerVariant()).resourceLocation;
+		return this.getReindeerVariantTexture(getReindeerVariant());
 	}
 	public int getReindeerVariant() {
 		return this.entityData.get(REINDEER_VARIANT);
@@ -1182,7 +1158,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		}
 
 		if(tag.contains("FlowerItem")) {
-			ItemStack decorItem = ItemStack.of(tag.getCompound("FlowerItem"));
+			ItemStack decorItem = ItemStack.parseOptional(this.registryAccess(), tag.getCompound("FlowerItem"));
 			this.setFlowerItem(decorItem);
 		}
 
@@ -1233,7 +1209,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		tag.putBoolean("CanDecompose", this.canDecompose());
 		tag.putInt("Flower_Type", this.getFlowerType());
 		if(!this.getFlowerItem().isEmpty()) {
-			tag.put("FlowerItem", this.getFlowerItem().save(new CompoundTag()));
+			tag.put("FlowerItem", this.getFlowerItem().save(this.registryAccess()));
 		}
 		tag.putBoolean("IsBranded", this.isBranded());
 		tag.putInt("TrainingTime", this.trainStatsTick);
@@ -1245,7 +1221,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
 		if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
@@ -1262,7 +1238,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 			}
 		}
 
-		this.setReindeerVariant(random.nextInt(OHorseModel.ReindeerVariant.values().length));
+		this.setReindeerVariant(random.nextInt(REINDEER_VARIANT_COUNT));
 		this.setGender(random.nextInt(Gender.values().length));
 
 		if (LivestockOverhaulCommonConfig.SPAWN_BY_BREED.get()) {
@@ -1270,7 +1246,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 			this.setMarkingByBreed();
 			this.setFeatheringByBreed();
 		} else {
-			this.setVariant(random.nextInt(OHorseModel.Variant.values().length));
+			this.setVariant(random.nextInt(HORSE_VARIANT_COUNT));
 			this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			this.setFeathering(random.nextInt(Feathering.values().length));
 		}
@@ -1288,39 +1264,39 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		this.setTailType(randomTail);
 
 		this.randomizeOHorseAttributes();
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(BREED, 0);
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(GENDER, 0);
-		this.entityData.define(VARIANT_TEXTURE, OHorseModel.Variant.BAY.resourceLocation.toString());
-		this.entityData.define(OVERLAY_TEXTURE, EquineMarkingOverlay.NONE.resourceLocation.toString());
-		this.entityData.define(REINDEER_VARIANT, 0);
-		this.entityData.define(DECOMP, 0);
-		this.entityData.define(MANE_TYPE, 0);
-		this.entityData.define(TAIL_TYPE, 0);
-		this.entityData.define(FEATHERING, 0);
-		this.entityData.define(EYES, 0);
-		this.entityData.define(UNDEAD, false);
-		this.entityData.define(DECOMPOSE, false);
-		this.entityData.define(FLOWER_ITEM, ItemStack.EMPTY);
-		this.entityData.define(FLOWER_TYPE, 0);
-		this.entityData.define(BRANDED, false);
-		this.entityData.define(SPEED_TRAINED, 0);
-		this.entityData.define(JUMP_TRAINED, 0);
-		this.entityData.define(HEALTH_TRAINED, 0);
-		this.entityData.define(HALLOW, false);
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(BREED, 0);
+		builder.define(VARIANT, 0);
+		builder.define(OVERLAY, 0);
+		builder.define(GENDER, 0);
+		builder.define(VARIANT_TEXTURE, this.getHorseVariantTexture(0).toString());
+		builder.define(OVERLAY_TEXTURE, EquineMarkingOverlay.NONE.resourceLocation.toString());
+		builder.define(REINDEER_VARIANT, 0);
+		builder.define(DECOMP, 0);
+		builder.define(MANE_TYPE, 0);
+		builder.define(TAIL_TYPE, 0);
+		builder.define(FEATHERING, 0);
+		builder.define(EYES, 0);
+		builder.define(UNDEAD, false);
+		builder.define(DECOMPOSE, false);
+		builder.define(FLOWER_ITEM, ItemStack.EMPTY);
+		builder.define(FLOWER_TYPE, 0);
+		builder.define(BRANDED, false);
+		builder.define(SPEED_TRAINED, 0);
+		builder.define(JUMP_TRAINED, 0);
+		builder.define(HEALTH_TRAINED, 0);
+		builder.define(HALLOW, false);
 	}
 
 	public boolean canMate(Animal animal) {
 		if (animal == this) {
 			return false;
-		} else if (!(animal instanceof ODonkey) && !(animal instanceof OHorse)) {
+		} else if (!(animal instanceof OHorse)) {
 			return false;
 		} else {
 			if (!this.isSnipped() && !((AbstractOMount) animal).isSnipped()) {
@@ -1340,37 +1316,9 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 	@Override
 	public AgeableMob getBreedOffspring(ServerLevel serverLevel, AgeableMob ageableMob) {
 		AbstractOMount foal;
-		if (ageableMob instanceof ODonkey partnerDonkey) {
-
-			foal = EntityTypes.O_MULE_ENTITY.get().create(serverLevel);
-
-			int overlayChance = this.random.nextInt(100);
-			int overlay;
-			if (overlayChance < ((100 - LivestockOverhaulCommonConfig.MARKING_CHANCE.get()) / 2)) {
-				overlay = this.getOverlayVariant();
-			} else if (overlayChance < (100 - LivestockOverhaulCommonConfig.MARKING_CHANCE.get())) {
-				overlay = partnerDonkey.getOverlayVariant();
-			} else {
-				overlay = this.random.nextInt(EquineMarkingOverlay.values().length);
-			}
-			foal.setOverlayVariant(overlay);
-			foal.setVariant(random.nextInt(OMuleModel.Variant.values().length));
-
-			if (this.isStockBreed() || this.isWarmbloodedBreed() || this.isRacingBreed()) {
-				foal.setBreed(0);
-			}
-			if (this.isPonyBreed()) {
-				foal.setBreed(1);
-			}
-			if (this.isDraftBreed()) {
-				foal.setBreed(2);
-			}
-
-			foal.setGender(random.nextInt(Gender.values().length));
-
-		} else {
+		{
 			OHorse partner = (OHorse) ageableMob;
-			foal = EntityTypes.O_HORSE_ENTITY.get().create(serverLevel);
+			foal = new OHorse((EntityType<? extends OHorse>) this.getType(), serverLevel);
 
 			int breedChance = this.random.nextInt(100);
 			int breed;
@@ -1397,7 +1345,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 				} else if (variantChance < (100 - LivestockOverhaulCommonConfig.COAT_CHANCE.get())) {
 					variant = partner.getVariant();
 				} else {
-					variant = this.random.nextInt(OHorseModel.Variant.values().length);
+					variant = this.random.nextInt(HORSE_VARIANT_COUNT);
 				}
 				foal.setVariant(variant);
 			} else if (breedChance <= LivestockOverhaulCommonConfig.BREED_CHANCE.get() && random.nextDouble() < 0.5) {
@@ -1642,7 +1590,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 
 		if (this.getBreed() == 3) { //fjords tend to come in only the fjord coloring
 			if (random.nextDouble() < 0.05) {
-				this.setVariant(random.nextInt(OHorseModel.Variant.values().length));
+				this.setVariant(random.nextInt(HORSE_VARIANT_COUNT));
 			} else if (random.nextDouble() > 0.05) {
 				int[] variants = {14};
 				int randomIndex = new Random().nextInt(variants.length);
@@ -2096,7 +2044,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 
 	//drops extra loot based on animal size
 	@Override
-	public void dropCustomDeathLoot(DamageSource p_33574_, int p_33575_, boolean p_33576_) {
+	public void dropCustomDeathLoot(ServerLevel p_33574_, DamageSource p_33575_, boolean p_33576_) {
 		super.dropCustomDeathLoot(p_33574_, p_33575_, p_33576_);
 		Random random = new Random();
 
@@ -2126,14 +2074,34 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 			}
 
 			if (ModList.get().isLoaded("create")) {
-				ResourceLocation resourceLocation = new ResourceLocation("create", "superglue");
-				Item createSuperglue = BuiltInRegistries.ITEM.getValue(resourceLocation);
+				ResourceLocation resourceLocation = ResourceLocation.fromNamespaceAndPath("create", "superglue");
+				Item createSuperglue = BuiltInRegistries.ITEM.get(resourceLocation);
 				if (random.nextDouble() < 0.25) {
 					this.spawnAtLocation(createSuperglue.getDefaultInstance());
 				}
 			}
 
 		}
+	}
+
+
+	private static final int HORSE_VARIANT_COUNT = 24;
+	private static final int REINDEER_VARIANT_COUNT = 17;
+
+	private ResourceLocation getHorseVariantTexture(int variant) {
+		String[] names = {"bay","black","blue_roan","buckskin","champagne","chestnut","chocolate","copper","cream","dark_bay","dapple_gray","dun","flaxen_chestnut","gold_champagne","grullo","light_gray","palomino","perlino","red_dun","rose_gray","seal_brown","silver","strawberry_roan","steel_grey"};
+		String n = names[Math.floorMod(variant, names.length)];
+		return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/" + n + ".png");
+	}
+
+	private ResourceLocation getSimplifiedHorseVariantTexture(int variant) {
+		return getHorseVariantTexture(variant);
+	}
+
+	private ResourceLocation getReindeerVariantTexture(int variant) {
+		String[] names = {"bay","black","blue","champagne","chestnut","chocolate","cream","grey","ivory","light_grey","liver_chestnut","palamino","red","seal","strawberry","tan","white"};
+		String n = names[Math.floorMod(variant, names.length)];
+		return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/reindeer/" + n + ".png");
 	}
 
 }

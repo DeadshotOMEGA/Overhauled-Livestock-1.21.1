@@ -4,22 +4,23 @@ import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
-import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.cache.object.GeoBone;
+
+import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
 public class FarmGoatModel extends DefaultedEntityGeoModel<FarmGoat> {
 
     public FarmGoatModel() {
-        super(new ResourceLocation(LivestockOverhaul.MODID, "o_goat"), true);
+        super(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "o_goat"), true);
     }
 
     @Override
     public void setCustomAnimations(FarmGoat animatable, long instanceId, AnimationState<FarmGoat> animationState) {
 
-        CoreGeoBone neck = getAnimationProcessor().getBone("neck");
-        CoreGeoBone head = getAnimationProcessor().getBone("head");
+        GeoBone neck = getAnimationProcessor().getBone("neck");
+        GeoBone head = getAnimationProcessor().getBone("head");
 
         if (neck != null) {
             EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
@@ -37,27 +38,27 @@ public class FarmGoatModel extends DefaultedEntityGeoModel<FarmGoat> {
     }
 
     public enum Variant {
-        BAY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/bay.png")),
-        BEIGE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/beige.png")),
-        BEZOAR(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/bezoar.png")),
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/black.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/brown.png")),
-        CARAMEL(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/caramel.png")),
-        CHAMOISEE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/chamoisee.png")),
-        CHOCOLATE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/chocolate.png")),
-        COU_BLANC(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/cou_blanc.png")),
-        COU_NOIR(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/cou_noir.png")),
-        CREAM(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/cream.png")),
-        GOLD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/gold.png")),
-        GREY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/grey.png")),
-        LILAC(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/lilac.png")),
-        MAHOGANY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/mahogany.png")),
-        RED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/red.png")),
-        SILVER(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/silver.png")),
-        SILVER_BEZOAR(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/silver_bezoar.png")),
-        TAN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/tan.png")),
-        TWO_TONED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/two_toned.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/farm_goat/white.png")),
+        BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/bay.png")),
+        BEIGE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/beige.png")),
+        BEZOAR(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/bezoar.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/black.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/brown.png")),
+        CARAMEL(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/caramel.png")),
+        CHAMOISEE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/chamoisee.png")),
+        CHOCOLATE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/chocolate.png")),
+        COU_BLANC(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/cou_blanc.png")),
+        COU_NOIR(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/cou_noir.png")),
+        CREAM(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/cream.png")),
+        GOLD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/gold.png")),
+        GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/grey.png")),
+        LILAC(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/lilac.png")),
+        MAHOGANY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/mahogany.png")),
+        RED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/red.png")),
+        SILVER(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/silver.png")),
+        SILVER_BEZOAR(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/silver_bezoar.png")),
+        TAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/tan.png")),
+        TWO_TONED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/two_toned.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/farm_goat/white.png")),
         ;
 
         public final ResourceLocation resourceLocation;
@@ -69,16 +70,16 @@ public class FarmGoatModel extends DefaultedEntityGeoModel<FarmGoat> {
         }
     }
 
-    public static final ResourceLocation ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/o_goat.animation.json");
+    public static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "animations/o_goat.animation.json");
 
-    public static final ResourceLocation FEMALE = new ResourceLocation(LivestockOverhaul.MODID, "geo/farm_goat/o_doe.geo.json");
-    public static final ResourceLocation MALE = new ResourceLocation(LivestockOverhaul.MODID, "geo/farm_goat/o_buck.geo.json");
-    public static final ResourceLocation MEAT_FEMALE = new ResourceLocation(LivestockOverhaul.MODID, "geo/farm_goat/meat_doe.geo.json");
-    public static final ResourceLocation MEAT_MALE = new ResourceLocation(LivestockOverhaul.MODID, "geo/farm_goat/meat_buck.geo.json");
-    public static final ResourceLocation NUBIAN_FEMALE = new ResourceLocation(LivestockOverhaul.MODID, "geo/farm_goat/nubian_doe.geo.json");
-    public static final ResourceLocation NUBIAN_MALE = new ResourceLocation(LivestockOverhaul.MODID, "geo/farm_goat/nubian_buck.geo.json");
-    public static final ResourceLocation WARM_FEMALE = new ResourceLocation(LivestockOverhaul.MODID, "geo/farm_goat/warm_doe.geo.json");
-    public static final ResourceLocation WARM_MALE = new ResourceLocation(LivestockOverhaul.MODID, "geo/farm_goat/warm_buck.geo.json");
+    public static final ResourceLocation FEMALE = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/farm_goat/o_doe.geo.json");
+    public static final ResourceLocation MALE = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/farm_goat/o_buck.geo.json");
+    public static final ResourceLocation MEAT_FEMALE = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/farm_goat/meat_doe.geo.json");
+    public static final ResourceLocation MEAT_MALE = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/farm_goat/meat_buck.geo.json");
+    public static final ResourceLocation NUBIAN_FEMALE = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/farm_goat/nubian_doe.geo.json");
+    public static final ResourceLocation NUBIAN_MALE = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/farm_goat/nubian_buck.geo.json");
+    public static final ResourceLocation WARM_FEMALE = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/farm_goat/warm_doe.geo.json");
+    public static final ResourceLocation WARM_MALE = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/farm_goat/warm_buck.geo.json");
 
     @Override
     public ResourceLocation getModelResource(FarmGoat object) {

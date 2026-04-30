@@ -11,12 +11,27 @@
     "minecraft:sweet_berries",
 
     {
+      "id": "#c:vegetables",
+      "required": false
+    },
+
+    {
       "id": "#forge:vegetables",
       "required": false
     },
 
     {
+      "id": "#c:seeds",
+      "required": false
+    },
+
+    {
       "id": "#forge:seeds",
+      "required": false
+    },
+
+    {
+      "id": "#c:fruits",
       "required": false
     },
 

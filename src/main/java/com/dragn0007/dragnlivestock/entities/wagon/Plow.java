@@ -90,9 +90,9 @@ public class Plow extends AbstractInventoryWagon {
     public Vec3 lastServerPos = Vec3.ZERO;
 
     public enum Mode {
-        NO(new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/nomode.png")),
-        TILL(new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/tillmode.png")),
-        HARVEST(new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/harvestmode.png"));
+        NO(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/nomode.png")),
+        TILL(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/tillmode.png")),
+        HARVEST(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/harvestmode.png"));
 
         public final ResourceLocation texture;
 
@@ -140,7 +140,7 @@ public class Plow extends AbstractInventoryWagon {
                             inventory.set(i, itemStack.copy());
                             added = true;
                             break;
-                        } else if (ItemStack.isSameItemSameTags(slotStack, itemStack)
+                        } else if (ItemStack.isSameItemSameComponents(slotStack, itemStack)
                                 && slotStack.getCount() < slotStack.getMaxStackSize()) {
 
                             int transferable = Math.min(itemStack.getCount(), slotStack.getMaxStackSize() - slotStack.getCount());
@@ -174,7 +174,7 @@ public class Plow extends AbstractInventoryWagon {
 
     protected void destroyFoliage(BlockPos pos) {
         BlockState blockState = this.level().getBlockState(pos);
-        if (blockState.is(Blocks.GRASS) || blockState.is(Blocks.TALL_GRASS) ||
+        if (blockState.is(Blocks.SHORT_GRASS) || blockState.is(Blocks.TALL_GRASS) ||
                 blockState.is(Blocks.DEAD_BUSH) || blockState.is(Blocks.FERN) || blockState.is(Blocks.LARGE_FERN)
                 || blockState.is(BlockTags.FLOWERS) || blockState.is(BlockTags.SNOW)) {
             blockState.getBlock().getDrops(blockState, (ServerLevel) level(), pos, null).forEach
@@ -263,11 +263,11 @@ public class Plow extends AbstractInventoryWagon {
     protected static final EntityDataAccessor<Integer> DATA_TYPE = SynchedEntityData.defineId(Plow.class, EntityDataSerializers.INT);
 
     @Override
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(MODE, 0);
-        entityData.define(DATA_TYPE, 0);
-        entityData.define(DATA_HEALTH, (float)maxHealth);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(MODE, 0);
+        builder.define(DATA_TYPE, 0);
+        builder.define(DATA_HEALTH, (float)maxHealth);
     }
 
     @Override

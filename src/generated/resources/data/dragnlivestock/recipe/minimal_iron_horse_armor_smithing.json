@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": {
+    "item": "minecraft:iron_ingot"
+  },
+  "base": {
+    "item": "minecraft:iron_horse_armor"
+  },
+  "result": {
+    "count": 1,
+    "id": "dragnlivestock:minimal_iron_horse_armor"
+  },
+  "template": {
+    "item": "dragnlivestock:light_horse_armor_smithing_template"
+  }
+}

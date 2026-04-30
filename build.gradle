@@ -18,20 +18,6 @@ sourceSets.main.resources {
     srcDir 'src/generated/resources'
 }
 
-sourceSets.main.java {
-    // TODO: Re-enable subsystems incrementally after NeoForge 1.21.1 API migration.
-    exclude 'com/dragn0007/dragnlivestock/blocks/**'
-    exclude 'com/dragn0007/dragnlivestock/client/**'
-    exclude 'com/dragn0007/dragnlivestock/common/**'
-    exclude 'com/dragn0007/dragnlivestock/compat/jade/**'
-    exclude 'com/dragn0007/dragnlivestock/compat/medievalembroidery/**'
-    exclude 'com/dragn0007/dragnlivestock/datagen/**'
-    exclude 'com/dragn0007/dragnlivestock/entities/**'
-    exclude 'com/dragn0007/dragnlivestock/items/**'
-    exclude 'com/dragn0007/dragnlivestock/spawn/**'
-    exclude 'com/dragn0007/dragnlivestock/util/ThrownFertilizedEgg.java'
-}
-
 repositories {
     maven {
         name = 'GeckoLib'
@@ -85,6 +71,10 @@ neoForge {
 
         configureEach {
             systemProperty 'forge.logging.markers', 'REGISTRIES'
+            // Temporary migration diagnostics for mixin target drift on 1.21.1.
+            systemProperty 'mixin.debug.export', 'true'
+            systemProperty 'mixin.debug.verbose', 'true'
+            systemProperty 'mixin.dumpTargetOnFailure', 'true'
             logLevel = org.slf4j.event.Level.DEBUG
         }
     }
@@ -101,11 +91,29 @@ configurations {
 }
 
 dependencies {
-    implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.8.4'
+    def enableCompatRuntimes = (findProperty('enableCompatRuntimes') ?: 'false').toString().toBoolean()
+    def allowPatchouliRuntime = (findProperty('allowPatchouliRuntime') ?: 'false').toString().toBoolean()
+    def patchouliRuntime = (findProperty('compatPatchouliRuntime') ?: '').toString().trim()
+    def allowMedievalEmbroideryRuntime = (findProperty('allowMedievalEmbroideryRuntime') ?: 'false').toString().toBoolean()
+    def medievalEmbroideryRuntime = (findProperty('compatMedievalEmbroideryRuntime') ?: '').toString().trim()
 
-    // TODO: Re-enable optional runtime compat dependencies once NeoForge 1.21.1 artifact compatibility is verified.
-    // localRuntime "vazkii.patchouli:Patchouli:<neoforge-version>"
-    // localRuntime "curse.maven:medieval-embroidery-986913:<fileId>"
+    implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.8.4'
+    compileOnly "curse.maven:jade-324717:7545219"
+
+    if (enableCompatRuntimes && allowPatchouliRuntime) {
+        // Explicitly opt-in only: local runtime jars for optional compat modules.
+        // Keep false unless compatibility is validated against this target line.
+        if (!patchouliRuntime.isEmpty()) {
+            localRuntime patchouliRuntime
+        }
+        // Explicitly opt-in only: only enable medieval embroidery runtime when compatibility is confirmed.
+    }
+
+    if (enableCompatRuntimes && allowMedievalEmbroideryRuntime) {
+        if (!medievalEmbroideryRuntime.isEmpty()) {
+            localRuntime medievalEmbroideryRuntime
+        }
+    }
 }
 
 tasks.named('processResources', ProcessResources).configure {

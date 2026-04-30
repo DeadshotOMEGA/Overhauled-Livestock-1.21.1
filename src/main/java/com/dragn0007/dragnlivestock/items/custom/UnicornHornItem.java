@@ -23,18 +23,13 @@ public class UnicornHornItem extends Item {
         this.effectInstances = effectInstances;
     }
 
-    @Override
-    public Rarity getRarity(ItemStack p_41461_) {
-        return Rarity.RARE;
-    }
-
     public SoundEvent getDrinkingSound() {
-        return SoundEvents.ARMOR_EQUIP_GENERIC;
+        return SoundEvents.ARMOR_EQUIP_GENERIC.value();
     }
 
     @Override
     public SoundEvent getEatingSound() {
-        return SoundEvents.ARMOR_EQUIP_GENERIC;
+        return SoundEvents.ARMOR_EQUIP_GENERIC.value();
     }
 
     @Override
@@ -42,13 +37,11 @@ public class UnicornHornItem extends Item {
         return UseAnim.BOW;
     }
 
-    @Override
-    public int getUseDuration(ItemStack pStack) {
+    public int getUseDuration(ItemStack pStack, LivingEntity pEntity) {
         return 32;
     }
 
 
-    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player playerEntity, InteractionHand hand) {
         return ItemUtils.startUsingInstantly(level, playerEntity, hand);
     }
@@ -58,18 +51,17 @@ public class UnicornHornItem extends Item {
             for (int i = 0; i < effectInstances.length; i++) {
                 pLivingEntity.addEffect(effectInstances[i]);
             }
-            pLivingEntity.getItemInHand(InteractionHand.MAIN_HAND).shrink(0);
         }
         return super.finishUsingItem(pStack, pLevel, pLivingEntity);
 
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, Level level, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(itemStack, level, tooltip, flag);
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext pContext, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(itemStack, pContext, tooltip, flag);
 
         for (MobEffectInstance effectInstance : effectInstances) {
-            String effectName = effectInstance.getEffect().getDisplayName().getString();
+            String effectName = effectInstance.getEffect().value().getDisplayName().getString();
             String amplifier = String.format(" Level %d", effectInstance.getAmplifier() + 1);
             String text = effectName + amplifier;
 
@@ -77,4 +69,3 @@ public class UnicornHornItem extends Item {
         }
     }
 }
-

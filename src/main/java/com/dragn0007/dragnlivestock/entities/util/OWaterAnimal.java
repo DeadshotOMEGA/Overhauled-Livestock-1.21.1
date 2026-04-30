@@ -2,24 +2,15 @@ package com.dragn0007.dragnlivestock.entities.util;
 
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 
 public abstract class OWaterAnimal extends AgeableMob {
    public OWaterAnimal(EntityType<? extends OWaterAnimal> p_30341_, Level p_30342_) {
       super(p_30341_, p_30342_);
-      this.setPathfindingMalus(BlockPathTypes.WATER, 0.0F);
-   }
-
-   public boolean canBreatheUnderwater() {
-      return true;
-   }
-
-   public MobType getMobType() {
-      return MobType.WATER;
+      this.setPathfindingMalus(PathType.WATER, 0.0F);
    }
 
    public boolean checkSpawnObstruction(LevelReader p_30348_) {

@@ -21,16 +21,16 @@ public class CaribouRender extends GeoEntityRenderer<Caribou> {
     }
 
     @Override
-    public void preRender(PoseStack poseStack, Caribou entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void preRender(PoseStack poseStack, Caribou entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
 
-        if (!animatable.isBaby()) {
-            if (animatable.hasChest()) {
+        if (!entity.isBaby()) {
+            if (entity.hasChest()) {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(false));
             } else {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(true));
             }
 
-            if (animatable.isSaddled()) {
+            if (entity.isSaddled()) {
                 model.getBone("saddle").ifPresent(b -> b.setHidden(false));
                 model.getBone("saddle2").ifPresent(b -> b.setHidden(false));
             } else {
@@ -38,7 +38,7 @@ public class CaribouRender extends GeoEntityRenderer<Caribou> {
                 model.getBone("saddle2").ifPresent(b -> b.setHidden(true));
             }
 
-            if (animatable.isWearingPullingHarness()) {
+            if (entity.isWearingPullingHarness()) {
                 model.getBone("wagon_harness").ifPresent(b -> b.setHidden(false));
             } else {
                 model.getBone("wagon_harness").ifPresent(b -> b.setHidden(true));
@@ -66,14 +66,14 @@ public class CaribouRender extends GeoEntityRenderer<Caribou> {
             }
         }
 
-        if (animatable.getFeathering() == 0) {
+        if (entity.getFeathering() == 0) {
             model.getBone("front_right_feathering").ifPresent(b -> b.setHidden(true));
             model.getBone("front_left_feathering").ifPresent(b -> b.setHidden(true));
             model.getBone("back_right_feathering").ifPresent(b -> b.setHidden(true));
             model.getBone("back_left_feathering").ifPresent(b -> b.setHidden(true));
         }
 
-        if (animatable.getFeathering() == 1) {
+        if (entity.getFeathering() == 1) {
             model.getBone("front_right_feathering").ifPresent(b -> b.setHidden(false));
             model.getBone("front_left_feathering").ifPresent(b -> b.setHidden(false));
             model.getBone("back_right_feathering").ifPresent(b -> b.setHidden(false));
@@ -90,7 +90,7 @@ public class CaribouRender extends GeoEntityRenderer<Caribou> {
             model.getBone("front_left_feathering").ifPresent(b -> b.setPosZ(-0.8F));
         }
 
-        if (animatable.getFeathering() == 2) {
+        if (entity.getFeathering() == 2) {
             model.getBone("front_right_feathering").ifPresent(b -> b.setHidden(false));
             model.getBone("front_left_feathering").ifPresent(b -> b.setHidden(false));
             model.getBone("back_right_feathering").ifPresent(b -> b.setHidden(false));
@@ -101,6 +101,6 @@ public class CaribouRender extends GeoEntityRenderer<Caribou> {
             model.getBone("back_left_feathering").ifPresent(b -> b.setScaleY(1F));
         }
 
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(poseStack, entity, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
     }
 }

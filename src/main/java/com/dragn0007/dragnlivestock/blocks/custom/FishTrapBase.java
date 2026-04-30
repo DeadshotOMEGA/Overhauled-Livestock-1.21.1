@@ -13,14 +13,14 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public class FishTrapBase extends HorizontalDirectionalBlock {
+public abstract class FishTrapBase extends HorizontalDirectionalBlock {
     public VoxelShape NORTH;
     public VoxelShape EAST;
     public VoxelShape SOUTH;
     public VoxelShape WEST;
 
     public FishTrapBase(VoxelShape north, VoxelShape east, VoxelShape south, VoxelShape west) {
-        super (Properties.copy(Blocks.SCAFFOLDING).sound(SoundType.SCAFFOLDING).noOcclusion());
+        super (Properties.ofFullCopy(Blocks.SCAFFOLDING).sound(SoundType.SCAFFOLDING).noOcclusion());
 
         NORTH = north;
         EAST = east;

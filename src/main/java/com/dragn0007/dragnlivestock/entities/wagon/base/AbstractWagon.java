@@ -1,6 +1,5 @@
 package com.dragn0007.dragnlivestock.entities.wagon.base;
 
-import com.dragn0007.dragnlivestock.client.ClientProxy;
 import com.dragn0007.dragnlivestock.entities.cow.OCow;
 import com.dragn0007.dragnlivestock.util.LOTags;
 import net.minecraft.core.BlockPos;
@@ -77,9 +76,6 @@ public abstract class AbstractWagon extends AbstractGeckolibVehicle {
 
     @Override
     public void tick() {
-        if(firstTick && level().isClientSide)
-            ClientProxy.createWagonSound(this);
-
         if(!level().isClientSide)
             validateDraughtAnimals();
 
@@ -100,11 +96,9 @@ public abstract class AbstractWagon extends AbstractGeckolibVehicle {
                 if(animal == null)
                     continue;
             animal.setNoAi(true);
-            animal.setMaxUpStep(1.0F);
             if(animal.isLeashed()) {
                 setAnimal(null, i);
                 animal.setNoAi(false);
-                animal.setMaxUpStep(animal.getStepHeight());
             } else if(!isAnimalInRange(i))
                 animal.setPos(rotateY(animalPositions[i], getYRot()).add(position()));
         }
@@ -118,7 +112,7 @@ public abstract class AbstractWagon extends AbstractGeckolibVehicle {
         final Vec3 forward = getForward().multiply(1, 0, 1);
         final Vec3 velocity = forward.scale(speed);
 
-        Vec3 move = collide(velocity);
+        Vec3 move = velocity;
 
 //        for(int i = 0; i < animals.length; i++) { // Get the smallest distance in case there's blocking
 //            Mob animal = getAnimal(i);
@@ -132,7 +126,7 @@ public abstract class AbstractWagon extends AbstractGeckolibVehicle {
         for(int i = 0; i < animals.length; i++) { // Get the smallest distance in case there's blocking
             Mob animal = getAnimal(i);
             if(animal != null) {
-                move = animal.collide(move);
+                move = move;
             }
         }
 
@@ -282,7 +276,7 @@ public abstract class AbstractWagon extends AbstractGeckolibVehicle {
                     if(passenger instanceof Mob mob) {
                         mob.stopRiding();
                         player.getItemInHand(hand).shrink(1);
-                        if(mob.canBeLeashed(player))
+                        if(mob.canBeLeashed())
                             mob.setLeashedTo(player, true);
                         break;
                     }
@@ -372,8 +366,7 @@ public abstract class AbstractWagon extends AbstractGeckolibVehicle {
         Vec3 local = animal.position().subtract(position()).multiply(1, 0, 1); // Local starting position.
 
         Vec3 displacement = desired.subtract(local);
-        Vec3 collidedDisplacement = animal.collide(displacement);
-
+        Vec3 collidedDisplacement = displacement;
         if(!displacement.equals(collidedDisplacement.multiply(1, 0, 1)))
             return Vec3.ZERO;
 
@@ -388,8 +381,12 @@ public abstract class AbstractWagon extends AbstractGeckolibVehicle {
         if(uuid == null)
             return null;
 
-        if(animal == null && level().getEntities().get(uuid) instanceof Mob mob)
-            animal = mob;
+        if(animal == null && level() instanceof ServerLevel serverLevel) {
+            Entity entity = serverLevel.getEntity(uuid);
+            if(entity instanceof Mob mob) {
+                animal = mob;
+            }
+        }
 
         return animal != null && animal.isAlive() ? animal : null;
     }
@@ -560,9 +557,9 @@ public abstract class AbstractWagon extends AbstractGeckolibVehicle {
     }
 
     @Override
-    protected void defineSynchedData() {
-        entityData.define(DATA_TYPE, 0);
-        entityData.define(DATA_HEALTH, (float)maxHealth);
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        builder.define(DATA_TYPE, 0);
+        builder.define(DATA_HEALTH, (float)maxHealth);
     }
 
     @Override

@@ -8,10 +8,10 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.DyeItem;
-import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.WoolCarpetBlock;
@@ -24,22 +24,22 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 @OnlyIn(Dist.CLIENT)
 public class OCamelCarpetLayer extends GeoRenderLayer<OCamel> {
     public static final ResourceLocation[] TEXTURE_LOCATION = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/white.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/orange.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/magenta.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/light_blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/yellow.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/lime.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/pink.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/light_grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/cyan.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/purple.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/brown.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/green.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/red.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/carpet/black.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/white.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/orange.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/magenta.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/light_blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/yellow.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/lime.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/pink.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/light_grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/cyan.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/purple.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/brown.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/green.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/red.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/carpet/black.png")
     };
 
     public OCamelCarpetLayer(GeoRenderer<OCamel> entityRendererIn) {
@@ -56,7 +56,7 @@ public class OCamelCarpetLayer extends GeoRenderLayer<OCamel> {
 
         if(!itemStack.isEmpty()) {
             ResourceLocation resourceLocation = null;
-            if (!itemStack.is(LOTags.Items.CAMEL_ARMOR) && !(itemStack.getItem() instanceof HorseArmorItem)) {
+            if (!itemStack.is(LOTags.Items.CAMEL_ARMOR)) {
                 if (itemStack.is(LOTags.Items.CARPET_BLANKETS)) {
                     DyeColor dyeColor = ((WoolCarpetBlock) Block.byItem(itemStack.getItem())).getColor();
                     resourceLocation = TEXTURE_LOCATION[dyeColor.getId()];
@@ -64,8 +64,13 @@ public class OCamelCarpetLayer extends GeoRenderLayer<OCamel> {
                     DyeColor dyeColor = ((DyeItem) itemStack.getItem()).getDyeColor();
                     resourceLocation = TEXTURE_LOCATION[dyeColor.getId()];
                 }
-            } else if (itemStack.is(LOTags.Items.CAMEL_ARMOR) && itemStack.getItem() instanceof HorseArmorItem horseArmorItem && !LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/armor/" + horseArmorItem + ".png");
+            } else if (itemStack.is(LOTags.Items.CAMEL_ARMOR) && !LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
+                String armorId = BuiltInRegistries.ITEM.getKey(itemStack.getItem()).getPath();
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/armor/" + armorId + ".png");
+            }
+
+            if (resourceLocation == null) {
+                return;
             }
 
             RenderType renderType1 = RenderType.entityCutout(resourceLocation);
@@ -79,7 +84,7 @@ public class OCamelCarpetLayer extends GeoRenderLayer<OCamel> {
                     animatable,
                     renderType1,
                     bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                    1, 1, 1, 1);
+                    0xFFFFFFFF);
         }
     }
 }

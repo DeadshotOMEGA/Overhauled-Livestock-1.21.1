@@ -12,14 +12,12 @@ public class OCamelRender extends GeoEntityRenderer<OCamel> {
     public OCamelRender(EntityRendererProvider.Context renderManager) {
         super(renderManager, new OCamelModel());
         this.addRenderLayer(new OCamelMarkingLayer(this));
-        this.addRenderLayer(new OCamelCarpetLayer(this));
-        this.addRenderLayer(new OCamelSaddleLayer(this));
+                this.addRenderLayer(new OCamelSaddleLayer(this));
         this.addRenderLayer(new OCamelChestLayer(this));
-        this.addRenderLayer(new OCamelBrandTagLayer(this));
-    }
+            }
 
     @Override
-    public void preRender(PoseStack poseStack, OCamel entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void preRender(PoseStack poseStack, OCamel entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
 
         if (!entity.isBaby()) {
 
@@ -45,7 +43,7 @@ public class OCamelRender extends GeoEntityRenderer<OCamel> {
             poseStack.scale(0.5F, 0.5F, 0.5F);
         }
 
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(poseStack, entity, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
     }
 }
 

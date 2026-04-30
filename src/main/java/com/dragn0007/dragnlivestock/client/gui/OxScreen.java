@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class OxScreen extends AbstractContainerScreen<OxMenu> {
-    public static final ResourceLocation OX_INVENTORY_LOCATION = new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/ox.png");
+    public static final ResourceLocation OX_INVENTORY_LOCATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/ox.png");
     public final AbstractOMount ox;
 
     public OxScreen(OxMenu oxMenu, Inventory inventory, Component component) {
@@ -44,9 +44,8 @@ public class OxScreen extends AbstractContainerScreen<OxMenu> {
 
     @Override
     public void render(GuiGraphics p_281697_, int p_282103_, int p_283529_, float p_283079_) {
-        this.renderBackground(p_281697_);
+        this.renderBackground(p_281697_, p_282103_, p_283529_, p_283079_);
         super.render(p_281697_, p_282103_, p_283529_, p_283079_);
         this.renderTooltip(p_281697_, p_282103_, p_283529_);
     }
 }
-

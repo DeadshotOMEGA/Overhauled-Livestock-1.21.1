@@ -29,7 +29,7 @@ public class OCowHarnessLayer extends GeoRenderLayer<OCow> {
         ResourceLocation resourceLocation = null;
 
         if (animatable.isHarnessed()) {
-            resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/tack/rodeo_harness.png");
+            resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/cow/tack/rodeo_harness.png");
 
             RenderType renderType1 = RenderType.entityCutout(resourceLocation);
             poseStack.pushPose();
@@ -41,12 +41,11 @@ public class OCowHarnessLayer extends GeoRenderLayer<OCow> {
                     bufferSource,
                     animatable,
                     renderType1,
-                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                    1, 1, 1, 1);
+                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
         }
 
         if (animatable.isBelled()) {
-            resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/tack/bell.png");
+            resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/cow/tack/bell.png");
 
             RenderType renderType1 = RenderType.entityCutout(resourceLocation);
             poseStack.pushPose();
@@ -58,12 +57,11 @@ public class OCowHarnessLayer extends GeoRenderLayer<OCow> {
                     bufferSource,
                     animatable,
                     renderType1,
-                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                    1, 1, 1, 1);
+                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
         }
 
         if (animatable.isSaddled()) {
-            resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/tack/wagon_harness.png");
+            resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/cow/tack/wagon_harness.png");
 
             RenderType renderType1 = RenderType.entityCutout(resourceLocation);
             poseStack.pushPose();
@@ -75,12 +73,11 @@ public class OCowHarnessLayer extends GeoRenderLayer<OCow> {
                     bufferSource,
                     animatable,
                     renderType1,
-                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                    1, 1, 1, 1);
+                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
         }
 
         if (animatable.hasChest()) {
-            resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/cow/tack/saddlebags.png");
+            resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/cow/tack/saddlebags.png");
 
             RenderType renderType1 = RenderType.entityCutout(resourceLocation);
             poseStack.pushPose();
@@ -92,8 +89,7 @@ public class OCowHarnessLayer extends GeoRenderLayer<OCow> {
                     bufferSource,
                     animatable,
                     renderType1,
-                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                    1, 1, 1, 1);
+                    bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
         }
     }
 }

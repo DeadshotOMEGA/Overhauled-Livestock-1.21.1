@@ -35,9 +35,9 @@ public abstract class AbstractWagonMenu extends AbstractContainerMenu {
                                     itemStack.is(ItemTags.PLANKS) ||
                                     itemStack.getItem() instanceof AxeItem;
                         } else if (wagon.getType().is(LOTags.Entity_Types.MINING_CART)) {
-                            return itemStack.is(Tags.Items.STONE) ||
+                            return itemStack.is(Tags.Items.STONES) ||
                                     itemStack.is(Tags.Items.ORES) ||
-                                    itemStack.is(Tags.Items.COBBLESTONE) ||
+                                    itemStack.is(Tags.Items.COBBLESTONES) ||
                                     itemStack.is(ItemTags.DIRT) ||
                                     itemStack.is(Tags.Items.INGOTS) ||
                                     itemStack.is(Tags.Items.RAW_MATERIALS) ||

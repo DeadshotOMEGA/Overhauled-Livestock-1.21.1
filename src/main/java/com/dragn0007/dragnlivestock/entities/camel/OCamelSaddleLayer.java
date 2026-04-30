@@ -27,9 +27,9 @@ public class OCamelSaddleLayer extends GeoRenderLayer<OCamel> {
 
         if (animatable.isSaddled()) {
             if (!LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/camel/tack/saddle.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/camel/tack/saddle.png");
             } else {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/config_simplified/camel/tack/saddle.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/config_simplified/camel/tack/saddle.png");
             }
         } else {
             return;
@@ -46,6 +46,6 @@ public class OCamelSaddleLayer extends GeoRenderLayer<OCamel> {
                 animatable,
                 renderType1,
                 bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                0xFFFFFFFF);
     }
 }

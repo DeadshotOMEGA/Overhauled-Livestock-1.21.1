@@ -8,10 +8,12 @@ import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.util.LOTags;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -38,17 +40,19 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CarrotBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModList;
+import net.neoforged.neoforge.event.EventHooks;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.Animation;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.Animation;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -63,11 +67,11 @@ public class ORabbit extends TamableAnimal implements GeoEntity {
 
 	public int poopTime = this.random.nextInt(LivestockOverhaulCommonConfig.RABBIT_POOP_TIME.get()) + 6000;
 
-	protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_rabbit");
-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/rabbit");
-	protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/rabbit");
+	protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/o_rabbit"));
+	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/rabbit"));
+	protected static final ResourceKey<LootTable> TFC_LOOT_TABLE = ResourceKey.create(net.minecraft.core.registries.Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("tfc", "entities/rabbit"));
 	@Override
-	public @NotNull ResourceLocation getDefaultLootTable() {
+	public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
 		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
 			return VANILLA_LOOT_TABLE;
 		} else if (ModList.get().isLoaded("tfc")) {
@@ -248,7 +252,7 @@ public class ORabbit extends TamableAnimal implements GeoEntity {
 		} else {
 			if (this.isTame()) {
 				if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
-					this.heal((float)itemstack.getFoodProperties(this).getNutrition());
+					this.heal((float)itemstack.get(DataComponents.FOOD).nutrition());
 					if (!player.getAbilities().instabuild) {
 						itemstack.shrink(1);
 					}
@@ -275,7 +279,7 @@ public class ORabbit extends TamableAnimal implements GeoEntity {
 					itemstack.shrink(1);
 				}
 
-				if (this.random.nextInt(3) == 0 && !net.neoforged.neoforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
+				if (this.random.nextInt(3) == 0 && !EventHooks.onAnimalTame(this, player)) {
 					this.tame(player);
 					this.navigation.stop();
 					this.setTarget(null);
@@ -292,14 +296,9 @@ public class ORabbit extends TamableAnimal implements GeoEntity {
 		}
 	}
 
-	@Override
-	public float getStepHeight() {
-		return 1F;
-	}
-
 	protected final AnimatableInstanceCache geoCache = GeckoLibUtil.createInstanceCache(this);
 
-	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.core.animation.AnimationState<T> tAnimationState) {
+	protected <T extends GeoAnimatable> PlayState predicate(software.bernie.geckolib.animation.AnimationState<T> tAnimationState) {
 		double currentSpeed = this.getDeltaMovement().lengthSqr();
 		double speedThreshold = 0.01;
 
@@ -351,7 +350,7 @@ public class ORabbit extends TamableAnimal implements GeoEntity {
 
 		public boolean canUse() {
 			if (this.nextStartTick <= 0) {
-				if (!net.neoforged.neoforge.event.ForgeEventFactory.getMobGriefingEvent(this.rabbit.level(), this.rabbit)) {
+				if (!EventHooks.canEntityGrief(this.rabbit.level(), this.rabbit)) {
 					return false;
 				}
 
@@ -573,7 +572,7 @@ public class ORabbit extends TamableAnimal implements GeoEntity {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
 		if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
@@ -594,21 +593,21 @@ public class ORabbit extends TamableAnimal implements GeoEntity {
 			this.setBreed(random.nextInt(RabbitBreed.Breed.values().length));
 		}
 
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(QUALITY, 0);
-		this.entityData.define(BREED, 0);
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(VARIANT_TEXTURE, ORabbitModel.Variant.BLACK.resourceLocation.toString());
-		this.entityData.define(OVERLAY_TEXTURE, ORabbitMarkingLayer.Overlay.NONE.resourceLocation.toString());
-		this.entityData.define(GENDER, 0);
-		this.entityData.define(DEWLAP, 0);
-		this.entityData.define(SHEARED, false);
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(QUALITY, 0);
+		builder.define(BREED, 0);
+		builder.define(VARIANT, 0);
+		builder.define(OVERLAY, 0);
+		builder.define(VARIANT_TEXTURE, ORabbitModel.Variant.BLACK.resourceLocation.toString());
+		builder.define(OVERLAY_TEXTURE, ORabbitMarkingLayer.Overlay.NONE.resourceLocation.toString());
+		builder.define(GENDER, 0);
+		builder.define(DEWLAP, 0);
+		builder.define(SHEARED, false);
 	}
 
 	public enum Gender {
@@ -816,7 +815,7 @@ public class ORabbit extends TamableAnimal implements GeoEntity {
 	}
 
 	@Override
-	public void dropCustomDeathLoot(DamageSource p_33574_, int p_33575_, boolean p_33576_) {
+	public void dropCustomDeathLoot(ServerLevel p_33574_, DamageSource p_33575_, boolean p_33576_) {
 		super.dropCustomDeathLoot(p_33574_, p_33575_, p_33576_);
 		Random random = new Random();
 

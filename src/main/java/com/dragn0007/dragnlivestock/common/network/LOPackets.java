@@ -1,21 +1,24 @@
 package com.dragn0007.dragnlivestock.common.network;
 
-import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.common.network.packets.VehicleControlPacket;
+import net.neoforged.neoforge.network.PacketDistributor;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 
-public class LOPackets {
+public final class LOPackets {
+    private static final String PROTOCOL_VERSION = "1";
+    public static final PacketChannel INSTANCE = new PacketChannel();
 
-    public static final PacketChannelShim INSTANCE = new PacketChannelShim();
+    private LOPackets() {}
 
-    public static void register() {
-        // TODO: Rewire to NeoForge 1.21 payload registration API.
-        LivestockOverhaul.LOGGER.info("LOPackets shim active; packet registration deferred during compile-first port.");
+    public static void register(RegisterPayloadHandlersEvent event) {
+        PayloadRegistrar registrar = event.registrar(PROTOCOL_VERSION);
+        registrar.playToServer(VehicleControlPacket.TYPE, VehicleControlPacket.STREAM_CODEC, (payload, context) -> payload.handle(context));
     }
 
-    public static final class PacketChannelShim {
+    public static final class PacketChannel {
         public void sendToServer(VehicleControlPacket packet) {
-            // TODO: Implement NeoForge payload send.
+            PacketDistributor.sendToServer(packet);
         }
     }
-
 }

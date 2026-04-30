@@ -13,6 +13,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.DifficultyInstance;
@@ -28,7 +29,9 @@ import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.core.registries.Registries;
 import net.neoforged.fml.ModList;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
@@ -41,11 +44,11 @@ public class OMooshroom extends OCow implements GeoEntity {
         super(type, level);
     }
 
-    protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_mooshroom");
-    protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/mooshroom");
-    protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/cow");
+    protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/o_mooshroom"));
+    protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/mooshroom"));
+    protected static final ResourceKey<LootTable> TFC_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("tfc", "entities/cow"));
     @Override
-    public @NotNull ResourceLocation getDefaultLootTable() {
+    public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
         if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
             return VANILLA_LOOT_TABLE;
         }
@@ -250,7 +253,7 @@ public class OMooshroom extends OCow implements GeoEntity {
 
     @Override
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
         if (data == null) {
             data = new AgeableMob.AgeableMobGroupData(0.2F);
         }
@@ -270,26 +273,26 @@ public class OMooshroom extends OCow implements GeoEntity {
 
         setMushroomVariant(OMooshroomMushroomLayer.MushroomOverlay.values().length);
 
-        return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+        return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
     }
 
     public static final EntityDataAccessor<Integer> GENDER = SynchedEntityData.defineId(OMooshroom.class, EntityDataSerializers.INT);
 
     @Override
-    public void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(BREED, 0);
-        this.entityData.define(VARIANT, 0);
-        this.entityData.define(OVERLAY, 0);
-        this.entityData.define(MUSHROOMS, 0);
-        this.entityData.define(GENDER, 0);
-        this.entityData.define(HORN_TYPE, 0);
-        this.entityData.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
-        this.entityData.define(TAGGED, false);
-        this.entityData.define(MILKED, false);
-        this.entityData.define(HARNESSED, false);
-        this.entityData.define(BELLED, false);
-        this.entityData.define(SHEARED, false);
+    public void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(BREED, 0);
+        builder.define(VARIANT, 0);
+        builder.define(OVERLAY, 0);
+        builder.define(MUSHROOMS, 0);
+        builder.define(GENDER, 0);
+        builder.define(HORN_TYPE, 0);
+        builder.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
+        builder.define(TAGGED, false);
+        builder.define(MILKED, false);
+        builder.define(HARNESSED, false);
+        builder.define(BELLED, false);
+        builder.define(SHEARED, false);
     }
 
     public boolean canParent() {
@@ -319,6 +322,9 @@ public class OMooshroom extends OCow implements GeoEntity {
         OMooshroom calf;
         OMooshroom partner = (OMooshroom) ageableMob;
         calf = EntityTypes.O_MOOSHROOM_ENTITY.get().create(serverLevel);
+        if (calf == null) {
+            return null;
+        }
 
         int breedChance = this.random.nextInt(100);
         int breed;

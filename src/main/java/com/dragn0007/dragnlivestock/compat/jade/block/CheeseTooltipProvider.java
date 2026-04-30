@@ -29,6 +29,6 @@ public class CheeseTooltipProvider implements IBlockComponentProvider {
 
     @Override
     public ResourceLocation getUid() {
-        return new ResourceLocation(LivestockOverhaul.MODID, "age_time");
+        return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "age_time");
     }
 }

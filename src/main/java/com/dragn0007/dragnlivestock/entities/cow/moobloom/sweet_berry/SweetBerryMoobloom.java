@@ -254,7 +254,7 @@ public class SweetBerryMoobloom extends AbstractMoobloom implements GeoEntity {
 
     @Override
     @Nullable
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
         if (data == null) {
             data = new AgeableMob.AgeableMobGroupData(0.2F);
         }
@@ -264,21 +264,21 @@ public class SweetBerryMoobloom extends AbstractMoobloom implements GeoEntity {
         setHornVariant(random.nextInt(OCow.BreedHorns.values().length));
         setGender(0);
 
-        return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+        return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
     }
 
     @Override
-    public void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(VARIANT, 0);
-        this.entityData.define(OVERLAY, 0);
-        this.entityData.define(HORN_TYPE, 0);
-        this.entityData.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
-        this.entityData.define(TAGGED, false);
-        this.entityData.define(MILKED, false);
-        this.entityData.define(HARNESSED, false);
-        this.entityData.define(BELLED, false);
-        this.entityData.define(SHEARED, false);
+    public void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(VARIANT, 0);
+        builder.define(OVERLAY, 0);
+        builder.define(HORN_TYPE, 0);
+        builder.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
+        builder.define(TAGGED, false);
+        builder.define(MILKED, false);
+        builder.define(HARNESSED, false);
+        builder.define(BELLED, false);
+        builder.define(SHEARED, false);
     }
 
 }

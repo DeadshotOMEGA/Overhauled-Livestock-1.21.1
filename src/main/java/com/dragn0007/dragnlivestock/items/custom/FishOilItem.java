@@ -20,7 +20,7 @@ public class FishOilItem extends Item {
     public MobEffectInstance[] effectInstances;
 
     public FishOilItem(MobEffectInstance... effectInstances) {
-        super(new Properties().food(new FoodProperties.Builder().nutrition(3).saturationMod(1).build()).stacksTo(16));
+        super(new Properties().food(new FoodProperties.Builder().nutrition(3).saturationModifier(1.0f).build()).stacksTo(16));
         this.effectInstances = effectInstances;
     }
 
@@ -38,13 +38,11 @@ public class FishOilItem extends Item {
         return UseAnim.DRINK;
     }
 
-    @Override
-    public int getUseDuration(ItemStack pStack) {
+    public int getUseDuration(ItemStack pStack, LivingEntity pEntity) {
         return 32;
     }
 
 
-    @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player playerEntity, InteractionHand hand) {
         return ItemUtils.startUsingInstantly(level, playerEntity, hand);
     }
@@ -54,18 +52,17 @@ public class FishOilItem extends Item {
             for (int i = 0; i < effectInstances.length; i++) {
                 pLivingEntity.addEffect(effectInstances[i]);
             }
-            pLivingEntity.getItemInHand(InteractionHand.MAIN_HAND).shrink(0);
         }
         return super.finishUsingItem(pStack, pLevel, pLivingEntity);
 
     }
 
     @Override
-    public void appendHoverText(ItemStack itemStack, Level level, List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(itemStack, level, tooltip, flag);
+    public void appendHoverText(ItemStack itemStack, Item.TooltipContext pContext, List<Component> tooltip, TooltipFlag flag) {
+        super.appendHoverText(itemStack, pContext, tooltip, flag);
 
         for (MobEffectInstance effectInstance : effectInstances) {
-            String effectName = effectInstance.getEffect().getDisplayName().getString();
+            String effectName = effectInstance.getEffect().value().getDisplayName().getString();
             String amplifier = String.format(" Level %d", effectInstance.getAmplifier() + 1);
             String text = effectName + amplifier;
 
@@ -73,4 +70,3 @@ public class FishOilItem extends Item {
         }
     }
 }
-

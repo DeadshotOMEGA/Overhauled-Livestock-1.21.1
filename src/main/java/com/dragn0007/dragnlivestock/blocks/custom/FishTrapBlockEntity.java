@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.HopperMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -52,22 +53,28 @@ public class FishTrapBlockEntity extends BaseContainerBlockEntity implements Men
 
     @Override
     public ItemStack getItem(int p_18941_) {
-        return null;
+        return this.items.get(p_18941_);
     }
 
     @Override
     public ItemStack removeItem(int p_18942_, int p_18943_) {
-        return null;
+        ItemStack itemstack = ContainerHelper.removeItem(this.items, p_18942_, p_18943_);
+        if (!itemstack.isEmpty()) {
+            this.setChanged();
+        }
+        return itemstack;
     }
 
     @Override
     public ItemStack removeItemNoUpdate(int p_18951_) {
-        return null;
+        return ContainerHelper.takeItem(this.items, p_18951_);
     }
 
     @Override
     public void setItem(int p_18944_, ItemStack p_18945_) {
-
+        this.items.set(p_18944_, p_18945_);
+        p_18945_.limitSize(this.getMaxStackSize(p_18945_));
+        this.setChanged();
     }
 
     @Override
@@ -77,6 +84,16 @@ public class FishTrapBlockEntity extends BaseContainerBlockEntity implements Men
 
     @Override
     public void clearContent() {
+        this.items.clear();
+    }
 
+    @Override
+    protected NonNullList<ItemStack> getItems() {
+        return this.items;
+    }
+
+    @Override
+    protected void setItems(NonNullList<ItemStack> items) {
+        this.items = items;
     }
 }

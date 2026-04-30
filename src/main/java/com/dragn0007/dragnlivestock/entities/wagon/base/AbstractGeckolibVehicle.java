@@ -1,7 +1,5 @@
 package com.dragn0007.dragnlivestock.entities.wagon.base;
 
-import com.dragn0007.dragnlivestock.client.ClientProxy;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -16,11 +14,11 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public abstract class AbstractGeckolibVehicle extends Entity implements GeoEntity {
@@ -61,8 +59,7 @@ public abstract class AbstractGeckolibVehicle extends Entity implements GeoEntit
         super.tick();
         tickLerp();
 
-        if(level().isClientSide && getControllingPassenger() == Minecraft.getInstance().player)
-            ClientProxy.controlVehicleLocal(this);
+        // Client-side input sync is handled from ForgeClientEvents each client tick.
 
         if(isControlledByLocalInstance()) {
             if(getControllingPassenger() == null)
@@ -234,7 +231,7 @@ public abstract class AbstractGeckolibVehicle extends Entity implements GeoEntit
     }
 
     @Override
-    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps, boolean teleport) {
+    public void lerpTo(double x, double y, double z, float yRot, float xRot, int steps) {
         lerpX = x;
         lerpY = y;
         lerpZ = z;
@@ -261,7 +258,6 @@ public abstract class AbstractGeckolibVehicle extends Entity implements GeoEntit
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {}
 
-    @Override
     public float getStepHeight() {
         return 1.0F;
     }

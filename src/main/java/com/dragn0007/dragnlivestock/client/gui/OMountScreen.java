@@ -15,7 +15,7 @@ import net.minecraft.world.entity.player.Inventory;
 
 public class OMountScreen extends AbstractContainerScreen<OMountMenu> {
 
-    public static final ResourceLocation MOUNT_INVENTORY_LOCATION = new ResourceLocation(LivestockOverhaul.MODID, "textures/gui/o_mount.png");
+    public static final ResourceLocation MOUNT_INVENTORY_LOCATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/gui/o_mount.png");
     public final AbstractOMount oMount;
 
     public OMountScreen(OMountMenu oMountMenu, Inventory inventory, Component component) {
@@ -73,15 +73,14 @@ public class OMountScreen extends AbstractContainerScreen<OMountMenu> {
             }
         }
 
-        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x + 51, y + 60, 17, (float)(x + 51), (float)(y + 75 - 50), this.oMount);
+        InventoryScreen.renderEntityInInventoryFollowsMouse(graphics, x + 51, y + 60, 17, x + 51, y + 75 - 50, 0.0F, 0.0F, 0.0F, this.oMount);
     }
 
     @Override
     public void render(GuiGraphics graphics, int i, int i1, float v) {
-        this.renderBackground(graphics);
+        this.renderBackground(graphics, i, i1, v);
         super.render(graphics, i, i1, v);
         this.renderTooltip(graphics, i, i1);
     }
 
 }
-

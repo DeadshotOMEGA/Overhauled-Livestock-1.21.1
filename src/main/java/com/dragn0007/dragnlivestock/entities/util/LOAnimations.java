@@ -1,10 +1,10 @@
 package com.dragn0007.dragnlivestock.entities.util;
 
 import net.minecraft.world.entity.LivingEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
+import software.bernie.geckolib.animation.PlayState;
 
 public class LOAnimations {
     public static final RawAnimation ATTACK = RawAnimation.begin().thenPlay("attack");

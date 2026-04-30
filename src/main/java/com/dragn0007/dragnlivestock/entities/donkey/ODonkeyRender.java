@@ -20,16 +20,16 @@ public class ODonkeyRender extends GeoEntityRenderer<ODonkey> {
     }
 
     @Override
-    public void preRender(PoseStack poseStack, ODonkey entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void preRender(PoseStack poseStack, ODonkey entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
 
-        if (!animatable.isBaby()) {
-            if (animatable.hasChest()) {
+        if (!entity.isBaby()) {
+            if (entity.hasChest()) {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(false));
             } else {
                 model.getBone("saddlebags").ifPresent(b -> b.setHidden(true));
             }
 
-            if (animatable.isSaddled()) {
+            if (entity.isSaddled()) {
                 model.getBone("saddle").ifPresent(b -> b.setHidden(false));
                 model.getBone("saddle2").ifPresent(b -> b.setHidden(false));
                 model.getBone("front_right_shoe").ifPresent(b -> b.setHidden(false));
@@ -45,20 +45,19 @@ public class ODonkeyRender extends GeoEntityRenderer<ODonkey> {
                 model.getBone("back_left_shoe").ifPresent(b -> b.setHidden(true));
             }
 
-            if (animatable.isWearingPullingHarness()) {
+            if (entity.isWearingPullingHarness()) {
                 model.getBone("wagon_harness").ifPresent(b -> b.setHidden(false));
             } else {
                 model.getBone("wagon_harness").ifPresent(b -> b.setHidden(true));
             }
         }
 
-        if (LivestockOverhaulClientConfig.SIMPLE_MODELS.get() && animatable.isBaby()) {
+        if (LivestockOverhaulClientConfig.SIMPLE_MODELS.get() && entity.isBaby()) {
             poseStack.scale(0.5F, 0.5F, 0.5F);
         }
 
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(poseStack, entity, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
     }
 
 }
-
 

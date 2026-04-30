@@ -1,7 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.donkey;
 
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
-import com.dragn0007.dragnlivestock.client.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.common.gui.ODonkeyMenu;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.GroundTieGoal;
@@ -14,6 +13,7 @@ import com.dragn0007.dragnlivestock.entities.util.marking_layer.EquineEyeColorOv
 import com.dragn0007.dragnlivestock.entities.util.marking_layer.EquineMarkingOverlay;
 import com.dragn0007.dragnlivestock.util.LOTags;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulClientConfig;
+import com.dragn0007.dragnlivestock.client.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
@@ -22,6 +22,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -40,17 +41,18 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.network.NetworkHooks;
+import net.minecraft.core.registries.Registries;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.GeoAnimatable;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimationState;
-import software.bernie.geckolib.core.animation.*;
-import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.animatable.GeoAnimatable;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimationState;
+import software.bernie.geckolib.animation.*;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -62,11 +64,11 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 		super(type, level);
 	}
 
-	protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_donkey");
-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/donkey");
-	protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/donkey");
+	protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/o_donkey"));
+	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/donkey"));
+	protected static final ResourceKey<LootTable> TFC_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("tfc", "entities/donkey"));
 	@Override
-	public @NotNull ResourceLocation getDefaultLootTable() {
+	public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
 		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
 			return VANILLA_LOOT_TABLE;
 		} else if (ModList.get().isLoaded("tfc")) {
@@ -79,7 +81,7 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 	@Override
 	public void openInventory(Player player) {
 		if(player instanceof ServerPlayer serverPlayer && this.isTamed()) {
-			NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((containerId, inventory, p) -> {
+			serverPlayer.openMenu(new SimpleMenuProvider((containerId, inventory, p) -> {
 				return new ODonkeyMenu(containerId, inventory, this.inventory, this);
 			}, this.getDisplayName()), (data) -> {
 				data.writeInt(this.getInventorySize());
@@ -106,14 +108,6 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.generateRandomMaxHealth());
 		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(this.generateRandomSpeed());
 		this.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(this.generateRandomJumpStrength());
-	}
-
-	public int getInventorySize() {
-		if (this.hasChest()) {
-			return 18;
-		} else {
-			return 3;
-		}
 	}
 
 	@Override
@@ -203,15 +197,15 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 							controller.setAnimationSpeed(Math.max(0.1, 0.82 * controller.getAnimationSpeed() + animationSpeed));
 						}
 
-					} else if (this.isAggressive() || (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD)) || (!this.isVehicle() && currentSpeed > speedThreshold)) {
+					} else if (this.isAggressive() || (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD_ID)) || (!this.isVehicle() && currentSpeed > speedThreshold)) {
 						controller.setAnimation(RawAnimation.begin().then("sprint", Animation.LoopType.LOOP));
 						controller.setAnimationSpeed(Math.max(0.1, 0.82 * controller.getAnimationSpeed() + animationSpeed));
 
-					} else if ((this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD)) || (!this.isVehicle() && currentSpeed > speedTrotThreshold)) {
+					} else if ((this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(TROT_SPEED_MOD_ID)) || (!this.isVehicle() && currentSpeed > speedTrotThreshold)) {
 						controller.setAnimation(RawAnimation.begin().then("trot", Animation.LoopType.LOOP));
 						controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
 
-					} else if ((this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD))
+					} else if ((this.isVehicle() && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID) && !this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD_ID))
 							|| (!this.isVehicle() && currentSpeed > speedRunThreshold && currentSpeed < speedThreshold)) {
 						if (this.isOnSand()) {
 							controller.setAnimation(RawAnimation.begin().then("run", Animation.LoopType.LOOP));
@@ -221,7 +215,7 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 							controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
 						}
 
-					} else if (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD)) {
+					} else if (this.isVehicle() && this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID)) {
 						if (LivestockOverhaulClientEvent.HORSE_SPANISH_WALK_TOGGLE.isDown()) {
 							controller.setAnimation(RawAnimation.begin().then("spanish_walk", Animation.LoopType.LOOP));
 							controller.setAnimationSpeed(Math.max(0.1, 0.78 * controller.getAnimationSpeed() + animationSpeed));
@@ -236,7 +230,7 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 					}
 
 				} else if (this.isVehicle() && LivestockOverhaulClientEvent.HORSE_WALK_BACKWARDS.isDown()) {
-					if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD)) {
+					if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(WALK_SPEED_MOD_ID)) {
 						controller.setAnimation(RawAnimation.begin().then("walk_back", Animation.LoopType.LOOP));
 						controller.setAnimationSpeed(Math.max(0.1, 0.76 * controller.getAnimationSpeed() + animationSpeed));
 					} else {
@@ -257,7 +251,7 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 		}
 		return PlayState.CONTINUE;
 	}
-	protected <T extends GeoAnimatable> PlayState emotePredicate(software.bernie.geckolib.core.animation.AnimationState<T> tAnimationState) {
+	protected <T extends GeoAnimatable> PlayState emotePredicate(software.bernie.geckolib.animation.AnimationState<T> tAnimationState) {
 		AnimationController<T> controller = tAnimationState.getController();
 
 		if(tAnimationState.isMoving() || !this.shouldEmote) {
@@ -306,7 +300,7 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 		double z = this.getZ() - this.zo;
 		boolean isMoving = (x * x + z * z) > 0.0001;
 
-		if (this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD) && !(sprintTick <= 0) && this.hasControllingPassenger() && isMoving) {
+		if (false && !(sprintTick <= 0) && this.hasControllingPassenger() && isMoving) {
 			sprintTick--;
 			if (controllingPassenger != null && !(sprintTick <= 0)) {
 				if (controllingPassenger instanceof Player player && LivestockOverhaulClientConfig.HORSE_SPRINT_TIMER.get()) {
@@ -315,7 +309,7 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 			}
 		}
 
-		if ((!this.getAttribute(Attributes.MOVEMENT_SPEED).hasModifier(SPRINT_SPEED_MOD) || !isMoving)) {
+		if ((true || !isMoving)) {
 			if (sprintTick < maxSprint && isMoving) {
 				sprintTick++;
 			} else if (sprintTick < maxSprint && !isMoving) {
@@ -327,7 +321,6 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 		if (sprintTick <= 0 && controllingPassenger != null) {
 			AttributeInstance movementSpeed = this.getAttribute(Attributes.MOVEMENT_SPEED);
 			this.handleSpeedRequest(-1);
-			movementSpeed.removeModifier(SPRINT_SPEED_MOD);
 			if (controllingPassenger != null) {
 				if (controllingPassenger instanceof Player player && LivestockOverhaulClientConfig.HORSE_SPRINT_TIMER.get()) {
 					player.displayClientMessage(Component.translatable("Sprint Depleted").withStyle(ChatFormatting.DARK_RED), true);
@@ -501,7 +494,7 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 		}
 
 		if(tag.contains("FlowerItem")) {
-			ItemStack decorItem = ItemStack.of(tag.getCompound("FlowerItem"));
+			ItemStack decorItem = ItemStack.parseOptional(this.registryAccess(), tag.getCompound("FlowerItem"));
 			this.setFlowerItem(decorItem);
 		}
 	}
@@ -518,13 +511,13 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 		tag.putInt("SprintTime", this.sprintTick);
 		tag.putInt("Flower_Type", this.getFlowerType());
 		if(!this.getFlowerItem().isEmpty()) {
-			tag.put("FlowerItem", this.getFlowerItem().save(new CompoundTag()));
+			tag.put("FlowerItem", this.getFlowerItem().save(this.registryAccess()));
 		}
 	}
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
 		if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
@@ -546,7 +539,7 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 		}
 
 		this.randomizeAttributes();
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
 	}
 
 	@Override
@@ -559,16 +552,16 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(GENDER, 0);
-		this.entityData.define(VARIANT_TEXTURE, ODonkeyModel.Variant.BROWN.resourceLocation.toString());
-		this.entityData.define(OVERLAY_TEXTURE, EquineMarkingOverlay.NONE.resourceLocation.toString());
-		this.entityData.define(EYES, 0);
-		this.entityData.define(FLOWER_ITEM, ItemStack.EMPTY);
-		this.entityData.define(FLOWER_TYPE, 0);
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(VARIANT, 0);
+		builder.define(OVERLAY, 0);
+		builder.define(GENDER, 0);
+		builder.define(VARIANT_TEXTURE, ODonkeyModel.Variant.BROWN.resourceLocation.toString());
+		builder.define(OVERLAY_TEXTURE, EquineMarkingOverlay.NONE.resourceLocation.toString());
+		builder.define(EYES, 0);
+		builder.define(FLOWER_ITEM, ItemStack.EMPTY);
+		builder.define(FLOWER_TYPE, 0);
 	}
 
 	public boolean canMate(Animal animal) {
@@ -598,6 +591,9 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 		if (ageableMob instanceof OHorse partnerHorse) {
 
 			foal = EntityTypes.O_MULE_ENTITY.get().create(serverLevel);
+			if (foal == null) {
+				return null;
+			}
 
 			int overlayChance = this.random.nextInt(100);
 			int overlay;
@@ -627,6 +623,9 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 		} else {
 			ODonkey partner = (ODonkey) ageableMob;
 			foal = EntityTypes.O_DONKEY_ENTITY.get().create(serverLevel);
+			if (foal == null) {
+				return null;
+			}
 
 			int variantChance = this.random.nextInt(100);
 			int variant;
@@ -662,7 +661,6 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 			((ODonkey) foal).setEyeVariant(eyes);
 
 			foal.setGender(random.nextInt(Gender.values().length));
-
 
 			if (this.random.nextInt(3) >= 1) {
 				((ODonkey) foal).generateRandomJumpStrength();

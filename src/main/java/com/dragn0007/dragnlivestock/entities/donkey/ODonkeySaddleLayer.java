@@ -30,9 +30,9 @@ public class ODonkeySaddleLayer extends GeoRenderLayer<ODonkey> {
 
             if (itemStack.getItem() instanceof SaddleItem saddleItem && !animatable.isWearingHarness()) {
                 if (!LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
-                    resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + saddleItem + ".png");
+                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + saddleItem + ".png");
                 } else {
-                    resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/config_simplified/horse/tack/saddle.png");
+                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/config_simplified/horse/tack/saddle.png");
                 }
 
                 if (resourceLocation != null) {
@@ -46,13 +46,12 @@ public class ODonkeySaddleLayer extends GeoRenderLayer<ODonkey> {
                             bufferSource,
                             animatable,
                             renderType1,
-                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                            1, 1, 1, 1);
+                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
                 }
             }
 
             if (animatable.isSaddled() && !LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/tack/stone_horseshoes.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/tack/stone_horseshoes.png");
 
                 if (resourceLocation != null) {
                     RenderType renderType1 = RenderType.entityCutout(resourceLocation);
@@ -65,8 +64,7 @@ public class ODonkeySaddleLayer extends GeoRenderLayer<ODonkey> {
                             bufferSource,
                             animatable,
                             renderType1,
-                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                            1, 1, 1, 1);
+                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
                 }
             }
 

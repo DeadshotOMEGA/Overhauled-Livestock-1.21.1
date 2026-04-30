@@ -1,7 +1,6 @@
 package com.dragn0007.dragnlivestock.entities.util;
 
 import com.dragn0007.dragnlivestock.entities.ai.OFollowFlockLeaderGoal;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityType;
@@ -101,8 +100,8 @@ public abstract class AbstractSchoolingOFish extends AbstractOFish {
         });
     }
 
-    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_27528_, DifficultyInstance p_27529_, MobSpawnType p_27530_, @Nullable SpawnGroupData groupData, @Nullable CompoundTag p_27532_) {
-        super.finalizeSpawn(p_27528_, p_27529_, p_27530_, groupData, p_27532_);
+    public SpawnGroupData finalizeSpawn(ServerLevelAccessor p_27528_, DifficultyInstance p_27529_, MobSpawnType p_27530_, @Nullable SpawnGroupData groupData) {
+        super.finalizeSpawn(p_27528_, p_27529_, p_27530_, groupData);
 
         if (groupData == null) {
             groupData = new AgeableMob.AgeableMobGroupData(0.2F);

@@ -39,8 +39,7 @@ public class OHorseEyeLayer extends GeoRenderLayer<OHorse> {
                 bufferSource,
                 animatable,
                 renderEyeType,
-                bufferSource.getBuffer(renderEyeType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderEyeType), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 
 }

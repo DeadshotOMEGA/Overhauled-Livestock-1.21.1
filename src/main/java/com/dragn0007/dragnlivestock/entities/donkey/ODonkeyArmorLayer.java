@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -46,23 +45,23 @@ public class ODonkeyArmorLayer extends GeoRenderLayer<ODonkey> {
 
         if (!armorItemStack.isEmpty()) {
             if (armorItemStack.getItem() == LOItems.OBSIDIAN_HORSE_ARMOR.get()) {
-                resourceLocation = new ResourceLocation("medievalembroidery", armorpath + "obsidian_horse_armor.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath("medievalembroidery", armorpath + "obsidian_horse_armor.png");
             } else if (armorItemStack.getItem() == LOItems.MINIMAL_OBSIDIAN_HORSE_ARMOR.get()) {
-                resourceLocation = new ResourceLocation("medievalembroidery", armorpath + "minimal_obsidian_horse_armor.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath("medievalembroidery", armorpath + "minimal_obsidian_horse_armor.png");
             } else if (armorItemStack.getItem() == LOItems.RIOT_HORSE_ARMOR.get() && !LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
-                resourceLocation = new ResourceLocation("deadlydinos", "textures/entity/horse/armor/riot_horse_armor.png");
-            } else if (armorItemStack.getItem() instanceof HorseArmorItem horseArmorItem) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, armorpath + horseArmorItem + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath("deadlydinos", "textures/entity/horse/armor/riot_horse_armor.png");
+            } else if (armorItemStack.is(com.dragn0007.dragnlivestock.util.LOTags.Items.ARMOR_SLOT_OTHER)) {
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, armorpath + armorItemStack.getItem() + ".png");
             } else if (armorItemStack.getItem() instanceof LightHorseArmorItem horseArmorItem) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, armorpath + horseArmorItem + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, armorpath + horseArmorItem + ".png");
             } else if ((armorItemStack.getItem() instanceof RumpStrapItem rumpStrapItem) && !armorItemStack.isEmpty() && !LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
-                resourceLocation = new ResourceLocation("medievalembroidery", "textures/entity/horse/caparison/" + rumpStrapItem + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath("medievalembroidery", "textures/entity/horse/caparison/" + rumpStrapItem + ".png");
             } else if ((armorItemStack.getItem() instanceof CaparisonItem caparisonItem) && !armorItemStack.isEmpty() && !LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
-                resourceLocation = new ResourceLocation("medievalembroidery", "textures/entity/horse/caparison/" + caparisonItem + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath("medievalembroidery", "textures/entity/horse/caparison/" + caparisonItem + ".png");
             } else if (armorItemStack.getItem() instanceof CosmeticsItem item) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + item + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + item + ".png");
             } else if (armorItemStack.getItem() instanceof HarnessItem item) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + item + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + item + ".png");
             } else {
                 return;
             }
@@ -78,7 +77,6 @@ public class ODonkeyArmorLayer extends GeoRenderLayer<ODonkey> {
                 bufferSource,
                 animatable,
                 renderType1,
-                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 }

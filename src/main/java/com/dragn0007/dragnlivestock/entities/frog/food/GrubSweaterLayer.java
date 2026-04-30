@@ -27,7 +27,7 @@ public class GrubSweaterLayer extends GeoRenderLayer<Grub> {
         ResourceLocation resourceLocation = null;
 
         if (dyeColor != null) {
-            resourceLocation =  new ResourceLocation(LivestockOverhaul.MODID,"textures/entity/grub/sweater/" + animatable.getSweaterColor().toString().toLowerCase() + ".png");
+            resourceLocation =  ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/sweater/" + animatable.getSweaterColor().toString().toLowerCase() + ".png");
         }
 
         if (resourceLocation == null || !animatable.isSweatered()) {
@@ -44,7 +44,6 @@ public class GrubSweaterLayer extends GeoRenderLayer<Grub> {
                 bufferSource,
                 animatable,
                 renderType1,
-                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 }

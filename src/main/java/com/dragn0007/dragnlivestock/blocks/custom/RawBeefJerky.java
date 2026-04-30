@@ -14,8 +14,16 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.stream.Stream;
+import com.mojang.serialization.MapCodec;
 
 public class RawBeefJerky extends JerkyBase {
+
+    public static final MapCodec<RawBeefJerky> CODEC = simpleCodec(properties -> new RawBeefJerky());
+
+    @Override
+    protected MapCodec<? extends JerkyBase> codec() {
+        return CODEC;
+    }
 
     public static final VoxelShape NORTH = Stream.of(
             box(3, 0, 14, 13, 14, 16)

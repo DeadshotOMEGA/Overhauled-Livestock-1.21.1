@@ -10,8 +10,16 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.util.stream.Stream;
+import com.mojang.serialization.MapCodec;
 
 public class DriedJerky extends JerkyBase {
+
+    public static final MapCodec<DriedJerky> CODEC = simpleCodec(properties -> new DriedJerky());
+
+    @Override
+    protected MapCodec<? extends JerkyBase> codec() {
+        return CODEC;
+    }
 
     public static final VoxelShape NORTH = Stream.of(
             Block.box(3, 0, 14, 13, 14, 16)
@@ -31,7 +39,7 @@ public class DriedJerky extends JerkyBase {
 
     public DriedJerky() {
         super(NORTH, EAST, SOUTH, WEST,
-                BlockBehaviour.Properties.copy(Blocks.BROWN_MUSHROOM_BLOCK).noCollission().noOcclusion().instabreak().pushReaction(PushReaction.DESTROY));
+                BlockBehaviour.Properties.ofFullCopy(Blocks.BROWN_MUSHROOM_BLOCK).noCollission().noOcclusion().instabreak().pushReaction(PushReaction.DESTROY));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

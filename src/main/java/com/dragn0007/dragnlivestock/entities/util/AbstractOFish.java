@@ -37,7 +37,7 @@ public abstract class AbstractOFish extends OWaterAnimal implements Bucketable {
     }
 
     public float getStandingEyeHeight(Pose p_27474_, EntityDimensions p_27475_) {
-        return p_27475_.height * 0.65F;
+        return p_27475_.height() * 0.65F;
     }
 
     public static AttributeSupplier.Builder createAttributes() {
@@ -56,10 +56,9 @@ public abstract class AbstractOFish extends OWaterAnimal implements Bucketable {
         return 8;
     }
 
-    public void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FROM_BUCKET, false);
-
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FROM_BUCKET, false);
     }
     public boolean fromBucket() {
         return this.entityData.get(FROM_BUCKET);

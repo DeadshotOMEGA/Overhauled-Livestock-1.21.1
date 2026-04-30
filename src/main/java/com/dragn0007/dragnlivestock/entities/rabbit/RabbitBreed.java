@@ -6,16 +6,16 @@ import net.minecraft.resources.ResourceLocation;
 public class RabbitBreed {
 
     public enum Breed {
-        DEFAULT(new ResourceLocation(LivestockOverhaul.MODID, "geo/rabbit/o_rabbit.geo.json")),
-        MEAT(new ResourceLocation(LivestockOverhaul.MODID, "geo/rabbit/meat.geo.json")),
-        DWARF(new ResourceLocation(LivestockOverhaul.MODID, "geo/rabbit/dwarf.geo.json")),
-        LOP(new ResourceLocation(LivestockOverhaul.MODID, "geo/rabbit/lop.geo.json")),
-        ANGORA(new ResourceLocation(LivestockOverhaul.MODID, "geo/rabbit/angora.geo.json")),
-        ARCH(new ResourceLocation(LivestockOverhaul.MODID, "geo/rabbit/arch.geo.json")),
-        CHECKERED_GIANT(new ResourceLocation(LivestockOverhaul.MODID, "geo/rabbit/checkered_giant.geo.json")),
-        LIONHEAD(new ResourceLocation(LivestockOverhaul.MODID, "geo/rabbit/lionhead.geo.json")),
-        GIANT(new ResourceLocation(LivestockOverhaul.MODID, "geo/rabbit/giant.geo.json")),
-        JACKALOPE(new ResourceLocation(LivestockOverhaul.MODID, "geo/rabbit/jackalope.geo.json")),
+        DEFAULT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/rabbit/o_rabbit.geo.json")),
+        MEAT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/rabbit/meat.geo.json")),
+        DWARF(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/rabbit/dwarf.geo.json")),
+        LOP(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/rabbit/lop.geo.json")),
+        ANGORA(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/rabbit/angora.geo.json")),
+        ARCH(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/rabbit/arch.geo.json")),
+        CHECKERED_GIANT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/rabbit/checkered_giant.geo.json")),
+        LIONHEAD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/rabbit/lionhead.geo.json")),
+        GIANT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/rabbit/giant.geo.json")),
+        JACKALOPE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/rabbit/jackalope.geo.json")),
         ;
 
         public final ResourceLocation resourceLocation;

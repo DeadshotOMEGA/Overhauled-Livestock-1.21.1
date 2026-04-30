@@ -25,7 +25,7 @@ public class OGoatChestLayer extends GeoRenderLayer<OGoat> {
         ResourceLocation resourceLocation = null;
 
         if (animatable.hasChest()) {
-            resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/goat/tack/saddlebags.png");
+            resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/goat/tack/saddlebags.png");
         } else {
             return;
         }
@@ -40,7 +40,6 @@ public class OGoatChestLayer extends GeoRenderLayer<OGoat> {
                 bufferSource,
                 animatable,
                 renderType1,
-                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 }

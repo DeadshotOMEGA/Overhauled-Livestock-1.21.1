@@ -68,7 +68,7 @@ public class OMuleCarpetLayer extends GeoRenderLayer<OMule> {
                     } else if (itemStack.getItem() instanceof BlanketItem blanketItem) {
                         String name = blanketItem.toString();
                         String noSuffix = name.replaceAll("_.+", "");
-                        resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/special/" + noSuffix + "_armor_blanket.png");
+                        resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/armor/carpet/special/" + noSuffix + "_armor_blanket.png");
                     }
                 }
             }
@@ -85,7 +85,7 @@ public class OMuleCarpetLayer extends GeoRenderLayer<OMule> {
                 } else if (itemStack.is(LOTags.Items.WESTERN_BLANKETS)) {
                     resourceLocation = OHorseCarpetLayer.WESTERN_COLOR[((BlanketItem) itemStack.getItem()).getColor().getId()];
                 } else if (itemStack.getItem() instanceof BlanketItem blanketItem) {
-                    resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/carpet/special/" + blanketItem + ".png");
+                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/special/" + blanketItem + ".png");
                 }
             }
 
@@ -100,15 +100,14 @@ public class OMuleCarpetLayer extends GeoRenderLayer<OMule> {
                         bufferSource,
                         animatable,
                         renderType1,
-                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                        1, 1, 1, 1);
+                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
         }
 
 
         if (animatable.getFlowerItem() != null && animatable.getFlowerItem().is(LOTags.Items.HAIR_FLOWERS)) {
             if (animatable.getFlowerType() == 0) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_mane.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_mane.png");
                 RenderType renderType1 = RenderType.entityCutout(resourceLocation);
                 poseStack.pushPose();
                 poseStack.scale(1.0f, 1.0f, 1.0f);
@@ -119,12 +118,11 @@ public class OMuleCarpetLayer extends GeoRenderLayer<OMule> {
                         bufferSource,
                         animatable,
                         renderType1,
-                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                        1, 1, 1, 1);
+                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
 
             if (animatable.getFlowerType() == 1) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_tail.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_tail.png");
                 RenderType renderType1 = RenderType.entityCutout(resourceLocation);
                 poseStack.pushPose();
                 poseStack.scale(1.0f, 1.0f, 1.0f);
@@ -135,12 +133,11 @@ public class OMuleCarpetLayer extends GeoRenderLayer<OMule> {
                         bufferSource,
                         animatable,
                         renderType1,
-                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                        1, 1, 1, 1);
+                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
 
             if (animatable.getFlowerType() == 2) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_tail.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_tail.png");
                 RenderType renderType1 = RenderType.entityCutout(resourceLocation);
                 poseStack.pushPose();
                 poseStack.scale(1.0f, 1.0f, 1.0f);
@@ -151,10 +148,9 @@ public class OMuleCarpetLayer extends GeoRenderLayer<OMule> {
                         bufferSource,
                         animatable,
                         renderType1,
-                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                        1, 1, 1, 1);
+                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
 
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_mane.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/decor/" + animatable.getFlowerItem().getItem() + "_mane.png");
                 RenderType renderType2 = RenderType.entityCutout(resourceLocation);
                 poseStack.pushPose();
                 poseStack.scale(1.0f, 1.0f, 1.0f);
@@ -165,8 +161,7 @@ public class OMuleCarpetLayer extends GeoRenderLayer<OMule> {
                         bufferSource,
                         animatable,
                         renderType2,
-                        bufferSource.getBuffer(renderType2), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                        1, 1, 1, 1);
+                        bufferSource.getBuffer(renderType2), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
         }
     }

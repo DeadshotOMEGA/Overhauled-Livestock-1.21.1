@@ -5,8 +5,8 @@ import com.dragn0007.dragnlivestock.entities.horse.OHorseModel;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
-import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
@@ -16,13 +16,13 @@ import java.util.Map;
 public class UnicornModel extends DefaultedEntityGeoModel<Unicorn> {
 
     public UnicornModel() {
-        super(new ResourceLocation(LivestockOverhaul.MODID, "unicorn"), true);
+        super(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "unicorn"), true);
     }
 
     @Override
     public void setCustomAnimations(Unicorn animatable, long instanceId, AnimationState<Unicorn> animationState) {
 
-        CoreGeoBone neck = getAnimationProcessor().getBone("neck");
+        GeoBone neck = getAnimationProcessor().getBone("neck");
 
         EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
         float targetYaw = entityData.netHeadYaw();
@@ -43,39 +43,39 @@ public class UnicornModel extends DefaultedEntityGeoModel<Unicorn> {
     }
 
     public enum Variant {
-        BAY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/bay.png")),
-        BAY_ROAN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/bay_roan.png")),
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/black.png")),
-        BLOOD_BAY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/blood_bay.png")),
-        BLUE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/blue.png")),
-        BLUE_ROAN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/blue_roan.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/brown.png")),
-        BUCKSKIN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/buckskin.png")),
-        CHAMPAGNE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/champagne.png")),
-        CHOCOLATE_ROAN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/chocolate_roan.png")),
-        CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/chestnut.png")),
-        CREAMY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/creamy.png")),
-        DARK_BAY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/dark_bay.png")),
-        DARK_BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/dark_brown.png")),
-        FJORD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/fjord.png")),
-        GREY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/grey.png")),
-        IVORY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/ivory.png")),
-        LIVER_CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/liver_chestnut.png")),
-        PALAMINO(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/palamino.png")),
-        PALAMINO_ORANGE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/palamino_orange.png")),
-        SEAL_BAY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/seal_bay.png")),
-        STRAWBERRY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/strawberry.png")),
-        WARM_BLACK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/warm_black.png")),
-        WARM_GREY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/warm_grey.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/white.png")),
-        CREAM(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/cream.png")),
-        RED_DUN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/red_dun.png")),
-        BAY_DUN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/bay_dun.png")),
-        GRULLA(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/grulla.png")),
-        BLUE_DUN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/blue_dun.png")),
-        CINNAMON(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/cinnamon.png")),
-        END(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/end.png")),
-        STRAWBERRY_ROAN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/unicorn/strawberry_roan.png"));
+        BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/bay.png")),
+        BAY_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/bay_roan.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/black.png")),
+        BLOOD_BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/blood_bay.png")),
+        BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/blue.png")),
+        BLUE_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/blue_roan.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/brown.png")),
+        BUCKSKIN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/buckskin.png")),
+        CHAMPAGNE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/champagne.png")),
+        CHOCOLATE_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/chocolate_roan.png")),
+        CHESTNUT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/chestnut.png")),
+        CREAMY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/creamy.png")),
+        DARK_BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/dark_bay.png")),
+        DARK_BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/dark_brown.png")),
+        FJORD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/fjord.png")),
+        GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/grey.png")),
+        IVORY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/ivory.png")),
+        LIVER_CHESTNUT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/liver_chestnut.png")),
+        PALAMINO(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/palamino.png")),
+        PALAMINO_ORANGE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/palamino_orange.png")),
+        SEAL_BAY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/seal_bay.png")),
+        STRAWBERRY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/strawberry.png")),
+        WARM_BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/warm_black.png")),
+        WARM_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/warm_grey.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/white.png")),
+        CREAM(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/cream.png")),
+        RED_DUN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/red_dun.png")),
+        BAY_DUN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/bay_dun.png")),
+        GRULLA(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/grulla.png")),
+        BLUE_DUN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/blue_dun.png")),
+        CINNAMON(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/cinnamon.png")),
+        END(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/end.png")),
+        STRAWBERRY_ROAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/unicorn/strawberry_roan.png"));
 
         public final ResourceLocation resourceLocation;
         Variant(ResourceLocation resourceLocation) {
@@ -86,9 +86,9 @@ public class UnicornModel extends DefaultedEntityGeoModel<Unicorn> {
         }
     }
 
-    public static final ResourceLocation MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/unicorn.geo.json");
-    public static final ResourceLocation ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/o_horse.animation.json");
-    public static final ResourceLocation BABY = new ResourceLocation(LivestockOverhaul.MODID, "geo/horse/baby_o_horse.geo.json");
+    public static final ResourceLocation MODEL = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/unicorn.geo.json");
+    public static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "animations/o_horse.animation.json");
+    public static final ResourceLocation BABY = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/baby_o_horse.geo.json");
     @Override
     public ResourceLocation getModelResource(Unicorn object) {
         if (object.isBaby()) {

@@ -9,7 +9,7 @@ public class LightHorseArmorItem extends Item {
    private final ResourceLocation texture;
 
    public LightHorseArmorItem(int prot, String p_41365_, Item.Properties properties) {
-      this(prot, new ResourceLocation("textures/entity/horse/armor/horse_armor_" + p_41365_ + ".png"), properties);
+      this(prot, ResourceLocation.fromNamespaceAndPath("minecraft", "textures/entity/horse/armor/horse_armor_" + p_41365_ + ".png"), properties);
       properties.stacksTo(1);
    }
 

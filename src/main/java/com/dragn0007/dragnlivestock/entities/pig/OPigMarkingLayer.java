@@ -34,28 +34,27 @@ public class OPigMarkingLayer extends GeoRenderLayer<OPig> {
                     bufferSource,
                     animatable,
                     renderMarkingType,
-                    bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                    1, 1, 1, 1);
+                    bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
         }
     }
 
     public enum Overlay {
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/none.png")),
-        BLACK_STRIPE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/black_striped.png")),
-        BLUE_STRIPE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/blue_striped.png")),
-        PINK_STRIPE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/pink_striped.png")),
-        WHITE_STRIPE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/white_striped.png")),
-        BLACK_SPOTTED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/black_spotted.png")),
-        BLUE_SPOTTED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/blue_spotted.png")),
-        BROWN_SPOTTED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/brown_spotted.png")),
-        PINK_SPOTTED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/pink_spotted.png")),
-        WHITE_SPOTTED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/white_spotted.png")),
-        BLACK_SPLOTCHED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/black_splotched.png")),
-        BROWN_SPLOTCHED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/brown_splotched.png")),
-        WHITE_SPLOTCHED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/white_splotched.png")),
-        BLACK_SPECKLED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/black_speckled.png")),
-        WHITE_SPECKLED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/white_speckled.png")),
-        WHITE_SOCKS(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/pig/overlay/white_socks.png")),
+        NONE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/none.png")),
+        BLACK_STRIPE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/black_striped.png")),
+        BLUE_STRIPE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/blue_striped.png")),
+        PINK_STRIPE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/pink_striped.png")),
+        WHITE_STRIPE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/white_striped.png")),
+        BLACK_SPOTTED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/black_spotted.png")),
+        BLUE_SPOTTED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/blue_spotted.png")),
+        BROWN_SPOTTED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/brown_spotted.png")),
+        PINK_SPOTTED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/pink_spotted.png")),
+        WHITE_SPOTTED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/white_spotted.png")),
+        BLACK_SPLOTCHED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/black_splotched.png")),
+        BROWN_SPLOTCHED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/brown_splotched.png")),
+        WHITE_SPLOTCHED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/white_splotched.png")),
+        BLACK_SPECKLED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/black_speckled.png")),
+        WHITE_SPECKLED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/white_speckled.png")),
+        WHITE_SOCKS(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/pig/overlay/white_socks.png")),
         ;
 
         //Add new entries to bottom when mod is public, else pigs will change textures during update.

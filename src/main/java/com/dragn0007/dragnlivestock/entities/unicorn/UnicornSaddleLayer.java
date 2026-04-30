@@ -28,7 +28,7 @@ public class UnicornSaddleLayer extends GeoRenderLayer<Unicorn> {
             ResourceLocation resourceLocation = null;
 
             if (itemStack.getItem() instanceof SaddleItem saddleItem && !animatable.isWearingHarness()) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + saddleItem + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + saddleItem + ".png");
 
                 if (resourceLocation != null) {
                     RenderType renderType1 = RenderType.entityCutout(resourceLocation);
@@ -41,13 +41,12 @@ public class UnicornSaddleLayer extends GeoRenderLayer<Unicorn> {
                             bufferSource,
                             animatable,
                             renderType1,
-                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                            1, 1, 1, 1);
+                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
                 }
             }
 
             if (animatable.isSaddled()) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/tack/stone_horseshoes.png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/tack/stone_horseshoes.png");
 
                 if (resourceLocation != null) {
                     RenderType renderType1 = RenderType.entityCutout(resourceLocation);
@@ -60,8 +59,7 @@ public class UnicornSaddleLayer extends GeoRenderLayer<Unicorn> {
                             bufferSource,
                             animatable,
                             renderType1,
-                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                            1, 1, 1, 1);
+                            bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
                 }
             }
 

@@ -7,21 +7,21 @@ import software.bernie.geckolib.model.GeoModel;
 public class GrubModel extends GeoModel<Grub> {
 
     public enum Variant {
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/black.png")),
-        GREEN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/green.png")),
-        RED(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/red.png")),
-        CREAM(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/cream.png")),
-        BLUE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/blue.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/brown.png")),
-        CHOCOLATE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/chocolate.png")),
-        FAWN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/fawn.png")),
-        GOLD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/gold.png")),
-        LILAC(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/lilac.png")),
-        MAHOGANY(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/mahogany.png")),
-        SEAL(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/seal.png")),
-        SILVER(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/silver.png")),
-        TAN(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/tan.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/grub/white.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/black.png")),
+        GREEN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/green.png")),
+        RED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/red.png")),
+        CREAM(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/cream.png")),
+        BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/blue.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/brown.png")),
+        CHOCOLATE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/chocolate.png")),
+        FAWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/fawn.png")),
+        GOLD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/gold.png")),
+        LILAC(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/lilac.png")),
+        MAHOGANY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/mahogany.png")),
+        SEAL(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/seal.png")),
+        SILVER(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/silver.png")),
+        TAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/tan.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/grub/white.png")),
         ;
 
         //Add new entries to bottom when mod is public, else grubs will change textures during update.
@@ -35,8 +35,8 @@ public class GrubModel extends GeoModel<Grub> {
         }
     }
 
-    public static final ResourceLocation MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/grub.geo.json");
-    public static final ResourceLocation ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/grub.animation.json");
+    public static final ResourceLocation MODEL = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/grub.geo.json");
+    public static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "animations/grub.animation.json");
 
     @Override
     public ResourceLocation getModelResource(Grub object) {

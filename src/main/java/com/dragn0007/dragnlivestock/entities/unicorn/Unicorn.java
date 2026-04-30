@@ -16,6 +16,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -40,11 +41,12 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
 import net.neoforged.fml.ModList;
-import net.neoforged.neoforge.network.NetworkHooks;
+import net.minecraft.core.registries.Registries;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.animatable.GeoEntity;
 
@@ -58,13 +60,13 @@ public class Unicorn extends OHorse implements GeoEntity {
 		this.xpReward = 50;
 	}
 
-	protected static final ResourceLocation O_LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/overworld_unicorn");
-	protected static final ResourceLocation N_LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/nether_unicorn");
-	protected static final ResourceLocation E_LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/end_unicorn");
-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/horse");
+	protected static final ResourceKey<LootTable> O_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/overworld_unicorn"));
+	protected static final ResourceKey<LootTable> N_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/nether_unicorn"));
+	protected static final ResourceKey<LootTable> E_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/end_unicorn"));
+	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/horse"));
 
 	@Override
-	public @NotNull ResourceLocation getDefaultLootTable() {
+	public @NotNull ResourceKey<LootTable> getDefaultLootTable() {
 		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
 			return VANILLA_LOOT_TABLE;
 		} else if (ModList.get().isLoaded("tfc")) {
@@ -137,7 +139,7 @@ public class Unicorn extends OHorse implements GeoEntity {
 
 	public void openInventory(Player player) {
 		if(player instanceof ServerPlayer serverPlayer && this.isTamed()) {
-			NetworkHooks.openScreen(serverPlayer, new SimpleMenuProvider((containerId, inventory, p) -> {
+			serverPlayer.openMenu(new SimpleMenuProvider((containerId, inventory, p) -> {
 				return new UnicornMenu(containerId, inventory, this.inventory, this);
 			}, this.getDisplayName()), (data) -> {
 				data.writeInt(this.getInventorySize());
@@ -438,7 +440,7 @@ public class Unicorn extends OHorse implements GeoEntity {
 				CompoundTag compoundtag = listtag.getCompound(i);
 				int j = compoundtag.getByte("Slot") & 255;
 				if (j >= 2 && j < this.inventory.getContainerSize()) {
-					this.inventory.setItem(j, ItemStack.of(compoundtag));
+					this.inventory.setItem(j, ItemStack.parseOptional(this.registryAccess(), compoundtag));
 				}
 			}
 		}
@@ -448,7 +450,7 @@ public class Unicorn extends OHorse implements GeoEntity {
 		}
 
 		if(tag.contains("FlowerItem")) {
-			ItemStack decorItem = ItemStack.of(tag.getCompound("FlowerItem"));
+			ItemStack decorItem = ItemStack.parseOptional(this.registryAccess(), tag.getCompound("FlowerItem"));
 			this.setFlowerItem(decorItem);
 		}
 
@@ -472,7 +474,7 @@ public class Unicorn extends OHorse implements GeoEntity {
 		tag.putInt("ManeGrowthTime", this.maneGrowthTick);
 		tag.putInt("Flower_Type", this.getFlowerType());
 		if(!this.getFlowerItem().isEmpty()) {
-			tag.put("FlowerItem", this.getFlowerItem().save(new CompoundTag()));
+			tag.put("FlowerItem", this.getFlowerItem().save(this.registryAccess()));
 		}
 
 		if (this.hasChest()) {
@@ -481,10 +483,10 @@ public class Unicorn extends OHorse implements GeoEntity {
 			for(int i = 2; i < this.inventory.getContainerSize(); ++i) {
 				ItemStack itemstack = this.inventory.getItem(i);
 				if (!itemstack.isEmpty()) {
-					CompoundTag compoundtag = new CompoundTag();
-					compoundtag.putByte("Slot", (byte)i);
-					itemstack.save(compoundtag);
-					listtag.add(compoundtag);
+					CompoundTag itemTag = new CompoundTag();
+					itemstack.save(this.registryAccess(), itemTag);
+					itemTag.putByte("Slot", (byte)i);
+					listtag.add(itemTag);
 				}
 			}
 
@@ -494,7 +496,7 @@ public class Unicorn extends OHorse implements GeoEntity {
 
 	@Override
 	@Nullable
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data, @Nullable CompoundTag tag) {
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
 		if (data == null) {
 			data = new AgeableMob.AgeableMobGroupData(0.2F);
 		}
@@ -525,24 +527,24 @@ public class Unicorn extends OHorse implements GeoEntity {
 		this.setManeType(randomMane);
 
 		this.randomizeUnicornAttributes();
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data, tag);
+		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
 	}
 
 	@Override
-	public void defineSynchedData() {
-		super.defineSynchedData();
-		this.entityData.define(SPECIES, 0);
-		this.entityData.define(VARIANT, 0);
-		this.entityData.define(OVERLAY, 0);
-		this.entityData.define(GENDER, 0);
-		this.entityData.define(VARIANT_TEXTURE, UnicornModel.Variant.BAY.resourceLocation.toString());
-		this.entityData.define(OVERLAY_TEXTURE, UnicornMarkingLayer.Overlay.NONE.resourceLocation.toString());
-		this.entityData.define(MANE_TYPE, 0);
-		this.entityData.define(FEATHERING, 0);
-		this.entityData.define(EYES, 0);
-		this.entityData.define(HORN, 0);
-		this.entityData.define(FLOWER_ITEM, ItemStack.EMPTY);
-		this.entityData.define(FLOWER_TYPE, 0);
+	public void defineSynchedData(SynchedEntityData.Builder builder) {
+		super.defineSynchedData(builder);
+		builder.define(SPECIES, 0);
+		builder.define(VARIANT, 0);
+		builder.define(OVERLAY, 0);
+		builder.define(GENDER, 0);
+		builder.define(VARIANT_TEXTURE, UnicornModel.Variant.BAY.resourceLocation.toString());
+		builder.define(OVERLAY_TEXTURE, UnicornMarkingLayer.Overlay.NONE.resourceLocation.toString());
+		builder.define(MANE_TYPE, 0);
+		builder.define(FEATHERING, 0);
+		builder.define(EYES, 0);
+		builder.define(HORN, 0);
+		builder.define(FLOWER_ITEM, ItemStack.EMPTY);
+		builder.define(FLOWER_TYPE, 0);
 	}
 
 	public boolean canMate(Animal animal) {
@@ -594,6 +596,9 @@ public class Unicorn extends OHorse implements GeoEntity {
 			} else {
 				foal = EntityTypes.UNICORN_ENTITY.get().create(serverLevel);
 			}
+			if (foal == null) {
+				return null;
+			}
 
 			int overlayChance = this.random.nextInt(100);
 			int overlay;
@@ -604,19 +609,21 @@ public class Unicorn extends OHorse implements GeoEntity {
 			} else {
 				overlay = this.random.nextInt(UnicornMarkingLayer.Overlay.values().length);
 			}
-			(foal).setVariant(overlay);
+			foal.setVariant(overlay);
 
 			((OHorse) foal).setManeType(3);
 			((OHorse) foal).setTailType(3);
-			(foal).setOverlayVariant(overlay);
-			(foal).setVariant(random.nextInt(OHorseModel.Variant.values().length));
+			foal.setOverlayVariant(overlay);
+			foal.setVariant(random.nextInt(OHorseModel.Variant.values().length));
 
 		} else {
 			Unicorn partner = (Unicorn) ageableMob;
 			foal = EntityTypes.UNICORN_ENTITY.get().create(serverLevel);
+			if (foal == null) {
+				return null;
+			}
 
-			int breed;
-			breed = (this.random.nextInt(2) == 0) ? this.getSpecies() : partner.getSpecies();
+			int breed = (this.random.nextInt(2) == 0) ? this.getSpecies() : partner.getSpecies();
 			((Unicorn) foal).setSpecies(breed);
 
 			int variantChance = this.random.nextInt(100);
@@ -628,7 +635,7 @@ public class Unicorn extends OHorse implements GeoEntity {
 			} else {
 				variant = this.random.nextInt(UnicornModel.Variant.values().length);
 			}
-			(foal).setVariant(variant);
+			foal.setVariant(variant);
 
 			int overlayChance = this.random.nextInt(100);
 			int overlay;
@@ -639,7 +646,7 @@ public class Unicorn extends OHorse implements GeoEntity {
 			} else {
 				overlay = this.random.nextInt(UnicornMarkingLayer.Overlay.values().length);
 			}
-			(foal).setOverlayVariant(overlay);
+			foal.setOverlayVariant(overlay);
 
 			int eyeColorChance = this.random.nextInt(100);
 			int eyes;

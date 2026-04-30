@@ -7,7 +7,7 @@ import software.bernie.geckolib.model.GeoModel;
 public class OCodModel extends GeoModel<OCod> {
 
     public enum Variant {
-        COD(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/fish/cod.png"));
+        COD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/fish/cod.png"));
 
         public final ResourceLocation resourceLocation;
         Variant(ResourceLocation resourceLocation) {
@@ -18,8 +18,8 @@ public class OCodModel extends GeoModel<OCod> {
         }
     }
 
-    public static final ResourceLocation MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/overhauled_cod.geo.json");
-    public static final ResourceLocation ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/o_fish.animation.json");
+    public static final ResourceLocation MODEL = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/overhauled_cod.geo.json");
+    public static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "animations/o_fish.animation.json");
 
     @Override
     public ResourceLocation getModelResource(OCod object) {

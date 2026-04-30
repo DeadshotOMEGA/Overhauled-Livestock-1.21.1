@@ -17,22 +17,22 @@ import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
 @OnlyIn(Dist.CLIENT)
 public class OLlamaCarpetLayer extends GeoRenderLayer<OLlama> {
     public static final ResourceLocation[] TEXTURE_LOCATION = new ResourceLocation[]{
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/white.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/orange.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/magenta.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/light_blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/yellow.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/lime.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/pink.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/light_grey.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/cyan.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/purple.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/blue.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/brown.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/green.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/red.png"),
-            new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/llama/carpet/black.png")
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/white.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/orange.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/magenta.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/light_blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/yellow.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/lime.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/pink.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/light_grey.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/cyan.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/purple.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/blue.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/brown.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/green.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/red.png"),
+            ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/llama/carpet/black.png")
     };
 
     public OLlamaCarpetLayer(GeoRenderer<OLlama> entityRendererIn) {
@@ -62,7 +62,6 @@ public class OLlamaCarpetLayer extends GeoRenderLayer<OLlama> {
                 bufferSource,
                 animatable,
                 renderType1,
-                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 }

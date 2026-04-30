@@ -28,18 +28,17 @@ public class OFrogEyeLayer extends GeoRenderLayer<OFrog> {
                 bufferSource,
                 animatable,
                 renderMarkingType,
-                bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                1, 1, 1, 1);
+                bufferSource.getBuffer(renderMarkingType), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
     }
 
     public enum Overlay {
-        NONE(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/none.png")),
-        BLUE_EYES(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_blue.png")),
-        BLACK_EYES(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_black.png")),
-        GREEN_EYES(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_green.png")),
-        ORANGE_EYES(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_orange.png")),
-        RED_EYES(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_red.png")),
-        PURPLE_EYES(new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_purple.png"));
+        NONE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/none.png")),
+        BLUE_EYES(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_blue.png")),
+        BLACK_EYES(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_black.png")),
+        GREEN_EYES(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_green.png")),
+        ORANGE_EYES(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_orange.png")),
+        RED_EYES(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_red.png")),
+        PURPLE_EYES(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/frog/overlay/frog_eyes_purple.png"));
 
         //Add new entries to bottom when mod is public, else frogs will change textures during update.
 

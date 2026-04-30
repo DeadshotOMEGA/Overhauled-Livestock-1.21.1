@@ -28,7 +28,7 @@ public class CaribouSaddleLayer extends GeoRenderLayer<Caribou> {
             ResourceLocation resourceLocation = null;
 
             if (itemStack.getItem() instanceof SaddleItem saddleItem && !animatable.isWearingHarness()) {
-                resourceLocation = new ResourceLocation(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + saddleItem + ".png");
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + saddleItem + ".png");
             }
 
             if(resourceLocation != null) {
@@ -42,8 +42,7 @@ public class CaribouSaddleLayer extends GeoRenderLayer<Caribou> {
                         bufferSource,
                         animatable,
                         renderType1,
-                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY,
-                        1, 1, 1, 1);
+                        bufferSource.getBuffer(renderType1), partialTick, packedLight, OverlayTexture.NO_OVERLAY, 0xFFFFFFFF);
             }
         }
     }

@@ -5,8 +5,8 @@ import com.dragn0007.dragnlivestock.util.LivestockOverhaulClientConfig;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import software.bernie.geckolib.constant.DataTickets;
-import software.bernie.geckolib.core.animatable.model.CoreGeoBone;
-import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.cache.object.GeoBone;
+import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.model.DefaultedEntityGeoModel;
 import software.bernie.geckolib.model.data.EntityModelData;
 
@@ -16,13 +16,13 @@ import java.util.Map;
 public class OMuleModel extends DefaultedEntityGeoModel<OMule> {
 
     public OMuleModel() {
-        super(new ResourceLocation(LivestockOverhaul.MODID, "o_mule"), true);
+        super(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "o_mule"), true);
     }
 
     @Override
     public void setCustomAnimations(OMule animatable, long instanceId, AnimationState<OMule> animationState) {
 
-        CoreGeoBone neck = getAnimationProcessor().getBone("neck");
+        GeoBone neck = getAnimationProcessor().getBone("neck");
 
         EntityModelData entityData = animationState.getData(DataTickets.ENTITY_MODEL_DATA);
         float targetYaw = entityData.netHeadYaw();
@@ -46,22 +46,22 @@ public class OMuleModel extends DefaultedEntityGeoModel<OMule> {
     public static String config_simplified_path = "textures/entity/config_simplified/mule/";
 
     public enum Variant {
-        RUST(new ResourceLocation(LivestockOverhaul.MODID, default_path + "rust.png")),
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, default_path + "black.png")),
-        BLUE(new ResourceLocation(LivestockOverhaul.MODID, default_path + "blue.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "brown.png")),
-        CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, default_path + "chestnut.png")),
-        CINNAMON(new ResourceLocation(LivestockOverhaul.MODID, default_path + "cinnamon.png")),
-        CREAM(new ResourceLocation(LivestockOverhaul.MODID, default_path + "cream.png")),
-        CREAMY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "creamy.png")),
-        DARK_BROWN(new ResourceLocation(LivestockOverhaul.MODID, default_path + "dark_brown.png")),
-        GREY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "grey.png")),
-        LIVER_CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, default_path + "liver_chestnut.png")),
-        PALAMINO(new ResourceLocation(LivestockOverhaul.MODID, default_path + "palamino.png")),
-        STRAWBERRY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "strawberry.png")),
-        WARM_BLACK(new ResourceLocation(LivestockOverhaul.MODID, default_path + "warm_black.png")),
-        WARM_GREY(new ResourceLocation(LivestockOverhaul.MODID, default_path + "warm_grey.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, default_path + "white.png")),
+        RUST(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "rust.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "black.png")),
+        BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "blue.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "brown.png")),
+        CHESTNUT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "chestnut.png")),
+        CINNAMON(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "cinnamon.png")),
+        CREAM(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "cream.png")),
+        CREAMY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "creamy.png")),
+        DARK_BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "dark_brown.png")),
+        GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "grey.png")),
+        LIVER_CHESTNUT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "liver_chestnut.png")),
+        PALAMINO(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "palamino.png")),
+        STRAWBERRY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "strawberry.png")),
+        WARM_BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "warm_black.png")),
+        WARM_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "warm_grey.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, default_path + "white.png")),
         ;
 
         public final ResourceLocation resourceLocation;
@@ -74,22 +74,22 @@ public class OMuleModel extends DefaultedEntityGeoModel<OMule> {
     }
 
     public enum SVariant {
-        RUST(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "rust.png")),
-        BLACK(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "black.png")),
-        BLUE(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "blue.png")),
-        BROWN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "brown.png")),
-        CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "chestnut.png")),
-        CINNAMON(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "cinnamon.png")),
-        CREAM(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "cream.png")),
-        CREAMY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "creamy.png")),
-        DARK_BROWN(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "dark_brown.png")),
-        GREY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "grey.png")),
-        LIVER_CHESTNUT(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "liver_chestnut.png")),
-        PALAMINO(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "palamino.png")),
-        STRAWBERRY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "strawberry.png")),
-        WARM_BLACK(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "warm_black.png")),
-        WARM_GREY(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "warm_grey.png")),
-        WHITE(new ResourceLocation(LivestockOverhaul.MODID, config_simplified_path + "white.png")),
+        RUST(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "rust.png")),
+        BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "black.png")),
+        BLUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "blue.png")),
+        BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "brown.png")),
+        CHESTNUT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "chestnut.png")),
+        CINNAMON(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "cinnamon.png")),
+        CREAM(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "cream.png")),
+        CREAMY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "creamy.png")),
+        DARK_BROWN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "dark_brown.png")),
+        GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "grey.png")),
+        LIVER_CHESTNUT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "liver_chestnut.png")),
+        PALAMINO(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "palamino.png")),
+        STRAWBERRY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "strawberry.png")),
+        WARM_BLACK(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "warm_black.png")),
+        WARM_GREY(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "warm_grey.png")),
+        WHITE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, config_simplified_path + "white.png")),
         ;
 
         public final ResourceLocation resourceLocation;
@@ -101,11 +101,11 @@ public class OMuleModel extends DefaultedEntityGeoModel<OMule> {
         }
     }
 
-    public static final ResourceLocation MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/o_mule.geo.json");
-    public static final ResourceLocation ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/o_horse.animation.json");
-    public static final ResourceLocation BABY_MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/baby_o_donkey.geo.json");
-    public static final ResourceLocation SIMPLIFIED_MODEL = new ResourceLocation(LivestockOverhaul.MODID, "geo/config_simplified/mule.geo.json");
-    public static final ResourceLocation SIMPLIFIED_ANIMATION = new ResourceLocation(LivestockOverhaul.MODID, "animations/config_simplified/horse.animation.json");
+    public static final ResourceLocation MODEL = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/o_mule.geo.json");
+    public static final ResourceLocation ANIMATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "animations/o_horse.animation.json");
+    public static final ResourceLocation BABY_MODEL = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/baby_o_donkey.geo.json");
+    public static final ResourceLocation SIMPLIFIED_MODEL = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/config_simplified/mule.geo.json");
+    public static final ResourceLocation SIMPLIFIED_ANIMATION = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "animations/config_simplified/horse.animation.json");
 
     @Override
     public ResourceLocation getModelResource(OMule object) {

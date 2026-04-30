@@ -10,7 +10,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.HorseArmorItem;
 import net.minecraft.world.item.ItemStack;
 
 public class OMuleMenu extends AbstractContainerMenu {
@@ -43,7 +42,7 @@ public class OMuleMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.container, OMuleSlots++, 8, 36) {
             @Override
             public boolean mayPlace(ItemStack itemStack) {
-                if (itemStack.getItem() instanceof HorseArmorItem || itemStack.getItem() instanceof LightHorseArmorItem) {
+                if (itemStack.getItem() instanceof LightHorseArmorItem) {
                     return !this.hasItem() && OMuleMenu.this.oMule.canWearArmor();
                 }
                 if (itemStack.is(LOTags.Items.ARMOR_SLOT_OTHER) || itemStack.is(LOTags.Items.COSMETICS)) {

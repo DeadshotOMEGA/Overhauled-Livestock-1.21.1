@@ -18,7 +18,7 @@ public class OMooshroomRender extends GeoEntityRenderer<OMooshroom> {
     }
 
     @Override
-    public void preRender(PoseStack poseStack, OMooshroom entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void preRender(PoseStack poseStack, OMooshroom entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
 
         if (entity.isSheared()) {
             model.getBone("plant").ifPresent(b -> b.setHidden(true));
@@ -204,7 +204,7 @@ public class OMooshroomRender extends GeoEntityRenderer<OMooshroom> {
 
         }
 
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(poseStack, entity, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
     }
 }
 

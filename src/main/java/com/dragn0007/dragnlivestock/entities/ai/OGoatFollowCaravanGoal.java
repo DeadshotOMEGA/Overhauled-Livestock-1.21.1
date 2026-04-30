@@ -1,9 +1,7 @@
 package com.dragn0007.dragnlivestock.entities.ai;
 
-import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.goat.OGoat;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.decoration.LeashFenceKnotEntity;
 import net.minecraft.world.phys.Vec3;
@@ -26,8 +24,7 @@ public class OGoatFollowCaravanGoal extends Goal {
    public boolean canUse() {
       if (!this.goat.isLeashed() && !this.goat.inCaravan()) {
          List<Entity> list = this.goat.level().getEntities(this.goat, this.goat.getBoundingBox().inflate(9.0D, 4.0D, 9.0D), (p_25505_) -> {
-            EntityType<?> entitytype = p_25505_.getType();
-            return entitytype == EntityTypes.O_GOAT_ENTITY.get();
+            return p_25505_ instanceof OGoat;
          });
          OGoat llama = null;
          double d0 = Double.MAX_VALUE;

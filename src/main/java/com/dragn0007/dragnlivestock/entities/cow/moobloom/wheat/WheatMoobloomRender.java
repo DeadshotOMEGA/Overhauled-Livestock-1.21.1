@@ -17,7 +17,7 @@ public class WheatMoobloomRender extends GeoEntityRenderer<WheatMoobloom> {
     }
 
     @Override
-    public void preRender(PoseStack poseStack, WheatMoobloom entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
+    public void preRender(PoseStack poseStack, WheatMoobloom entity, BakedGeoModel model, MultiBufferSource bufferSource, VertexConsumer buffer, boolean isReRender, float partialTick, int packedLight, int packedOverlay, int renderColor) {
 
         model.getBone("hump").ifPresent(b -> b.setHidden(true));
         model.getBone("body_fluff").ifPresent(b -> b.setHidden(true));
@@ -180,7 +180,7 @@ public class WheatMoobloomRender extends GeoEntityRenderer<WheatMoobloom> {
 
         }
 
-        super.preRender(poseStack, animatable, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, red, green, blue, alpha);
+        super.preRender(poseStack, entity, model, bufferSource, buffer, isReRender, partialTick, packedLight, packedOverlay, renderColor);
     }
 }
 
