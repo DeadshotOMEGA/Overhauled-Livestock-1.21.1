@@ -27,3 +27,10 @@ forge*changelog.txt
 
 # Datagen policy: keep generated assets/data, ignore datagen cache noise
 src/generated/resources/.cache/
+
+# Local workspace artifacts
+/.vscode/
+/build.gradle.bak
+/net/
+/patches/
+/reports/
