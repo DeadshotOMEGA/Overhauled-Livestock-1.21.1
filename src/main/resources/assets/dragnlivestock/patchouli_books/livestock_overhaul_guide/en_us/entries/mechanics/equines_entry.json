@@ -1,6 +1,6 @@
 {
   "name": "Equines",
-  "icon": "dragnlivestock:iron_horseshoe",
+  "icon": "minecraft:iron_horse_armor",
   "category": "dragnlivestock:mount_controls_category",
   "pages": [
     {

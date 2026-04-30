@@ -13,7 +13,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_camel{Variant:5}",
+      "entity": "dragnlivestock:o_camel_entity{Variant:5}",
       "name": "The O-Camel",
       "default_rotation": 45,
       "scale": 0.8,

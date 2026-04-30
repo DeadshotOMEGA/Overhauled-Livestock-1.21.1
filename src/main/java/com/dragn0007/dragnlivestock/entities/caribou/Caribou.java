@@ -725,7 +725,6 @@ public class Caribou extends AbstractOMount implements GeoEntity, Taggable {
 		super.defineSynchedData(builder);
 		builder.define(VARIANT, 0);
 		builder.define(OVERLAY, 0);
-		builder.define(GENDER, 0);
 		builder.define(VARIANT_TEXTURE, CaribouModel.Variant.BAY.resourceLocation.toString());
 		builder.define(OVERLAY_TEXTURE, EquineMarkingOverlay.NONE.resourceLocation.toString());
 		builder.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());

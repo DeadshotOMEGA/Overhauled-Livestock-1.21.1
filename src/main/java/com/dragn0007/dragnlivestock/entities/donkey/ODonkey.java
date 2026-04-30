@@ -556,7 +556,6 @@ public class ODonkey extends AbstractOMount implements GeoEntity {
 		super.defineSynchedData(builder);
 		builder.define(VARIANT, 0);
 		builder.define(OVERLAY, 0);
-		builder.define(GENDER, 0);
 		builder.define(VARIANT_TEXTURE, ODonkeyModel.Variant.BROWN.resourceLocation.toString());
 		builder.define(OVERLAY_TEXTURE, EquineMarkingOverlay.NONE.resourceLocation.toString());
 		builder.define(EYES, 0);

@@ -1,6 +1,6 @@
 {
   "name": "Aging Cheese",
-  "icon": "dragnlivestock:cheese",
+  "icon": "minecraft:milk_bucket",
   "category": "dragnlivestock:recipes_category",
   "pages": [
     {
@@ -20,7 +20,7 @@
     {
       "type": "patchouli:spotlight",
       "item": {
-        "item": "dragnlivestock:cheese"
+        "item": "minecraft:milk_bucket"
       },
       "text": "Cheese is a great source of protein, and lasts a long time. Cheese has a chance of giving Absorption when eaten."
     }

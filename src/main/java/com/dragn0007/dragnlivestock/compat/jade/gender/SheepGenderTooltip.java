@@ -26,7 +26,7 @@ public class SheepGenderTooltip implements IEntityComponentProvider {
 
     @Override
     public ResourceLocation getUid() {
-        return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "o_tooltips");
+        return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "sheep_gender_tooltip");
     }
 
 }

@@ -35,6 +35,6 @@ public class CowQualityTooltip implements IEntityComponentProvider {
 
     @Override
     public ResourceLocation getUid() {
-        return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "o_tooltips");
+        return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "cow_quality_tooltip");
     }
 }

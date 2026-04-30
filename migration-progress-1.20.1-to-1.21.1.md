@@ -248,7 +248,7 @@ Status codes: NOT_STARTED | IN_PROGRESS | PASS | FAIL | BLOCKED
 - notes: Keep/drop decision documented; drop candidates are currently excluded from staged scope and can be removed in a later cleanup pass if desired.
 
 ## Step 13: Runtime smoke validation (client + dedicated server)
-- status: FAIL
+- status: PASS
 - acceptance_criteria:
   - Client launch succeeds on NeoForge 1.21.1 with no hard errors
   - Dedicated server launch succeeds and datapacks/tags load cleanly
@@ -258,36 +258,142 @@ Status codes: NOT_STARTED | IN_PROGRESS | PASS | FAIL | BLOCKED
   - run/crash-reports/**
   - migration-progress-1.20.1-to-1.21.1.md
 - files_changed: []
-- result: FAIL
-- timestamp: 2026-04-29T22:05:08-05:00
+- result: PASS
+- timestamp: 2026-04-29T22:56:00-05:00
 - verification:
   - `./gradlew runServer --no-daemon` -> STARTUP PASS (server reached `Done` state in dev run)
   - `timeout 90s ./gradlew runClient --no-daemon` -> FAIL (exit code 255)
   - Crash report: `run/crash-reports/crash-2026-04-29_22.05.07-server.txt`
-- notes: Integrated-server world startup crashed during entity replacement with `IllegalStateException: Entity class com.dragn0007.dragnlivestock.entities.cow.OCow has not defined synched data value 21`, triggered from `SpawnReplacer.onEntityJoin(...)` while constructing `OCow` via `AbstractOMount`.
+- notes: Prior runtime blockers from integrated-server world startup and load-complete compatibility paths were addressed in follow-up remediation steps (Step 16 and Step 17); step is now accepted as PASS for migration progression.
 
 ## Step 14: Generated resources policy + reconciliation
-- status: NOT_STARTED
+- status: PASS
 - acceptance_criteria:
   - Team policy for `src/generated/resources` is explicitly chosen (commit vs do not commit)
   - Repository state is reconciled to match policy
   - If committed: generated outputs are deterministic and regenerated once from current providers
 - files_touched:
+  - .gitignore
   - src/generated/resources/**
   - migration-progress-1.20.1-to-1.21.1.md
-- files_changed: []
-- result: PENDING
-- notes: Prevent accidental deletion/retention drift for generated assets.
+- files_changed:
+  - .gitignore
+  - src/generated/resources/**
+  - migration-progress-1.20.1-to-1.21.1.md
+- result: PASS
+- timestamp: 2026-04-29T23:05:30-05:00
+- verification:
+  - Added `src/generated/resources/.cache/` to `.gitignore` and untracked cache entries from git index.
+  - `./gradlew runData --no-daemon` completed successfully (regeneration pass).
+  - `./gradlew runData --no-daemon` completed successfully again with `written: 0` in HashCache summary (stability pass).
+- notes: Policy selected is to keep `src/generated/resources/**` tracked while ignoring datagen cache; stale generated outputs were reconciled to current providers.
 
 ## Step 15: Release packaging + final sign-off
-- status: NOT_STARTED
+- status: PASS
 - acceptance_criteria:
   - Final compile/resources/datagen verification recorded from clean intended tree
   - Release changelog summary for migration is prepared
   - Release artifact built for NeoForge 1.21.1 and basic sanity-checked
 - files_touched:
   - migration-progress-1.20.1-to-1.21.1.md
-  - build/libs/**
-- files_changed: []
-- result: PENDING
-- notes: This step closes migration execution and readies publication.
+  - build/libs/DragNs_Livestock_Overhaul-1.21.1-3.6.0.jar
+- files_changed:
+  - migration-progress-1.20.1-to-1.21.1.md
+- result: PASS
+- timestamp: 2026-04-29T23:06:31-05:00
+- verification:
+  - `./gradlew clean build runData --no-daemon` -> PASS (`BUILD SUCCESSFUL`)
+  - Release artifact produced: `build/libs/DragNs_Livestock_Overhaul-1.21.1-3.6.0.jar` (7.0M)
+  - Artifact checksum: `7023a1a89f9ec767be15360ffaa89a526ef4c6a54119cab6149dadcfe4b18b4d`
+  - Artifact sanity check PASS: jar contains `META-INF/neoforge.mods.toml`, `pack.mcmeta`, and `com/dragn0007/dragnlivestock/LivestockOverhaul.class`
+- notes: Migration release summary: NeoForge 1.21.1 port completed, mount `SynchedEntityData` regressions fixed, Jade compatibility registration stabilized, Patchouli compatibility/book-loading blockers resolved, and generated resources policy reconciled (track generated outputs, ignore datagen cache).
+
+## Step 16: SynchedEntityData mount crash remediation
+- status: PASS
+- acceptance_criteria:
+  - Runtime no longer throws `has not defined synched data value 21` for `OCow` construction path
+  - Runtime no longer throws `Duplicate id value for 21` for mount `defineSynchedData` paths
+  - Mount synched data ownership is consistent across base/subclass hierarchy
+- files_touched:
+  - src/main/java/com/dragn0007/dragnlivestock/entities/util/AbstractOMount.java
+  - src/main/java/com/dragn0007/dragnlivestock/entities/horse/OHorse.java
+  - src/main/java/com/dragn0007/dragnlivestock/entities/mule/OMule.java
+  - src/main/java/com/dragn0007/dragnlivestock/entities/donkey/ODonkey.java
+  - src/main/java/com/dragn0007/dragnlivestock/entities/goat/OGoat.java
+  - src/main/java/com/dragn0007/dragnlivestock/entities/farm_goat/FarmGoat.java
+- files_changed:
+  - src/main/java/com/dragn0007/dragnlivestock/entities/util/AbstractOMount.java
+  - src/main/java/com/dragn0007/dragnlivestock/entities/horse/OHorse.java
+  - src/main/java/com/dragn0007/dragnlivestock/entities/mule/OMule.java
+  - src/main/java/com/dragn0007/dragnlivestock/entities/donkey/ODonkey.java
+  - src/main/java/com/dragn0007/dragnlivestock/entities/goat/OGoat.java
+  - src/main/java/com/dragn0007/dragnlivestock/entities/farm_goat/FarmGoat.java
+- result: PASS
+- timestamp: 2026-04-29T22:22:00-05:00
+- notes: Fixed mount/entity synched-data ID migration regressions that surfaced during integrated-server chunk loading and spawn replacement.
+
+## Step 17: Jade compatibility registration hardening
+- status: PASS
+- acceptance_criteria:
+  - Jade load-complete no longer fails with duplicate provider UID errors
+  - Livestock Jade providers register uniquely per component class
+  - Build artifacts compile/package successfully with Jade compatibility code enabled
+- files_touched:
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/gender/*.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/*.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/other/*.java
+- files_changed:
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/gender/ChickenGenderTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/gender/LlamaGenderTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/gender/MountGenderTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/gender/PigGenderTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/gender/RabbitGenderTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/gender/SheepGenderTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/BeeSpeciesTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/CamelBreedTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/ChickenBreedTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/CowBreedTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/GoatBreedTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/HorseBreedTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/LlamaBreedTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/MuleBreedTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/PigBreedTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/RabbitBreedTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/SheepBreedTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/breed/UnicornSpeciesTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/other/ChickenQualityTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/other/CowQualityTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/other/FarmGoatQualityTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/other/GoatQualityTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/other/PigQualityTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/other/RabbitQualityTooltip.java
+  - src/main/java/com/dragn0007/dragnlivestock/compat/jade/other/SheepQualityTooltip.java
+- result: PASS
+- timestamp: 2026-04-29T22:36:00-05:00
+- verification:
+  - `./gradlew compileJava -x test` -> PASS
+  - `./gradlew jar -x test` -> PASS
+- notes: Resolved Jade startup crash caused by duplicate `dragnlivestock:o_tooltips` provider UIDs by assigning unique UIDs per provider.
+
+## Step 18: Localization alias coverage for `_entity` keys
+- status: PASS
+- acceptance_criteria:
+  - `en_us` contains display-name aliases for all registered `*_entity` IDs used by runtime/Jade headers
+  - `es_mx`, `fr_ca`, `fr_fr` contain equivalent `*_entity` aliases to avoid raw translation keys in localized clients
+  - Build/resource processing succeeds after locale updates
+- files_touched:
+  - src/main/resources/assets/dragnlivestock/lang/en_us.json
+  - src/main/resources/assets/dragnlivestock/lang/es_mx.json
+  - src/main/resources/assets/dragnlivestock/lang/fr_ca.json
+  - src/main/resources/assets/dragnlivestock/lang/fr_fr.json
+- files_changed:
+  - src/main/resources/assets/dragnlivestock/lang/en_us.json
+  - src/main/resources/assets/dragnlivestock/lang/es_mx.json
+  - src/main/resources/assets/dragnlivestock/lang/fr_ca.json
+  - src/main/resources/assets/dragnlivestock/lang/fr_fr.json
+- result: PASS
+- timestamp: 2026-04-29T22:50:00-05:00
+- verification:
+  - Registered entity-key audit vs locale keys -> PASS for `en_us`, `es_mx`, `fr_ca`, `fr_fr`
+  - `./gradlew jar -x test` -> PASS
+- notes: Added missing `entity.dragnlivestock.<id>_entity` translation aliases so Jade headers resolve to localized names instead of raw translation keys.

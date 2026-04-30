@@ -1,6 +1,6 @@
 {
   "name": "O-Cow",
-  "icon": "dragnlivestock:o_cow_spawn_egg",
+  "icon": "minecraft:cow_spawn_egg",
   "category": "dragnlivestock:animals_category",
   "pages": [
     {

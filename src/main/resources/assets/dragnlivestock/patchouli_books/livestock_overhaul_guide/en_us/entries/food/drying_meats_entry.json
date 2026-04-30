@@ -1,6 +1,6 @@
 {
   "name": "Jerky & Meat Drying",
-  "icon": "dragnlivestock:beef_jerky",
+  "icon": "minecraft:beef",
   "category": "dragnlivestock:recipes_category",
   "pages": [
     {
@@ -10,7 +10,7 @@
     {
       "type": "patchouli:spotlight",
       "item": {
-        "item": "dragnlivestock:beef_jerky"
+        "item": "minecraft:beef"
       },
       "text": "Dried Meat doesn't have to be cooked, making it a great source of food for those who may be low on coal - as long as you don't mind waiting a couple days."
     },

@@ -764,7 +764,6 @@ public class FarmGoat extends AbstractOMount implements GeoEntity, Taggable {
 		builder.define(EYES, 0);
 		builder.define(FACE_OVERLAY, 0);
 		builder.define(HORN_TYPE, 0);
-		builder.define(GENDER, 0);
 		builder.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
 		builder.define(DATA_COLLAR_COLOR, DyeColor.RED.getId());
 		builder.define(TAGGED, false);

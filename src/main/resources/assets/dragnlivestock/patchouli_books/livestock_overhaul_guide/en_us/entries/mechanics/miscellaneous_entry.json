@@ -15,7 +15,7 @@
     },
     {
       "type": "patchouli:crafting",
-      "recipe": "dragnlivestock:red_medieval_blanket",
+      "recipe": "minecraft:red_carpet",
       "recipe2": "dragnlivestock:red_modern_blanket"
     },
     {

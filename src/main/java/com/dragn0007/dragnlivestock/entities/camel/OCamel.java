@@ -777,7 +777,6 @@ public class OCamel extends AbstractOMount implements GeoEntity, Taggable {
 		builder.define(OVERLAY, 0);
 		builder.define(VARIANT_TEXTURE, OCamelModel.Variant.DESERT.resourceLocation.toString());
 		builder.define(OVERLAY_TEXTURE, OCamelMarkingLayer.Overlay.NONE.resourceLocation.toString());
-		builder.define(GENDER, 0);
 		builder.define(MANE, 0);
 		builder.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
 		builder.define(TAGGED, false);

@@ -38,6 +38,6 @@ public class BeeSpeciesTooltip implements IEntityComponentProvider {
 
     @Override
     public ResourceLocation getUid() {
-        return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "o_tooltips");
+        return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "bee_species_tooltip");
     }
 }

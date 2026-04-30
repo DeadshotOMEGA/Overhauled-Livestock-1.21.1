@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_frog{Variant:4}",
+      "entity": "dragnlivestock:o_frog_entity{Variant:4}",
       "name": "The O-Frog",
       "default_rotation": 45,
       "scale": 0.8,

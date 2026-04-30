@@ -35,6 +35,6 @@ public class RabbitQualityTooltip implements IEntityComponentProvider {
 
     @Override
     public ResourceLocation getUid() {
-        return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "o_tooltips");
+        return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "rabbit_quality_tooltip");
     }
 }

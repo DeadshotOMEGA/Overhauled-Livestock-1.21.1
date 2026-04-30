@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:caribou{Variant:0,Gender:1}",
+      "entity": "dragnlivestock:caribou_entity{Variant:0,Gender:1}",
       "name": "The Caribou",
       "default_rotation": 45,
       "scale": 0.7,

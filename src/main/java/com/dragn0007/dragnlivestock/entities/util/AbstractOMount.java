@@ -606,6 +606,16 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
         builder.define(SADDLE_ITEM, ItemStack.EMPTY);
         builder.define(LOCKED, false);
         builder.define(SNIPPED, false);
+        // AbstractOMount also owns these accessors and must initialize them here.
+        builder.define(GENDER, 0);
+        builder.define(VARIANT, 0);
+        builder.define(VARIANT_TEXTURE, "");
+        builder.define(OVERLAY, 0);
+        builder.define(OVERLAY_TEXTURE, "");
+        builder.define(BREED, 0);
+        builder.define(FLOWER_ITEM, ItemStack.EMPTY);
+        builder.define(FLOWER_TYPE, 0);
+        builder.define(BRANDED, false);
     }
 
     public ItemStack getDecorItem() {

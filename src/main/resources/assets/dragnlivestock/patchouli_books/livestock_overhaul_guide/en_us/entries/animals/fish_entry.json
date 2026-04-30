@@ -1,6 +1,6 @@
 {
   "name": "O-Fish",
-  "icon": "dragnlivestock:roe",
+  "icon": "minecraft:salmon",
   "category": "dragnlivestock:animals_category",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_salmon{Variant:0}",
+      "entity": "dragnlivestock:o_salmon_entity{Variant:0}",
       "name": "The O-Salmon",
       "default_rotation": 45,
       "scale": 0.6,
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_cod{Variant:0}",
+      "entity": "dragnlivestock:o_cod_entity{Variant:0}",
       "name": "The O-Cod",
       "default_rotation": 45,
       "scale": 0.8,
@@ -28,7 +28,7 @@
     {
       "type": "patchouli:spotlight",
       "item": {
-        "item": "dragnlivestock:roe"
+        "item": "minecraft:salmon"
       },
       "text": "$(l)Roe$() can be eaten or placed down to spawn baby fish fry. Both cod and salmon can drop roe."
     }

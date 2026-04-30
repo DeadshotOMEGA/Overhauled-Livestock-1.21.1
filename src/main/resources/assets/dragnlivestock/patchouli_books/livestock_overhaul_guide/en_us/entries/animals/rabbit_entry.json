@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_rabbit{Variant:3, Breed:3}",
+      "entity": "dragnlivestock:o_rabbit_entity{Variant:3, Breed:3}",
       "name": "The O-Rabbit",
       "default_rotation": 45,
       "scale": 0.8,

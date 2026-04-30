@@ -1,6 +1,6 @@
 {
   "name": "Unicorn",
-  "icon": "dragnlivestock:unicorn_spawn_egg",
+  "icon": "minecraft:horse_spawn_egg",
   "category": "dragnlivestock:animals_category",
   "pages": [
     {
@@ -17,7 +17,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:unicorn{Variant:24, Breed:0, Mane:3, Tail:2, Feathering:2}",
+      "entity": "dragnlivestock:unicorn_entity{Variant:24, Breed:0, Mane:3, Tail:2, Feathering:2}",
       "name": "Overworld (0)",
       "default_rotation": 70,
       "scale": 0.7,
@@ -26,7 +26,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:unicorn{Variant:2, Breed:1, Mane:3, Tail:2, Feathering:0}",
+      "entity": "dragnlivestock:unicorn_entity{Variant:2, Breed:1, Mane:3, Tail:2, Feathering:0}",
       "name": "Nether (1)",
       "default_rotation": 70,
       "scale": 0.7,
@@ -35,7 +35,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:unicorn{Variant:30, Breed:2, Mane:3, Tail:2, Feathering:1}",
+      "entity": "dragnlivestock:unicorn_entity{Variant:30, Breed:2, Mane:3, Tail:2, Feathering:1}",
       "name": "End (2)",
       "default_rotation": 70,
       "scale": 0.7,
@@ -45,7 +45,7 @@
     {
       "type": "patchouli:spotlight",
       "item": {
-        "item": "dragnlivestock:unicorn_breeds"
+        "item": "minecraft:book"
       },
       "text": "Unicorn",
       "title": "Unicorn"

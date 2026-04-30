@@ -1,12 +1,12 @@
 {
   "name": "Brand Tags",
-  "icon": "dragnlivestock:yellow_brand_tag",
+  "icon": "minecraft:name_tag",
   "category": "dragnlivestock:mechanics_category",
   "pages": [
     {
       "type": "patchouli:spotlight",
       "item": {
-        "item": "dragnlivestock:yellow_brand_tag"
+        "item": "minecraft:name_tag"
       },
       "text": "Brand Tags come in all 16 dye colors and can be used on Cows, Cow Variants, Sheep, Goats, Pigs, Chickens, Caribou, and Camels. $(br2)They can be sheared off by shift-right clicking the tagged animal with Shears."
     },
@@ -48,7 +48,7 @@
     {
       "type": "patchouli:crafting",
       "recipe": "dragnlivestock:white_brand_tag",
-      "recipe2": "dragnlivestock:yellow_brand_tag"
+      "recipe2": "minecraft:name_tag"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "name": "Horse Customization",
-  "icon": "dragnlivestock:red_medieval_blanket",
+  "icon": "minecraft:red_carpet",
   "category": "dragnlivestock:mechanics_category",
   "pages": [
     {
@@ -10,7 +10,7 @@
     {
       "type": "patchouli:spotlight",
       "item": {
-        "item": "dragnlivestock:cyan_western_blanket"
+        "item": "minecraft:cyan_carpet"
       },
       "text": "Blankets can be placed in the decor slot of an O-Equine. They are simply cosmetic and offer no protection. Medieval, Modern, Racer and Western blankets are their own items, but normal vanilla carpets can be used too."
     },

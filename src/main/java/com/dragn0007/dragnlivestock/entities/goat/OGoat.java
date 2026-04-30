@@ -612,7 +612,6 @@ public class OGoat extends AbstractOMount implements GeoEntity, Taggable {
 		builder.define(QUALITY, 0);
 		builder.define(VARIANT, 0);
 		builder.define(OVERLAY, 0);
-		builder.define(GENDER, 0);
 		builder.define(BRAND_TAG_COLOR, DyeColor.YELLOW.getId());
 		builder.define(TAGGED, false);
 		builder.define(SHEARED, false);

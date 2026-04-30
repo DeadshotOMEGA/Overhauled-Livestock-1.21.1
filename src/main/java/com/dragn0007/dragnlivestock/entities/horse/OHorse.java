@@ -1273,7 +1273,6 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		builder.define(BREED, 0);
 		builder.define(VARIANT, 0);
 		builder.define(OVERLAY, 0);
-		builder.define(GENDER, 0);
 		builder.define(VARIANT_TEXTURE, this.getHorseVariantTexture(0).toString());
 		builder.define(OVERLAY_TEXTURE, EquineMarkingOverlay.NONE.resourceLocation.toString());
 		builder.define(REINDEER_VARIANT, 0);

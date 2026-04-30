@@ -638,7 +638,6 @@ public class OMule extends AbstractOMount implements GeoEntity {
 		builder.define(OVERLAY, 0);
 		builder.define(VARIANT_TEXTURE, OMuleModel.Variant.RUST.resourceLocation.toString());
 		builder.define(OVERLAY_TEXTURE, EquineMarkingOverlay.NONE.resourceLocation.toString());
-		builder.define(GENDER, 0);
 		builder.define(BREED, 0);
 		builder.define(FEATHERING, 0);
 		builder.define(EYES, 0);

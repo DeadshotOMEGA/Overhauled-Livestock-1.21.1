@@ -1,6 +1,6 @@
 {
   "name": "O-Pig",
-  "icon": "dragnlivestock:pork_tenderloin",
+  "icon": "minecraft:porkchop",
   "category": "dragnlivestock:animals_category",
   "pages": [
     {
@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_pig{Variant:4}",
+      "entity": "dragnlivestock:o_pig_entity{Variant:4}",
       "name": "The O-Pig",
       "default_rotation": 45,
       "scale": 0.8,

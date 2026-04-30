@@ -1,6 +1,6 @@
 {
   "name": "O-Horse",
-  "icon": "dragnlivestock:o_horse_spawn_egg",
+  "icon": "minecraft:horse_spawn_egg",
   "category": "dragnlivestock:animals_category",
   "pages": [
     {
@@ -22,7 +22,7 @@
     {
       "type": "patchouli:spotlight",
       "item": {
-        "item": "dragnlivestock:light_saddle"
+        "item": "minecraft:saddle"
       },
       "text": "O-Horses are a great upgrade to vanilla horses due to their new versatility. They can also be customized cosmetically with things like blankets.",
       "title": "O-Horse"

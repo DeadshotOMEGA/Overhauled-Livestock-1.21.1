@@ -1,6 +1,6 @@
 {
   "name": "All Mounts",
-  "icon": "dragnlivestock:diamond_horseshoe",
+  "icon": "minecraft:diamond_horse_armor",
   "category": "dragnlivestock:mount_controls_category",
   "pages": [
     {
