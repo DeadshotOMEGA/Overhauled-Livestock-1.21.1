@@ -60,14 +60,16 @@ public class HorseFollowHerdLeaderGoal extends Goal {
          this.timeToRecalcPath = this.adjustedTickDelay(20);
 
          OHorse leader = this.mob.leader;
-         if (leader != null) {
-            double distanceSq = this.mob.distanceToSqr(leader);
-            double minDistanceSq = 3.0D * 3.0D;
+         if (mob.goalSelector.getAvailableGoals().stream().noneMatch(goal -> goal.isRunning() && goal.getGoal() instanceof OAvoidEntityGoal<?>)) {
+            if (leader != null) {
+               double distanceSq = this.mob.distanceToSqr(leader);
+               double minDistanceSq = 3.0D * 3.0D;
 
-            if (distanceSq > minDistanceSq) {
-               this.mob.pathToLeader();
-            } else {
-               this.mob.getNavigation().stop();
+               if (distanceSq > minDistanceSq) {
+                  this.mob.pathToLeader();
+               } else {
+                  this.mob.getNavigation().stop();
+               }
             }
          }
       }
