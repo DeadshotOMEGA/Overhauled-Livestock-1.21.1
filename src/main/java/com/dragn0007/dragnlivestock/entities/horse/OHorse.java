@@ -649,6 +649,11 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		return 1.0F;
 	}
 
+	@Override
+	public float maxUpStep() {
+		return 1.0F;
+	}
+
 	public void addFollowers(Stream<? extends OHorse> stream) {
 		stream.limit(this.getMaxHerdSize() - this.herdSize).filter((horse) -> horse != this).forEach((horse) -> {
 			horse.startFollowing(this);
