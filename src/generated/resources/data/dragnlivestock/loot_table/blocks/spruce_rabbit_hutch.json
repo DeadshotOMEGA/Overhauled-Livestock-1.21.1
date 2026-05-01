@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dragnlivestock:rabbit_hutch"
+          "name": "dragnlivestock:spruce_rabbit_hutch"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "dragnlivestock:blocks/rabbit_hutch"
+  "random_sequence": "dragnlivestock:blocks/spruce_rabbit_hutch"
 }

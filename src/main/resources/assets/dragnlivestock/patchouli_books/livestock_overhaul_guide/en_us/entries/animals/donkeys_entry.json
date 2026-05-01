@@ -13,7 +13,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_donkey_entity{Variant:0}",
+      "entity": "dragnlivestock:o_donkey{Variant:0}",
       "name": "The O-Donkey",
       "default_rotation": 45,
       "scale": 0.75,
@@ -23,7 +23,7 @@
 
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_mule_entity{Variant:0}",
+      "entity": "dragnlivestock:o_mule{Variant:0}",
       "name": "The O-Mule",
       "default_rotation": 45,
       "scale": 1,

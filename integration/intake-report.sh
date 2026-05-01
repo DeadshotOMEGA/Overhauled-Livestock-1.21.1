@@ -170,11 +170,13 @@ write_init_gate5_validation_template() {
 | \`./gradlew compileJava --no-daemon\` | TBD | TBD | |
 | \`./gradlew processResources --no-daemon\` | TBD | TBD | |
 | \`./gradlew runData --no-daemon\` | TBD | TBD | |
+| \`./gradlew runServer --no-daemon\` | TBD | TBD | optional smoke |
 
 ## Manual Checks
 - [ ] Core gameplay parity checks completed (mounts, AI, inventory interactions)
 - [ ] Key recipes and loot tables verified
 - [ ] Datapack/tag loading verified
+- [ ] Client smoke log scanned for unknown keys/missing attributes/missing textures
 - [ ] Optional compat paths validated or explicitly deferred
 
 ## Merge Readiness Verdict
@@ -360,6 +362,7 @@ GATE5_DISP
 - [ ] Core gameplay parity checks completed
 - [ ] Datapack/tag loading clean
 - [ ] Key recipe and loot changes verified
+- [ ] Client smoke log scanned for unknown keys/missing attributes/missing textures
 - [ ] Optional compatibility modules validated or deferred with rationale
 
 ## Merge Readiness Verdict

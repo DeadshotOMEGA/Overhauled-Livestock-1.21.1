@@ -37,3 +37,13 @@ Dispositions:
 - After `B2`: run `./gradlew compileJava --no-daemon`.
 - After `B3`: run `./gradlew runData --no-daemon` and verify generated diffs are intentional.
 - After `B4`: run `./gradlew compileJava processResources --no-daemon`, then optional `./gradlew runServer --no-daemon` smoke.
+
+## Post-Gate Corrective Batch (Integration-Only)
+
+| item_id | upstream_ref | summary | disposition | target_paths | rationale | owner | batch | status | notes |
+|---|---|---|---|---|---|---|---|---|---|
+| G5-R001 | `(none)` | restore removed item/entity surface and generated assets after migration drift | adapt | `LOItems`, `EntityTypes`, generated item models, patchouli references | Post-smoke parity check showed migration drift removed large content surface from registry visibility. | sauk | B5 | DONE | Restored pre-migration-equivalent item/entity registrations in NeoForge form; rebuilt and deployed Prism test jar. |
+| G5-R002 | `(none)` | fix worldgen registry ids for biome modifiers | adapt | `src/generated/resources/data/dragnlivestock/neoforge/biome_modifier/*.json` | World creation failed due to stale `*_entity` ids after registry-id restoration. | sauk | B5 | DONE | Updated to `caribou`, `farm_goat`, `grub`; world creation succeeded in client smoke. |
+| G5-R003 | `(none)` | restore rabbit-hutch block model/blockstate coverage | apply | `src/main/resources/assets/dragnlivestock/{models/block,blockstates}/*rabbit_hutch*` | Rabbit-hutch item models referenced missing block model parents. | sauk | B5 | DONE | Added missing variant model/blockstate files for all wood types; user confirmed fix. |
+| G5-R004 | `(none)` | align loot datagen and entity attributes with restored registry surface | adapt | `LOBlockLoot`, `LivestockOverhaulCommonEvent`, generated loot tables | Startup logs showed unknown loot item keys and missing attributes for restored entities. | sauk | B5 | DONE | Reinstated explicit `dropOther` mappings and restored attribute registrations (headless horseman + mooblooms). |
+| G5-R005 | `(none)` | harden horse texture variant mapping to existing assets | adapt | `OHorse` | Runtime log showed missing `rose_gray.png` and similar non-existent variant names. | sauk | B5 | DONE | Added variant-name alias mapping to existing texture files; removed missing-texture warnings for this path class. |

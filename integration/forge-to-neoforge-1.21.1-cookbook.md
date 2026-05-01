@@ -210,6 +210,43 @@ Run in order:
 Generated resources rule:
 - Never port `src/generated/resources/.cache/**` between branches/cycles.
 
+## Regression Tripwires (Add Before Gate 6 Merge)
+
+Use these checks after large registry/content ports and after any `runData` reconciliation:
+
+1. Registry-to-model coverage (items)
+```bash
+perl -ne 'while(/register\(\"([a-z0-9_]+)\"/g){print "$1\n"}' src/main/java/com/dragn0007/dragnlivestock/items/LOItems.java | sort -u > /tmp/lo_item_ids.txt
+(find src/main/resources/assets/dragnlivestock/models/item -maxdepth 1 -type f -name '*.json'; find src/generated/resources/assets/dragnlivestock/models/item -maxdepth 1 -type f -name '*.json') | sed 's#.*/##;s/\.json$//' | sort -u > /tmp/lo_model_ids.txt
+comm -23 /tmp/lo_item_ids.txt /tmp/lo_model_ids.txt
+```
+- Expected: no output. Any lines are missing item model ids.
+
+2. Biome modifier entity-id sanity
+```bash
+rg -n "dragnlivestock:.*_entity" src/generated/resources/data/dragnlivestock/neoforge/biome_modifier
+```
+- Expected: no stale ids when runtime entities are registered without `_entity` suffixes.
+
+3. Attribute registration coverage for restored entities
+```bash
+rg -n "event\.put\(EntityTypes\." src/main/java/com/dragn0007/dragnlivestock/common/event/LivestockOverhaulCommonEvent.java
+```
+- Required coverage includes all restored entities from `EntityTypes` that need attributes (notably `headless_horseman` and moobloom variants).
+
+4. Loot drop mapping integrity for blocks without block-items
+```bash
+rg -n "registerBlockWithoutItem|dropSelf\(|dropOther\(" src/main/java/com/dragn0007/dragnlivestock/{blocks/LOBlocks.java,datagen/biglooter/LOBlockLoot.java}
+```
+- If a block is registered without block item, `LOBlockLoot` must not `dropSelf` that block.
+
+5. Prism client smoke log scan
+```bash
+rg -n "Unknown registry key|has no attributes|Failed to load texture" \
+  /path/to/PrismLauncher/instances/<instance>/minecraft/logs/latest.log
+```
+- Expected: no new LO-related hits after the cycle’s fix set.
+
 ## Ready-to-Start B1 Checklist (Aligned to Gate 5 Batches)
 
 - [ ] Cookbook refresh completed and reviewed.

@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_bee_entity{Variant:0}",
+      "entity": "dragnlivestock:o_bee{Variant:0}",
       "name": "The O-Bee",
       "default_rotation": 45,
       "scale": 0.8,

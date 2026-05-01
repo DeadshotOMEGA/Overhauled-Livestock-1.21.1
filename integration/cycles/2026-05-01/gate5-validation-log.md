@@ -21,6 +21,9 @@
 | `timeout 120s ./gradlew runServer --no-daemon` | PASS | 2026-04-30T23:48:22-05:00 | Server reached `Done` startup state in dev run; process ended by timeout guard after smoke verification. |
 | `./gradlew runData --no-daemon` | PASS | 2026-05-01T00:45:13-05:00 | Post-full-B4 datagen reconciliation; providers completed and no failures in artifact log `artifacts/b4-postfull-rundata.log`. |
 | `timeout 120s ./gradlew runServer --no-daemon` | PASS | 2026-05-01T00:45:13-05:00 | Post-full-B4 server smoke reached `Done` startup state; captured in `artifacts/b4-postfull-runserver.log`. |
+| `./gradlew clean build` | PASS | 2026-05-01T13:20:00-05:00 | Post-intake restoration build used for Prism validation jar refresh. |
+| `./gradlew runData` | PASS | 2026-05-01T13:40:49-05:00 | Regenerated loot/datapack outputs after post-smoke regression fixes (loot drop mappings + rabbit-hutch split). |
+| `./gradlew build` | PASS | 2026-05-01T13:41:00-05:00 | Final packaging after post-smoke fixes; jar deployed to Prism test instance. |
 
 ## Manual Checks
 - [x] Core gameplay parity checks completed (smoke-level)
@@ -34,8 +37,28 @@ Notes:
 - Key recipe/loot verification evidence: expected intake file set is present in working tree (`wagon_harness` recipe add, jerky tag updates, loot-table sweep including `ox.json` removal).
 - Compatibility rationale: optional compat items remain tagged with `required: false`; datagen log explicitly notes Medieval Embroidery generators were skipped because that mod is not loaded in this validation environment.
 
+## Post-Smoke Regression Reconciliation (2026-05-01)
+- Trigger: Prism client smoke discovered missing item models/textures, failed world creation due to biome-modifier entity ids, and startup log warnings for missing entity attributes.
+- Root-cause classification (baseline-only comparison against `baseline/fork-2026-05-01` and `baseline/upstream-2026-05-01`):
+  - Migration symptom: generated item model set had been reduced relative to restored item registry surface.
+  - Migration symptom: biome modifier JSONs still referenced `*_entity` ids while restored entity registry ids were non-suffixed (`caribou`, `farm_goat`, `grub`).
+  - Migration symptom: attribute registration list in NeoForge common event did not include restored `headless_horseman` and moobloom entities.
+  - Migration symptom: horse variant texture mapping requested non-existent assets (example: `rose_gray.png`).
+  - Migration symptom: block loot datagen logic had drifted to `dropSelf` for all blocks, causing item-key resolution failures for no-item block registrations.
+- Corrective actions:
+  - Restored full generated item model set under `src/generated/resources/assets/dragnlivestock/models/item/**`.
+  - Restored/added rabbit-hutch variant blockstate and block-model assets.
+  - Fixed biome modifier entity ids and regenerated datagen outputs.
+  - Restored explicit block loot mappings in `LOBlockLoot` (`dropOther` where block item is intentionally absent).
+  - Restored attribute registrations for `headless_horseman` + all moobloom variants.
+  - Added horse variant fallback alias mapping to existing texture names.
+- Validation evidence:
+  - World creation succeeds in Prism instance after biome-modifier fix.
+  - Creative/EMI item surface restored (user-confirmed model issue resolution).
+  - `runData` and `build` pass after corrective patch set.
+
 ## Merge Readiness Verdict
-- Verdict: `READY_FOR_GATE6_MERGE`
+- Verdict: `READY_FOR_GATE6_MERGE_WITH_POST_SMOKE_FIXES_APPLIED`
 - Decision owner: `sauk`
-- Decision time: `2026-05-01T00:45:13-05:00`
+- Decision time: `2026-05-01T13:41:00-05:00`
 - Blocking items: `none`
