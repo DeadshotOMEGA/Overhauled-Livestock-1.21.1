@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dragnlivestock:raw_generic_jerky_hanging"
+          "name": "dragnlivestock:generic_strips"
         }
       ],
       "rolls": 1.0

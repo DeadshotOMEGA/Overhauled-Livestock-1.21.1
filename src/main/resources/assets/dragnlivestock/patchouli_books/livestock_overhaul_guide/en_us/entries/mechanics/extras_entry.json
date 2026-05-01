@@ -5,7 +5,7 @@
   "pages": [
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:grub_entity{Variant:0}",
+      "entity": "dragnlivestock:grub{Variant:0}",
       "name": "The Grub",
       "default_rotation": 45,
       "scale": 0.8,
@@ -21,7 +21,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_horse_entity{Variant:0}",
+      "entity": "dragnlivestock:o_horse{Variant:0}",
       "name": "The Headless Horseman",
       "default_rotation": 45,
       "scale": 0.7,

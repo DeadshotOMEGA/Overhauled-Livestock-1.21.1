@@ -2111,7 +2111,20 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 	private ResourceLocation getHorseVariantTexture(int variant) {
 		String[] names = {"bay","black","blue_roan","buckskin","champagne","chestnut","chocolate","copper","cream","dark_bay","dapple_gray","dun","flaxen_chestnut","gold_champagne","grullo","light_gray","palomino","perlino","red_dun","rose_gray","seal_brown","silver","strawberry_roan","steel_grey"};
 		String n = names[Math.floorMod(variant, names.length)];
-		return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/" + n + ".png");
+		String textureName = switch (n) {
+			case "chocolate" -> "chocolate_roan";
+			case "copper" -> "cinnamon";
+			case "dapple_gray", "light_gray", "rose_gray" -> "grey";
+			case "dun" -> "bay_dun";
+			case "flaxen_chestnut" -> "liver_chestnut";
+			case "gold_champagne" -> "champagne";
+			case "grullo" -> "grulla";
+			case "palomino" -> "palamino";
+			case "perlino" -> "ivory";
+			case "seal_brown" -> "seal_bay";
+			default -> n;
+		};
+		return ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/" + textureName + ".png");
 	}
 
 	private ResourceLocation getSimplifiedHorseVariantTexture(int variant) {

@@ -1,0 +1,5 @@
+8d1e01aa -EVEN more TFC compat recipes
+4c190d95 -more TFC compat recipes
+2364d66e -TFC wagon harness leather knapping recipe
+ed89b814 -TFC Spindle inclusion
+23ee6cb0 -Russian translation by Maxwell

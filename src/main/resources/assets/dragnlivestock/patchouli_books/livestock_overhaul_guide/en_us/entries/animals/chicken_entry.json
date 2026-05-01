@@ -13,7 +13,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_chicken_entity{Variant:3,Breed:3}",
+      "entity": "dragnlivestock:o_chicken{Variant:3,Breed:3}",
       "name": "The O-Chicken",
       "default_rotation": 45,
       "scale": 0.8,

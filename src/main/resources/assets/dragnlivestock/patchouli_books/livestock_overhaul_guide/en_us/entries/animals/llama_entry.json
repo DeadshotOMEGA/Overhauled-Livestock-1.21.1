@@ -9,7 +9,7 @@
     },
     {
       "type": "patchouli:entity",
-      "entity": "dragnlivestock:o_llama_entity{Variant:2}",
+      "entity": "dragnlivestock:o_llama{Variant:2}",
       "name": "The O-Llama",
       "default_rotation": 45,
       "scale": 0.6,

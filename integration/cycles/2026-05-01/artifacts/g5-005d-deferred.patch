@@ -1,0 +1,1803 @@
+commit 23ee6cb0c2b18c646ae61ac0e6ed01de3f92b8a7
+Author: DragN0007 <115123493+DragN0007@users.noreply.github.com>
+Date:   Tue Apr 28 16:43:36 2026 -0500
+
+    -Russian translation by Maxwell
+
+diff --git a/src/main/java/com/dragn0007/dragnlivestock/entities/cow/OCow.java b/src/main/java/com/dragn0007/dragnlivestock/entities/cow/OCow.java
+index 5fb12268..3b0020b0 100644
+--- a/src/main/java/com/dragn0007/dragnlivestock/entities/cow/OCow.java
++++ b/src/main/java/com/dragn0007/dragnlivestock/entities/cow/OCow.java
+@@ -78,15 +78,15 @@ public class OCow extends AbstractOMount implements GeoEntity, Taggable {
+ 		setMilked(false);
+ 	}
+ 
+-	protected static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_cow");
+-	protected static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/cow");
+-	protected static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/cow");
++	public static final ResourceLocation LOOT_TABLE = new ResourceLocation(LivestockOverhaul.MODID, "entities/o_cow");
++	public static final ResourceLocation VANILLA_LOOT_TABLE = new ResourceLocation("minecraft", "entities/cow");
++	public static final ResourceLocation TFC_LOOT_TABLE = new ResourceLocation("tfc", "entities/cow");
+ 	@Override
+ 	public @NotNull ResourceLocation getDefaultLootTable() {
+-		if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
+-			return VANILLA_LOOT_TABLE;
+-		} else if (ModList.get().isLoaded("tfc")) {
++		if (ModList.get().isLoaded("tfc")) {
+ 			return TFC_LOOT_TABLE;
++		} else if (LivestockOverhaulCommonConfig.USE_VANILLA_LOOT.get()) {
++			return VANILLA_LOOT_TABLE;
+ 		} else {
+ 			return LOOT_TABLE;
+ 		}
+diff --git a/src/main/resources/assets/dragnlivestock/animations/o_cow.animation.json b/src/main/resources/assets/dragnlivestock/animations/o_cow.animation.json
+index aaa92fa7..f9d5c57c 100644
+--- a/src/main/resources/assets/dragnlivestock/animations/o_cow.animation.json
++++ b/src/main/resources/assets/dragnlivestock/animations/o_cow.animation.json
+@@ -6346,7 +6346,160 @@
+ 					}
+ 				}
+ 			}
++		},
++		"sleep": {
++			"loop": true,
++			"bones": {
++				"body": {
++					"rotation": {
++						"vector": [0, 0, -12.5]
++					},
++					"position": {
++						"vector": [0, -10.9, 0]
++					}
++				},
++				"body_piv": {
++					"position": {
++						"vector": [0, "math.cos(query.anim_time*100)*0.2-0.2", 0]
++					},
++					"scale": {
++						"vector": ["1+math.cos(query.anim_time*100)*0.03", 1, 1]
++					}
++				},
++				"fat": {
++					"rotation": {
++						"vector": [-22.5, 0, 0]
++					}
++				},
++				"utters": {
++					"scale": {
++						"vector": [0, 0, 0]
++					}
++				},
++				"front_right_leg": {
++					"rotation": {
++						"vector": [-82.54655, 10.77814, 14.00591]
++					}
++				},
++				"front_right_calf": {
++					"rotation": {
++						"vector": [170, 0, 0]
++					},
++					"position": {
++						"vector": [0, 2, 1]
++					}
++				},
++				"front_right_hoof": {
++					"rotation": {
++						"vector": [122.5, 0, 0]
++					}
++				},
++				"front_left_leg": {
++					"rotation": {
++						"vector": [-90.36186, 1.41513, 13.78347]
++					},
++					"position": {
++						"vector": [1, -2, -0.3]
++					}
++				},
++				"front_left_calf": {
++					"rotation": {
++						"vector": [175.77056, 0.22304, -13.52052]
++					},
++					"position": {
++						"vector": [0, 2, 1.1]
++					}
++				},
++				"front_left_hoof": {
++					"rotation": {
++						"vector": [102.5, 0, 0]
++					}
++				},
++				"back_right_leg": {
++					"rotation": {
++						"vector": [0, 0, -5]
++					}
++				},
++				"back_left_calf": {
++					"rotation": {
++						"vector": [-62.53308, 2.01452, -70.13596]
++					},
++					"position": {
++						"vector": [2.4, -2, 0]
++					}
++				},
++				"back_left_hoof": {
++					"rotation": {
++						"vector": [92.5, 0, 0]
++					},
++					"position": {
++						"vector": [0, -1.1, 2]
++					}
++				},
++				"back_left_leg": {
++					"rotation": {
++						"vector": [0, 0, -15]
++					},
++					"position": {
++						"vector": [0.3, 0, 0]
++					}
++				},
++				"back_right_calf": {
++					"rotation": {
++						"vector": [-83.515, -23.76985, 11.27949]
++					},
++					"position": {
++						"vector": [0, -1.5, 0]
++					}
++				},
++				"back_right_hoof": {
++					"rotation": {
++						"vector": [95, 0, 0]
++					},
++					"position": {
++						"vector": [0.4, -0.8, 0.7]
++					}
++				},
++				"neck": {
++					"rotation": {
++						"vector": [-0.80401, -0.35619, 12.06214]
++					},
++					"position": {
++						"vector": [0.9, "1.1+math.cos(query.anim_time*100)*0.3-0.3", 1.5]
++					}
++				},
++				"head": {
++					"rotation": {
++						"vector": [19.29928, -14.5158, -0.95658]
++					},
++					"position": {
++						"vector": [0, 0, -0.5]
++					}
++				},
++				"right_ear": {
++					"rotation": {
++						"vector": [22.5, 0, 0]
++					}
++				},
++				"left_ear": {
++					"rotation": {
++						"vector": [22.5, 0, 0]
++					}
++				},
++				"tail": {
++					"rotation": {
++						"vector": [15.72577, -12.64366, "-48.2961+math.sin(query.anim_time*100)*2"]
++					},
++					"position": {
++						"vector": [0, -2, 0]
++					}
++				},
++				"tail_2": {
++					"rotation": {
++						"vector": [-12.5, 0, "-29.9999+math.cos(query.anim_time*100)*-3"]
++					}
++				}
++			}
+ 		}
+-	},
+-	"geckolib_format_version": 2
++	}
+ }
+\ No newline at end of file
+diff --git a/src/main/resources/assets/dragnlivestock/patchouli_books/livestock_overhaul_guide/en_us/entries/animals/unicorn_entry.json b/src/main/resources/assets/dragnlivestock/patchouli_books/livestock_overhaul_guide/en_us/entries/animals/unicorn_entry.json
+index 50067b19..c7688098 100644
+--- a/src/main/resources/assets/dragnlivestock/patchouli_books/livestock_overhaul_guide/en_us/entries/animals/unicorn_entry.json
++++ b/src/main/resources/assets/dragnlivestock/patchouli_books/livestock_overhaul_guide/en_us/entries/animals/unicorn_entry.json
+@@ -45,7 +45,7 @@
+     {
+       "type": "patchouli:spotlight",
+       "item": {
+-        "item": "dragnlivestock:unicorn_breeds"
++        "item": "dragnlivestock:overworld_unicorn_horn"
+       },
+       "text": "Unicorn",
+       "title": "Unicorn"
+diff --git a/src/main/resources/assets/dragnlivestock/textures/item/camel.png b/src/main/resources/assets/dragnlivestock/textures/item/camel.png
+index 90e2d64c..1df80303 100644
+Binary files a/src/main/resources/assets/dragnlivestock/textures/item/camel.png and b/src/main/resources/assets/dragnlivestock/textures/item/camel.png differ
+diff --git a/src/main/resources/assets/dragnlivestock/textures/item/cooked_camel.png b/src/main/resources/assets/dragnlivestock/textures/item/cooked_camel.png
+index 785c3712..3ce8c65f 100644
+Binary files a/src/main/resources/assets/dragnlivestock/textures/item/cooked_camel.png and b/src/main/resources/assets/dragnlivestock/textures/item/cooked_camel.png differ
+diff --git a/src/main/resources/assets/dragnlivestock/textures/item/cooked_horse.png b/src/main/resources/assets/dragnlivestock/textures/item/cooked_horse.png
+index a5a7789c..c29cfae4 100644
+Binary files a/src/main/resources/assets/dragnlivestock/textures/item/cooked_horse.png and b/src/main/resources/assets/dragnlivestock/textures/item/cooked_horse.png differ
+diff --git a/src/main/resources/assets/dragnlivestock/textures/item/cooked_llama.png b/src/main/resources/assets/dragnlivestock/textures/item/cooked_llama.png
+index 339b206b..85197886 100644
+Binary files a/src/main/resources/assets/dragnlivestock/textures/item/cooked_llama.png and b/src/main/resources/assets/dragnlivestock/textures/item/cooked_llama.png differ
+diff --git a/src/main/resources/assets/dragnlivestock/textures/item/cooked_unicorn.png b/src/main/resources/assets/dragnlivestock/textures/item/cooked_unicorn.png
+index b6453ad6..dc6c3d94 100644
+Binary files a/src/main/resources/assets/dragnlivestock/textures/item/cooked_unicorn.png and b/src/main/resources/assets/dragnlivestock/textures/item/cooked_unicorn.png differ
+diff --git a/src/main/resources/assets/dragnlivestock/textures/item/game_strips.png b/src/main/resources/assets/dragnlivestock/textures/item/game_strips.png
+index f116271e..ed91ea2d 100644
+Binary files a/src/main/resources/assets/dragnlivestock/textures/item/game_strips.png and b/src/main/resources/assets/dragnlivestock/textures/item/game_strips.png differ
+diff --git a/src/main/resources/assets/dragnlivestock/textures/item/horse.png b/src/main/resources/assets/dragnlivestock/textures/item/horse.png
+index 8c68f253..c669ec4c 100644
+Binary files a/src/main/resources/assets/dragnlivestock/textures/item/horse.png and b/src/main/resources/assets/dragnlivestock/textures/item/horse.png differ
+diff --git a/src/main/resources/assets/dragnlivestock/textures/item/llama.png b/src/main/resources/assets/dragnlivestock/textures/item/llama.png
+index 921b30e3..533d5a26 100644
+Binary files a/src/main/resources/assets/dragnlivestock/textures/item/llama.png and b/src/main/resources/assets/dragnlivestock/textures/item/llama.png differ
+diff --git a/src/main/resources/assets/dragnlivestock/textures/item/pork_jerky.png b/src/main/resources/assets/dragnlivestock/textures/item/pork_jerky.png
+index d4f038e5..9acd3990 100644
+Binary files a/src/main/resources/assets/dragnlivestock/textures/item/pork_jerky.png and b/src/main/resources/assets/dragnlivestock/textures/item/pork_jerky.png differ
+diff --git a/src/main/resources/assets/dragnlivestock/textures/item/unicorn.png b/src/main/resources/assets/dragnlivestock/textures/item/unicorn.png
+index c64a887b..3e1cc72e 100644
+Binary files a/src/main/resources/assets/dragnlivestock/textures/item/unicorn.png and b/src/main/resources/assets/dragnlivestock/textures/item/unicorn.png differ
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/caribou.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/caribou.json
+index 78de432b..33b3c8bb 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/caribou.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/caribou.json
+@@ -92,86 +92,6 @@
+           "name": "dragnlivestock:caribou"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:caribou_sirloin_steak"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:caribou_rib_steak"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/end_unicorn.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/end_unicorn.json
+index 8e5bbcca..2cf2019d 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/end_unicorn.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/end_unicorn.json
+@@ -118,86 +118,6 @@
+           "name": "dragnlivestock:unicorn"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:unicorn_sirloin_steak"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:unicorn_rib_steak"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/nether_unicorn.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/nether_unicorn.json
+index 29434467..e6d7bd35 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/nether_unicorn.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/nether_unicorn.json
+@@ -118,86 +118,6 @@
+           "name": "dragnlivestock:unicorn"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:unicorn_sirloin_steak"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:unicorn_rib_steak"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_camel.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_camel.json
+index c6b40796..e136da75 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_camel.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_camel.json
+@@ -92,86 +92,6 @@
+           "name": "dragnlivestock:camel"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:camel_loin"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:camel_rib"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_chicken.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_chicken.json
+index e12f2642..7aada220 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_chicken.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_chicken.json
+@@ -92,46 +92,6 @@
+           "name": "minecraft:chicken"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 0.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:chicken_thigh"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_cow.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_cow.json
+index 0e66013b..c99bd711 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_cow.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_cow.json
+@@ -92,86 +92,6 @@
+           "name": "minecraft:beef"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:beef_sirloin_steak"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:beef_rib_steak"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_donkey.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_donkey.json
+index ff0f8944..b394a8b1 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_donkey.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_donkey.json
+@@ -92,86 +92,6 @@
+           "name": "dragnlivestock:horse"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:horse_sirloin_steak"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:horse_rib_steak"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_goat.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_goat.json
+index 90df7ea9..964792f0 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_goat.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_goat.json
+@@ -67,86 +67,6 @@
+         }
+       ]
+     },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "name": "dragnlivestock:chevon_loin",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "type": "minecraft:uniform",
+-                "min": 1,
+-                "max": 2
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "entity": "this",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  }
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0,
+-                "max": 1
+-              }
+-            }
+-          ]
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "name": "dragnlivestock:chevon_rib",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "type": "minecraft:uniform",
+-                "min": 1,
+-                "max": 2
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "entity": "this",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  }
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 1,
+-                "max": 1
+-              }
+-            }
+-          ]
+-        }
+-      ]
+-    },
+     {
+       "rolls": 1,
+       "entries": [
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_horse.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_horse.json
+index ff0f8944..b394a8b1 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_horse.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_horse.json
+@@ -92,86 +92,6 @@
+           "name": "dragnlivestock:horse"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:horse_sirloin_steak"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:horse_rib_steak"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_llama.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_llama.json
+index 1b6dd5d7..73e31a99 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_llama.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_llama.json
+@@ -92,86 +92,6 @@
+           "name": "dragnlivestock:llama"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:llama_loin"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:llama_rib"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_mooshroom.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_mooshroom.json
+index fb119d16..2549a0d6 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_mooshroom.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_mooshroom.json
+@@ -144,86 +144,6 @@
+           "name": "minecraft:beef"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:beef_sirloin_steak"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:beef_rib_steak"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_mule.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_mule.json
+index ff0f8944..b394a8b1 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_mule.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_mule.json
+@@ -92,86 +92,6 @@
+           "name": "dragnlivestock:horse"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:horse_sirloin_steak"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:horse_rib_steak"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_pig.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_pig.json
+index b581fc6d..ebd336a1 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_pig.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_pig.json
+@@ -66,86 +66,6 @@
+           "name": "minecraft:porkchop"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:pork_tenderloin"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:pork_rib_chop"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_rabbit.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_rabbit.json
+index 4621a74f..19a810e8 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_rabbit.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_rabbit.json
+@@ -93,46 +93,6 @@
+         }
+       ]
+     },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 0.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:rabbit_thigh"
+-        }
+-      ]
+-    },
+     {
+       "bonus_rolls": 0.0,
+       "conditions": [
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_sheep.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_sheep.json
+index fa27b707..6263acfa 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/o_sheep.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/o_sheep.json
+@@ -66,86 +66,6 @@
+           "name": "minecraft:mutton"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:mutton_loin"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:mutton_rib"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/overworld_unicorn.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/overworld_unicorn.json
+index 4c2937c3..cf04a6e7 100644
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/overworld_unicorn.json
++++ b/src/main/resources/data/dragnlivestock/loot_tables/entities/overworld_unicorn.json
+@@ -118,86 +118,6 @@
+           "name": "dragnlivestock:unicorn"
+         }
+       ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:unicorn_sirloin_steak"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 2.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:unicorn_rib_steak"
+-        }
+-      ]
+     }
+   ]
+ }
+diff --git a/src/main/resources/data/dragnlivestock/loot_tables/entities/ox.json b/src/main/resources/data/dragnlivestock/loot_tables/entities/ox.json
+deleted file mode 100644
+index a52bdca0..00000000
+--- a/src/main/resources/data/dragnlivestock/loot_tables/entities/ox.json
++++ /dev/null
+@@ -1,178 +0,0 @@
+-{
+-  "type": "minecraft:entity",
+-  "pools": [
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 4.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 2.0
+-              }
+-            }
+-          ],
+-          "name": "minecraft:bone"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 6.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 2.0
+-              }
+-            }
+-          ],
+-          "name": "minecraft:leather"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 5.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 2.0
+-              }
+-            }
+-          ],
+-          "name": "minecraft:beef"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 4.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:beef_sirloin_steak"
+-        }
+-      ]
+-    },
+-    {
+-      "rolls": 1,
+-      "entries": [
+-        {
+-          "type": "minecraft:item",
+-          "functions": [
+-            {
+-              "function": "minecraft:set_count",
+-              "count": {
+-                "min": 1.0,
+-                "max": 4.0,
+-                "type": "minecraft:uniform"
+-              }
+-            },
+-            {
+-              "function": "minecraft:furnace_smelt",
+-              "conditions": [
+-                {
+-                  "condition": "minecraft:entity_properties",
+-                  "predicate": {
+-                    "flags": {
+-                      "is_on_fire": true
+-                    }
+-                  },
+-                  "entity": "this"
+-                }
+-              ]
+-            },
+-            {
+-              "function": "minecraft:looting_enchant",
+-              "count": {
+-                "min": 0.0,
+-                "max": 1.0
+-              }
+-            }
+-          ],
+-          "name": "dragnlivestock:beef_rib_steak"
+-        }
+-      ]
+-    }
+-  ]
+-}
+-

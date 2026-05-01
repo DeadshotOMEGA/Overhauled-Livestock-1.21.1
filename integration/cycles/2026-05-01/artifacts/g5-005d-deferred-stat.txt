@@ -1,0 +1,32 @@
+23ee6cb0 -Russian translation by Maxwell
+ .../dragnlivestock/entities/cow/OCow.java          |  12 +-
+ .../dragnlivestock/animations/o_cow.animation.json | 157 +++++++++++++++++-
+ .../en_us/entries/animals/unicorn_entry.json       |   2 +-
+ .../assets/dragnlivestock/textures/item/camel.png  | Bin 332 -> 350 bytes
+ .../dragnlivestock/textures/item/cooked_camel.png  | Bin 336 -> 333 bytes
+ .../dragnlivestock/textures/item/cooked_horse.png  | Bin 368 -> 386 bytes
+ .../dragnlivestock/textures/item/cooked_llama.png  | Bin 332 -> 358 bytes
+ .../textures/item/cooked_unicorn.png               | Bin 410 -> 383 bytes
+ .../dragnlivestock/textures/item/game_strips.png   | Bin 299 -> 330 bytes
+ .../assets/dragnlivestock/textures/item/horse.png  | Bin 363 -> 373 bytes
+ .../assets/dragnlivestock/textures/item/llama.png  | Bin 329 -> 330 bytes
+ .../dragnlivestock/textures/item/pork_jerky.png    | Bin 285 -> 340 bytes
+ .../dragnlivestock/textures/item/unicorn.png       | Bin 386 -> 372 bytes
+ .../loot_tables/entities/caribou.json              |  80 ---------
+ .../loot_tables/entities/end_unicorn.json          |  80 ---------
+ .../loot_tables/entities/nether_unicorn.json       |  80 ---------
+ .../loot_tables/entities/o_camel.json              |  80 ---------
+ .../loot_tables/entities/o_chicken.json            |  40 -----
+ .../dragnlivestock/loot_tables/entities/o_cow.json |  80 ---------
+ .../loot_tables/entities/o_donkey.json             |  80 ---------
+ .../loot_tables/entities/o_goat.json               |  80 ---------
+ .../loot_tables/entities/o_horse.json              |  80 ---------
+ .../loot_tables/entities/o_llama.json              |  80 ---------
+ .../loot_tables/entities/o_mooshroom.json          |  80 ---------
+ .../loot_tables/entities/o_mule.json               |  80 ---------
+ .../dragnlivestock/loot_tables/entities/o_pig.json |  80 ---------
+ .../loot_tables/entities/o_rabbit.json             |  40 -----
+ .../loot_tables/entities/o_sheep.json              |  80 ---------
+ .../loot_tables/entities/overworld_unicorn.json    |  80 ---------
+ .../dragnlivestock/loot_tables/entities/ox.json    | 178 ---------------------
+ 30 files changed, 162 insertions(+), 1387 deletions(-)

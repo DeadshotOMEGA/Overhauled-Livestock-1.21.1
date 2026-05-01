@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "dragnlivestock:game_jerky_hanging"
+          "name": "dragnlivestock:game_jerky"
         }
       ],
       "rolls": 1.0
