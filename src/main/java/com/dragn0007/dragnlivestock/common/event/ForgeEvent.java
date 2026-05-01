@@ -32,6 +32,10 @@ public class ForgeEvent {
                 } else {
                     mob.setLeashedTo(player, true);
                 }
+
+                if (!player.getAbilities().instabuild) {
+                    stack.shrink(1);
+                }
             }
 
             if (mob.isLeashed() && !(mob.getLeashHolder() instanceof Player) && stack.is(Items.SHEARS)) {
