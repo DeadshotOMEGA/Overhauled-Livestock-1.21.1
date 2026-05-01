@@ -24,7 +24,7 @@ public class CattleFollowHerdLeaderGoal extends Goal {
    }
 
    public int nextStartTick(OCow cow) {
-      return reducedTickDelay(200 + cow.getRandom().nextInt(200) % 20);
+      return reducedTickDelay(200 + cow.getRandom().nextInt(200));
    }
 
    public boolean canUse() {
@@ -63,7 +63,7 @@ public class CattleFollowHerdLeaderGoal extends Goal {
 
    public void tick() {
       if (--this.timeToRecalcPath <= 0) {
-         this.timeToRecalcPath = this.adjustedTickDelay(10);
+         this.timeToRecalcPath = this.adjustedTickDelay(20);
 
          OCow leader = this.mob.leader;
          if (leader != null) {
