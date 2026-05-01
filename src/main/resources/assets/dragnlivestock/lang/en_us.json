@@ -981,6 +981,8 @@
   "config.jade.plugin_dragnlivestock.o_tooltips": "Display O-Livestock Genders & Breeds",
   "tooltip.dragnlivestock.jade.female.tooltip": "Female",
   "tooltip.dragnlivestock.jade.male.tooltip": "Male",
+  "tooltip.dragnlivestock.horse_gender.mare": "Mare",
+  "tooltip.dragnlivestock.horse_gender.stallion": "Stallion",
   "config.jade.plugin_dragnlivestock.dry_time": "Display O-Jerky Dry Percent",
   "config.jade.plugin_dragnlivestock.age_time": "Display O-Cheese Age Percent",
   "key.dragnlivestock.plow_mode": "Switch Plow/ Mower Mode",

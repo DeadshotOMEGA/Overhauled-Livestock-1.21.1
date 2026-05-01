@@ -224,8 +224,8 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
     }
 
     private void renderGenderLabel(GuiGraphics graphics) {
-        String female = "FEMALE";
-        String male = "MALE";
+        String female = Component.translatable("tooltip.dragnlivestock.horse_gender.mare").getString();
+        String male = Component.translatable("tooltip.dragnlivestock.horse_gender.stallion").getString();
         String error = "NBT Error";
 
         if (this.oHorse.getGender() == 0) {
@@ -335,4 +335,3 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
     }
 
 }
-
