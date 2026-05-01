@@ -225,13 +225,15 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
 
     private void renderGenderLabel(GuiGraphics graphics) {
         String female = Component.translatable("tooltip.dragnlivestock.horse_gender.mare").getString();
+        String spayedMare = Component.translatable("tooltip.dragnlivestock.horse_gender.mare_spayed").getString();
         String male = Component.translatable("tooltip.dragnlivestock.horse_gender.stallion").getString();
+        String gelding = Component.translatable("tooltip.dragnlivestock.horse_gender.gelding").getString();
         String error = "NBT Error";
 
         if (this.oHorse.getGender() == 0) {
-            graphics.drawString(this.font, female, genderFLabelX, genderLabelY, 0xFFFFFF, false);
+            graphics.drawString(this.font, this.oHorse.isSnipped() ? spayedMare : female, genderFLabelX, genderLabelY, 0xFFFFFF, false);
         } else if (this.oHorse.getGender() == 1) {
-            graphics.drawString(this.font, male, genderMLabelX, genderLabelY, 0xFFFFFF, false);
+            graphics.drawString(this.font, this.oHorse.isSnipped() ? gelding : male, genderMLabelX, genderLabelY, 0xFFFFFF, false);
         } else {
             graphics.drawString(this.font, error, genderFLabelX, genderLabelY, 0xFFFFFF, false);
         }

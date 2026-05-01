@@ -20,9 +20,17 @@ public class MountGenderTooltip implements IEntityComponentProvider {
         AbstractOMount mount = (AbstractOMount)entityAccessor.getEntity();
         boolean isHorse = mount instanceof OHorse;
         if (mount.isFemale()) {
-            tooltip.add(Component.translatable(isHorse ? "tooltip.dragnlivestock.horse_gender.mare" : "tooltip.dragnlivestock.jade.female.tooltip"));
+            if (isHorse && mount.isSnipped()) {
+                tooltip.add(Component.translatable("tooltip.dragnlivestock.horse_gender.mare_spayed"));
+            } else {
+                tooltip.add(Component.translatable(isHorse ? "tooltip.dragnlivestock.horse_gender.mare" : "tooltip.dragnlivestock.jade.female.tooltip"));
+            }
         } else if (mount.isMale()) {
-            tooltip.add(Component.translatable(isHorse ? "tooltip.dragnlivestock.horse_gender.stallion" : "tooltip.dragnlivestock.jade.male.tooltip"));
+            if (isHorse && mount.isSnipped()) {
+                tooltip.add(Component.translatable("tooltip.dragnlivestock.horse_gender.gelding"));
+            } else {
+                tooltip.add(Component.translatable(isHorse ? "tooltip.dragnlivestock.horse_gender.stallion" : "tooltip.dragnlivestock.jade.male.tooltip"));
+            }
         }
     }
 
