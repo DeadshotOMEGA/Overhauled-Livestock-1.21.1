@@ -173,7 +173,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 
 	public float generateRandomOHorseMaxHealth() {
 		float baseHealth;
-		switch (this.getBreed()) {
+		switch (this.getBreedTemplate()) {
 			case 0:
 			default:
 				baseHealth = 16.0F;
@@ -209,7 +209,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		double baseStrength = 0.4F;
 		double multiplier = this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.2D + this.random.nextDouble() * 0.25D;
 
-		switch (this.getBreed()) {
+		switch (this.getBreedTemplate()) {
 			case 0:
 			default:
 				baseStrength = 0.5F;
@@ -251,7 +251,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	}
 
 	public HorseBreedSpeedProfile getSpeedProfile() {
-		return HorseBreedSpeedProfile.forBreed(this.getBreed());
+		return HorseBreedSpeedProfile.forBreed(this.getBreedTemplate());
 	}
 
 	public int getGaitLevel(HorseAiGait gait) {
@@ -278,19 +278,24 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	}
 
 	public boolean isDraftBreed() {
-		return this.getBreed() == 1 || this.getBreed() == 5 || this.getBreed() == 8 || this.getBreed() == 12 || this.getBreed() == 14 || this.getBreed() == 17 || this.getBreed() == 22;
+		int breed = this.getBreedTemplate();
+		return breed == 1 || breed == 5 || breed == 8 || breed == 12 || breed == 14 || breed == 17 || breed == 22;
 	}
 	public boolean isPonyBreed() {
-		return this.getBreed() == 3 || this.getBreed() == 6 || this.getBreed() == 11 || this.getBreed() == 15 || this.getBreed() == 16 || this.getBreed() == 19;
+		int breed = this.getBreedTemplate();
+		return breed == 3 || breed == 6 || breed == 11 || breed == 15 || breed == 16 || breed == 19;
 	}
 	public boolean isStockBreed() {
-		return this.getBreed() == 0 || this.getBreed() == 7;
+		int breed = this.getBreedTemplate();
+		return breed == 0 || breed == 7;
 	}
 	public boolean isWarmbloodedBreed() {
-		return this.getBreed() == 2 || this.getBreed() == 9 || this.getBreed() == 10 || this.getBreed() == 18 || this.getBreed() == 21;
+		int breed = this.getBreedTemplate();
+		return breed == 2 || breed == 9 || breed == 10 || breed == 18 || breed == 21;
 	}
 	public boolean isRacingBreed() {
-		return this.getBreed() == 4 || this.getBreed() == 13 || this.getBreed() == 20;
+		int breed = this.getBreedTemplate();
+		return breed == 4 || breed == 13 || breed == 20;
 	}
 
 	@Override
@@ -327,13 +332,14 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			double offsetZ = -0.055;
 
 			int passengers = this.getPassengers().indexOf(entity);
+			int breed = this.getBreedTemplate();
 
 			if (!LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
-				if (getBreed() == 0) {
+				if (breed == 0) {
 					offsetY = 1.03;
 				}
 
-				if (getBreed() == 1) {
+				if (breed == 1) {
 					switch (passengers) {
 						case 0:
 							offsetY = 1.05;
@@ -345,19 +351,19 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 					}
 				}
 
-				if (getBreed() == 2) {
+				if (breed == 2) {
 					offsetY = 1.2;
 				}
 
-				if (getBreed() == 3) {
+				if (breed == 3) {
 					offsetY = 0.9;
 				}
 
-				if (getBreed() == 4) {
+				if (breed == 4) {
 					offsetY = 1.2;
 				}
 
-				if (getBreed() == 5) {
+				if (breed == 5) {
 					switch (passengers) {
 						case 0:
 							offsetY = 1.3;
@@ -369,7 +375,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 					}
 				}
 
-				if (getBreed() == 6) {
+				if (breed == 6) {
 					switch (passengers) {
 						case 0:
 							offsetY = 0.97;
@@ -381,11 +387,11 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 					}
 				}
 
-				if (getBreed() == 7) {
+				if (breed == 7) {
 					offsetY = 1.05;
 				}
 
-				if (getBreed() == 8) {
+				if (breed == 8) {
 					switch (passengers) {
 						case 0:
 							offsetY = 1.4;
@@ -397,19 +403,19 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 					}
 				}
 
-				if (getBreed() == 9) {
+				if (breed == 9) {
 					offsetY = 1.05;
 				}
 
-				if (getBreed() == 10) {
+				if (breed == 10) {
 					offsetY = 1.05;
 				}
 
-				if (getBreed() == 11) {
+				if (breed == 11) {
 					offsetY = 0.8;
 				}
 
-				if (getBreed() == 12) {
+				if (breed == 12) {
 					switch (passengers) {
 						case 0:
 							offsetY = 1.45;
@@ -421,11 +427,11 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 					}
 				}
 
-				if (getBreed() == 13) {
+				if (breed == 13) {
 					offsetY = 1.1;
 				}
 
-				if (getBreed() == 14) {
+				if (breed == 14) {
 					switch (passengers) {
 						case 0:
 							offsetY = 1.33;
@@ -437,35 +443,35 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 					}
 				}
 
-				if (getBreed() == 15) {
+				if (breed == 15) {
 					offsetY = 0.62;
 				}
 
-				if (getBreed() == 16) {
+				if (breed == 16) {
 					offsetY = 0.65;
 				}
 
-				if (getBreed() == 17) {
+				if (breed == 17) {
 					offsetY = 0.98;
 				}
 
-				if (getBreed() == 18) {
+				if (breed == 18) {
 					offsetY = 1.03;
 				}
 
-				if (getBreed() == 19) {
+				if (breed == 19) {
 					offsetY = 0.46;
 				}
 
-				if (getBreed() == 20) {
+				if (breed == 20) {
 					offsetY = 1.08;
 				}
 
-				if (getBreed() == 21) {
+				if (breed == 21) {
 					offsetY = 1.03;
 				}
 
-				if (getBreed() == 22) {
+				if (breed == 22) {
 					offsetY = 1.08;
 				}
 
@@ -1170,6 +1176,9 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	public int getBreed() {
 		return this.entityData.get(BREED);
 	}
+	private int getBreedTemplate() {
+		return HorseBreed.templateOrdinal(this.getBreed());
+	}
 	public void setBreed(int breed) {
 		this.entityData.set(BREED, breed);
 	}
@@ -1577,6 +1586,32 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		if (tag.contains("IsHallow")) {
 			this.setHallow(tag.getBoolean("IsHallow"));
 		}
+
+		if (tag.getBoolean("ForcedBreedSpawnEgg")) {
+			this.applyForcedBreedSpawnEggData();
+		}
+	}
+
+	private void applyForcedBreedSpawnEggData() {
+		if (LivestockOverhaulCommonConfig.SPAWN_BY_BREED.get()) {
+			this.setColorByBreed();
+			this.setMarkingByBreed();
+			this.setFeatheringByBreed();
+		} else {
+			this.setVariant(random.nextInt(HORSE_VARIANT_COUNT));
+			this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
+			this.setFeathering(random.nextInt(Feathering.values().length));
+		}
+
+		if (LivestockOverhaulCommonConfig.EYES_BY_COLOR.get()) {
+			this.setEyeColorByChance();
+		} else {
+			this.setEyeVariant(random.nextInt(EquineEyeColorOverlay.values().length));
+		}
+
+		this.setAge(0);
+		this.randomizeOHorseAttributes();
+		this.initializeAdultLifeStageAge();
 	}
 
 	@Override
@@ -1633,9 +1668,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 
 		if (spawnType == MobSpawnType.SPAWN_EGG) {
 			if (!ModList.get().isLoaded("deadlydinos")) {
-				int[] breeds = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22};
-				int randomIndex = new Random().nextInt(breeds.length);
-				this.setBreed(breeds[randomIndex]);
+				this.setBreed(this.getRandomNaturalHorseBreed(random));
 			} else {
 				this.setBreed(random.nextInt(HorseBreed.values().length));
 			}
@@ -1695,10 +1728,23 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		}
 
 		if (LivestockOverhaulCommonConfig.NATURAL_HORSE_BREEDS.get()) {
-			this.setBreed(random.nextInt(HorseBreed.values().length));
+			this.setBreed(this.getRandomNaturalHorseBreed(random));
 		} else {
 			this.setBreed(HorseBreed.MUSTANG.ordinal());
 		}
+	}
+
+	private int getRandomNaturalHorseBreed(Random random) {
+		if (this.isNaturalHorseBreedAvailable(HorseBreed.AMERICAN_SOLDIER.ordinal())) {
+			return random.nextInt(HorseBreed.values().length);
+		}
+
+		int[] breeds = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
+		return breeds[random.nextInt(breeds.length)];
+	}
+
+	private boolean isNaturalHorseBreedAvailable(int breed) {
+		return breed != HorseBreed.AMERICAN_SOLDIER.ordinal() || ModList.get().isLoaded("deadlydinos");
 	}
 
 	private int getWeightedNaturalBreedForBiome(@Nullable ResourceLocation biomeLocation, Random random) {
@@ -1708,8 +1754,10 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		}
 
 		int totalWeight = 0;
-		for (int i = 1; i < breedWeights.length; i += 2) {
-			totalWeight += breedWeights[i];
+		for (int i = 0; i < breedWeights.length; i += 2) {
+			if (this.isNaturalHorseBreedAvailable(breedWeights[i])) {
+				totalWeight += breedWeights[i + 1];
+			}
 		}
 
 		if (totalWeight <= 0) {
@@ -1718,13 +1766,23 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 
 		int roll = random.nextInt(totalWeight);
 		for (int i = 0; i < breedWeights.length; i += 2) {
+			if (!this.isNaturalHorseBreedAvailable(breedWeights[i])) {
+				continue;
+			}
+
 			roll -= breedWeights[i + 1];
 			if (roll < 0) {
 				return breedWeights[i];
 			}
 		}
 
-		return breedWeights[0];
+		for (int i = 0; i < breedWeights.length; i += 2) {
+			if (this.isNaturalHorseBreedAvailable(breedWeights[i])) {
+				return breedWeights[i];
+			}
+		}
+
+		return -1;
 	}
 
 	private int[] getNaturalBreedWeightsForBiome(@Nullable ResourceLocation biomeLocation) {
@@ -1734,25 +1792,25 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 
 		return switch (biomeLocation.toString()) {
 			case "minecraft:plains" -> new int[] {
-					0, 10, 1, 10, 2, 10, 4, 10, 5, 10, 6, 10, 7, 10, 8, 10, 9, 10, 11, 10, 12, 10, 14, 10, 16, 10, 18, 10, 20, 10, 21, 10, 22, 10, 15, 5, 10, 1, 13, 1
+					0, 10, 1, 10, 2, 10, 4, 10, 5, 10, 6, 10, 7, 10, 8, 10, 9, 10, 11, 10, 12, 10, 14, 10, 16, 10, 18, 10, 20, 10, 21, 10, 22, 10, 15, 5, 10, 1, 13, 1, 32, 1
 			};
 			case "minecraft:sunflower_plains" -> new int[] {
 					0, 10, 4, 5, 7, 5, 9, 5, 20, 5
 			};
 			case "minecraft:savanna" -> new int[] {
-					0, 10, 7, 10, 10, 10, 13, 10, 14, 5, 4, 1, 9, 1, 11, 1, 20, 1
+					0, 10, 7, 10, 10, 10, 13, 10, 32, 10, 14, 5, 4, 1, 9, 1, 11, 1, 20, 1
 			};
 			case "minecraft:savanna_plateau" -> new int[] {
-					0, 5, 7, 5, 10, 5, 13, 5
+					0, 5, 7, 5, 10, 5, 13, 5, 32, 5
 			};
 			case "minecraft:badlands" -> new int[] {
-					0, 5, 7, 5, 10, 5, 13, 5, 14, 1
+					0, 5, 7, 5, 10, 5, 13, 5, 32, 5, 14, 1
 			};
 			case "minecraft:wooded_badlands" -> new int[] {
 					10, 5, 0, 1, 7, 1
 			};
 			case "minecraft:desert" -> new int[] {
-					10, 10, 13, 10, 0, 1, 7, 1
+					10, 10, 13, 10, 32, 10, 0, 1, 7, 1
 			};
 			case "minecraft:meadow" -> new int[] {
 					1, 10, 2, 10, 3, 10, 4, 10, 5, 10, 6, 10, 8, 10, 9, 10, 11, 10, 12, 10, 15, 10, 16, 10, 17, 10, 18, 10, 19, 10, 20, 10, 21, 10, 22, 10, 14, 5
@@ -1794,7 +1852,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 					5, 1, 8, 1, 12, 1
 			};
 			case "minecraft:windswept_savanna" -> new int[] {
-					13, 5
+					13, 5, 32, 5
 			};
 			case "minecraft:beach" -> new int[] {
 					16, 5, 19, 5, 22, 5
@@ -1892,9 +1950,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 				breed = partner.getBreed();
 			} else {
 				if (!ModList.get().isLoaded("deadlydinos")) {
-					int[] breeds = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21};
-					int randomIndex = new Random().nextInt(breeds.length);
-					breed = (breeds[randomIndex]);
+					breed = this.getRandomNaturalHorseBreed(new Random());
 				} else {
 					breed = this.random.nextInt(HorseBreed.values().length);
 				}
@@ -2119,16 +2175,17 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 
 		final double appearanceRoll = random.nextDouble();
 		this.breedVariantAssigned = false;
+		int breed = this.getBreedTemplate();
 
 
-		if (this.getBreed() == 0) { //mustangs can come in any color naturally, aside from fjord coloring
+		if (breed == 0) { //mustangs can come in any color naturally, aside from fjord coloring
 			int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 					16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.assignBreedVariant(variants[randomIndex]);
 		}
 
-		if (this.getBreed() == 1) { //ardennes tend to come in browns, roans and greys
+		if (breed == 1) { //ardennes tend to come in browns, roans and greys
 			if (appearanceRoll < 0.05) {
 				int[] variants = {4, 5, 8, 11, 19, 25, 26, 27, 28, 29, 30, 32};
 				int randomIndex = new Random().nextInt(variants.length);
@@ -2144,7 +2201,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 2) { //kladrubers tend to come in blacks and greys
+		if (breed == 2) { //kladrubers tend to come in blacks and greys
 			if (appearanceRoll < 0.02) {
 				int[] variants = {8, 11, 25, 31, 32};
 				int randomIndex = new Random().nextInt(variants.length);
@@ -2160,7 +2217,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 3) { //fjords tend to come in only the fjord coloring
+		if (breed == 3) { //fjords tend to come in only the fjord coloring
 			if (appearanceRoll < 0.05) {
 				this.assignBreedVariant(random.nextInt(HORSE_VARIANT_COUNT));
 			} else if (appearanceRoll > 0.05) {
@@ -2170,7 +2227,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 4) { //thoroughbreds can come in any color naturally, aside from fjord coloring. they usually come in bays
+		if (breed == 4) { //thoroughbreds can come in any color naturally, aside from fjord coloring. they usually come in bays
 			if (appearanceRoll < 0.40) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33};
@@ -2183,7 +2240,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 5) { //friesians usually just come in black
+		if (breed == 5) { //friesians usually just come in black
 			if (appearanceRoll < 0.02) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33};
@@ -2194,21 +2251,21 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 6) { //irish cobs can come in any color naturally, aside from fjord coloring
+		if (breed == 6) { //irish cobs can come in any color naturally, aside from fjord coloring
 			int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 					16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.assignBreedVariant(variants[randomIndex]);
 		}
 
-		if (this.getBreed() == 7) { //american quarters can come in any color naturally, aside from fjord coloring
+		if (breed == 7) { //american quarters can come in any color naturally, aside from fjord coloring
 			int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 					16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.assignBreedVariant(variants[randomIndex]);
 		}
 
-		if (this.getBreed() == 8) { //percherons usually just come in blacks and greys
+		if (breed == 8) { //percherons usually just come in blacks and greys
 			if (appearanceRoll < 0.10) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
@@ -2221,7 +2278,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 9) { //selle francais can come in any color naturally, aside from fjord coloring. they usually come in bays
+		if (breed == 9) { //selle francais can come in any color naturally, aside from fjord coloring. they usually come in bays
 			if (appearanceRoll < 0.20) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32, 33};
@@ -2234,14 +2291,14 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 10) { //marwaris can come in any color naturally, aside from fjord coloring
+		if (breed == 10) { //marwaris can come in any color naturally, aside from fjord coloring
 			int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 					16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.assignBreedVariant(variants[randomIndex]);
 		}
 
-		if (this.getBreed() == 11) { //mongolian ponies can come in any color naturally, aside from fjord coloring. they usually come in duns or bays
+		if (breed == 11) { //mongolian ponies can come in any color naturally, aside from fjord coloring. they usually come in duns or bays
 			if (appearanceRoll < 0.20) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33};
@@ -2254,7 +2311,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 12) { //shires usually come in greys or browns
+		if (breed == 12) { //shires usually come in greys or browns
 			if (appearanceRoll < 0.10) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
@@ -2267,7 +2324,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 13) { //ahkal tekes usually come in creams or other light colors
+		if (breed == 13) { //ahkal tekes usually come in creams or other light colors
 			if (appearanceRoll < 0.10) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 33};
@@ -2280,7 +2337,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 14) { //american soliders usually come in blacks or greys but can be other colors as well
+		if (breed == 14) { //american soliders usually come in blacks or greys but can be other colors as well
 			if (appearanceRoll < 0.40) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32};
@@ -2293,7 +2350,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 15) { //welsh ponies tend to come in browns, roans and greys
+		if (breed == 15) { //welsh ponies tend to come in browns, roans and greys
 			if (appearanceRoll < 0.05) {
 				int[] variants = {4, 5, 8, 11, 19, 25, 26, 27, 28, 29, 30, 32};
 				int randomIndex = new Random().nextInt(variants.length);
@@ -2309,7 +2366,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 16) { //connemaras usually come in blacks or greys but can be other colors as well
+		if (breed == 16) { //connemaras usually come in blacks or greys but can be other colors as well
 			if (appearanceRoll < 0.40) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 32};
@@ -2322,7 +2379,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 17) { //haflingers can come in any color naturally, aside from fjord coloring. they usually come in duns or bays
+		if (breed == 17) { //haflingers can come in any color naturally, aside from fjord coloring. they usually come in duns or bays
 			if (appearanceRoll < 0.20) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33};
@@ -2335,7 +2392,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 18) { //oldenburgers tend to come in browns, roans and greys
+		if (breed == 18) { //oldenburgers tend to come in browns, roans and greys
 			if (appearanceRoll < 0.05) {
 				int[] variants = {4, 5, 8, 11, 19, 25, 26, 27, 28, 29, 30, 32};
 				int randomIndex = new Random().nextInt(variants.length);
@@ -2351,14 +2408,14 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 19) { //shetland ponies can come in any color naturally, aside from fjord coloring
+		if (breed == 19) { //shetland ponies can come in any color naturally, aside from fjord coloring
 			int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 					16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33};
 			int randomIndex = new Random().nextInt(variants.length);
 			this.assignBreedVariant(variants[randomIndex]);
 		}
 
-		if (this.getBreed() == 20) { //standardbreds can come in any color naturally, aside from fjord coloring. they usually come in bays
+		if (breed == 20) { //standardbreds can come in any color naturally, aside from fjord coloring. they usually come in bays
 			if (appearanceRoll < 0.40) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33};
@@ -2371,7 +2428,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 21) { //trakehners tend to come in browns, roans and greys
+		if (breed == 21) { //trakehners tend to come in browns, roans and greys
 			if (appearanceRoll < 0.05) {
 				int[] variants = {4, 5, 8, 11, 19, 25, 26, 27, 28, 29, 30, 32};
 				int randomIndex = new Random().nextInt(variants.length);
@@ -2387,7 +2444,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 22) { //boulonnais usually just come in white or silver
+		if (breed == 22) { //boulonnais usually just come in white or silver
 			if (appearanceRoll < 0.10) {
 				int[] variants = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15,
 						16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32};
@@ -2409,12 +2466,13 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	public void setMarkingByBreed() {
 
 		final double appearanceRoll = random.nextDouble();
+		int breed = this.getBreedTemplate();
 
-		if (this.getBreed() == 0) { //mustangs can come in any pattern naturally
+		if (breed == 0) { //mustangs can come in any pattern naturally
 			this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 		}
 
-		if (this.getBreed() == 1) { //ardennes can come in any pattern naturally, but often come with socks or a face marking (or no markings)
+		if (breed == 1) { //ardennes can come in any pattern naturally, but often come with socks or a face marking (or no markings)
 			if (appearanceRoll < 0.20) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.20) {
@@ -2424,7 +2482,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 2) { //kaldrubers usually don't come with markings, or with very small ones
+		if (breed == 2) { //kaldrubers usually don't come with markings, or with very small ones
 			if (appearanceRoll < 0.10) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.10 && appearanceRoll < 0.30) {
@@ -2436,7 +2494,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 3) { //fjords usually don't come with markings, or with very small ones
+		if (breed == 3) { //fjords usually don't come with markings, or with very small ones
 			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.05 && appearanceRoll < 0.20) {
@@ -2448,7 +2506,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 4) { //thoroughbreds can come in any pattern naturally, but usually come in solids
+		if (breed == 4) { //thoroughbreds can come in any pattern naturally, but usually come in solids
 			if (appearanceRoll < 0.30) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.30) {
@@ -2456,7 +2514,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 5) { //friesians usually come in solids
+		if (breed == 5) { //friesians usually come in solids
 			if (appearanceRoll < 0.02) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.02) {
@@ -2464,7 +2522,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 6) { //irish cobs usually come with large markings
+		if (breed == 6) { //irish cobs usually come with large markings
 			if (appearanceRoll < 0.02) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.02) {
@@ -2474,11 +2532,11 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 7) { //american quarters can come in any pattern naturally
+		if (breed == 7) { //american quarters can come in any pattern naturally
 			this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 		}
 
-		if (this.getBreed() == 8) { //percherons usually come with small markings
+		if (breed == 8) { //percherons usually come with small markings
 			if (appearanceRoll < 0.02) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.02) {
@@ -2488,7 +2546,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 9) { //selle francias can come in any pattern naturally, but usually come in solids or with socks
+		if (breed == 9) { //selle francias can come in any pattern naturally, but usually come in solids or with socks
 			if (appearanceRoll < 0.20) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.20) {
@@ -2498,7 +2556,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 10) { //marwaris usually come in solids
+		if (breed == 10) { //marwaris usually come in solids
 			if (appearanceRoll < 0.20) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.20) {
@@ -2506,7 +2564,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 11) { //mongolian ponies can come in solids and, sometimes, any marking
+		if (breed == 11) { //mongolian ponies can come in solids and, sometimes, any marking
 			if (appearanceRoll < 0.50) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.50) {
@@ -2514,7 +2572,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 12) { //shires usually come with small markings or socks
+		if (breed == 12) { //shires usually come with small markings or socks
 			if (appearanceRoll < 0.07) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.07) {
@@ -2524,7 +2582,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 13) { //ahkal tekes usually come in solids
+		if (breed == 13) { //ahkal tekes usually come in solids
 			if (appearanceRoll < 0.05) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.05) {
@@ -2532,7 +2590,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 14) { //american soldiers usually come with small markings or socks
+		if (breed == 14) { //american soldiers usually come with small markings or socks
 			if (appearanceRoll < 0.30) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.30) {
@@ -2542,7 +2600,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 15) { //welsh ponies can come in any pattern naturally, but often come with socks or a face marking (or no markings)
+		if (breed == 15) { //welsh ponies can come in any pattern naturally, but often come with socks or a face marking (or no markings)
 			if (appearanceRoll < 0.20) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.20) {
@@ -2552,7 +2610,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 16) { //connemaras usually come with small markings or socks
+		if (breed == 16) { //connemaras usually come with small markings or socks
 			if (appearanceRoll < 0.30) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.30) {
@@ -2562,7 +2620,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 17) { //haflingers usually come with small markings or socks
+		if (breed == 17) { //haflingers usually come with small markings or socks
 			if (appearanceRoll < 0.30) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.30) {
@@ -2572,7 +2630,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 18) { //oldenburgers can come in any pattern naturally, but often come with socks or a face marking (or no markings)
+		if (breed == 18) { //oldenburgers can come in any pattern naturally, but often come with socks or a face marking (or no markings)
 			if (appearanceRoll < 0.20) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.20) {
@@ -2582,7 +2640,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 19) { //shetland ponies usually come with small markings or socks
+		if (breed == 19) { //shetland ponies usually come with small markings or socks
 			if (appearanceRoll < 0.30) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.30) {
@@ -2592,7 +2650,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 20) { //standardbreds can come in any pattern naturally, but usually come in solids
+		if (breed == 20) { //standardbreds can come in any pattern naturally, but usually come in solids
 			if (appearanceRoll < 0.30) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.30) {
@@ -2600,7 +2658,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 21) { //trakehners can come in any pattern naturally, but usually come in solids
+		if (breed == 21) { //trakehners can come in any pattern naturally, but usually come in solids
 			if (appearanceRoll < 0.30) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.30) {
@@ -2608,7 +2666,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			}
 		}
 
-		if (this.getBreed() == 22) { //boulonnais usually come in solids or dapple
+		if (breed == 22) { //boulonnais usually come in solids or dapple
 			if (appearanceRoll < 0.02) {
 				this.setOverlayVariant(random.nextInt(EquineMarkingOverlay.values().length));
 			} else if (appearanceRoll > 0.30) {

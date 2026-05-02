@@ -49,6 +49,7 @@ public record HorseBreedSpeedProfile(
     }
 
     public static HorseBreedSpeedProfile forBreed(int breed) {
+        breed = HorseBreed.templateOrdinal(breed);
         return switch (breed) {
             case 1 -> new HorseBreedSpeedProfile(5, 6, 10, 14, 14, 21, 29, 39, 35, 45); // ARDENNES
             case 2 -> new HorseBreedSpeedProfile(6, 7, 13, 19, 18, 26, 35, 45, 45, 55); // KLADRUBER

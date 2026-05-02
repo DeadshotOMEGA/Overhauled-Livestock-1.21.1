@@ -27,6 +27,16 @@ public enum HorseBreed {
     STANDARDBRED(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/standardbred.geo.json")),
     TRAKEHNER(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/trakehner.geo.json")),
     BOULONNAIS(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/boulonnais.geo.json")),
+    PAINT_HORSE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/paint_horse.geo.json")),
+    APPALOOSA(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/appaloosa.geo.json")),
+    MORGAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/morgan.geo.json")),
+    DUTCH_WARMBLOOD(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/dutch_warmblood.geo.json")),
+    CLYDESDALE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/clydesdale.geo.json")),
+    LIPIZZANER(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/lipizzaner.geo.json")),
+    BELGIAN_DRAFT(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/belgian_draft.geo.json")),
+    TENNESSEE_WALKING_HORSE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/tennessee_walking_horse.geo.json")),
+    CANADIAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/canadian.geo.json")),
+    ARABIAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/arabian.geo.json")),
     ;
 
     public final ResourceLocation resourceLocation;
@@ -39,9 +49,22 @@ public enum HorseBreed {
         return HorseBreed.values()[ordinal % HorseBreed.values().length];
     }
 
+    public static int templateOrdinal(int ordinal) {
+        HorseBreed breed = breedFromOrdinal(ordinal);
+        return switch (breed) {
+            case PAINT_HORSE, APPALOOSA, MORGAN, CANADIAN -> AMERICAN_QUARTER.ordinal();
+            case DUTCH_WARMBLOOD -> OLDENBURGER.ordinal();
+            case CLYDESDALE -> SHIRE.ordinal();
+            case LIPIZZANER -> KLADRUBER.ordinal();
+            case BELGIAN_DRAFT -> ARDENNES.ordinal();
+            case TENNESSEE_WALKING_HORSE -> STANDARDBRED.ordinal();
+            case ARABIAN -> AKHAL_TEKE.ordinal();
+            default -> breed.ordinal();
+        };
+    }
+
     public HorseBreed next() {
         return HorseBreed.values()[(this.ordinal() + 1) % HorseBreed.values().length];
     }
 
 }
-

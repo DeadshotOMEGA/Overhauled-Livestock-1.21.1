@@ -47,6 +47,16 @@ public class HorseBreedTooltip implements IEntityComponentProvider {
             case 20: return "Standardbred";
             case 21: return "Trakehner";
             case 22: return "Boulonnais";
+            case 23: return "Paint Horse";
+            case 24: return "Appaloosa";
+            case 25: return "Morgan";
+            case 26: return "Dutch Warmblood";
+            case 27: return "Clydesdale";
+            case 28: return "Lipizzaner";
+            case 29: return "Belgian Draft";
+            case 30: return "Tennessee Walking Horse";
+            case 31: return "Canadian";
+            case 32: return "Arabian";
             default: return "Unknown";
         }
     }

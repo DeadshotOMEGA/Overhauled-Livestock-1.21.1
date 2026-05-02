@@ -186,6 +186,16 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
             case 20: return "Standardbred (Racer)";
             case 21: return "Trakehner (Warmblood)";
             case 22: return "Boulonnais (Draft)";
+            case 23: return "Paint Horse (Stock)";
+            case 24: return "Appaloosa (Stock)";
+            case 25: return "Morgan (Stock)";
+            case 26: return "Dutch Warmblood (Warmblood)";
+            case 27: return "Clydesdale (Draft)";
+            case 28: return "Lipizzaner (Warmblood)";
+            case 29: return "Belgian Draft (Draft)";
+            case 30: return "Tennessee Walking Horse (Racer)";
+            case 31: return "Canadian (Stock)";
+            case 32: return "Arabian (Racer)";
             default: return "Unknown";
         }
     }

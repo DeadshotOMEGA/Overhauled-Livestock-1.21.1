@@ -3,6 +3,7 @@ package com.dragn0007.dragnlivestock.items;
 import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.blocks.LOBlocks;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.horse.HorseBreed;
 import com.dragn0007.dragnlivestock.items.custom.*;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -18,9 +19,47 @@ public class LOItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(net.minecraft.core.registries.BuiltInRegistries.ITEM, LivestockOverhaul.MODID);
 
+    private static Supplier<Item> registerHorseBreedSpawnEgg(String name, HorseBreed breed) {
+        return ITEMS.register(name + "_spawn_egg",
+                () -> new HorseBreedSpawnEggItem(EntityTypes.O_HORSE_ENTITY, breed, 0x53250e, 0x281003, HorseBreedSpawnEggItem.propertiesFor(breed)));
+    }
+
     //Spawn Eggs
     public static final Supplier<Item> O_HORSE_SPAWN_EGG = ITEMS.register("o_horse_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityTypes.O_HORSE_ENTITY, 0x53250e, 0x281003, new Item.Properties().stacksTo(64)));
+    public static final Supplier<Item> MUSTANG_SPAWN_EGG = registerHorseBreedSpawnEgg("mustang", HorseBreed.MUSTANG);
+    public static final Supplier<Item> ARDENNES_SPAWN_EGG = registerHorseBreedSpawnEgg("ardennes", HorseBreed.ARDENNES);
+    public static final Supplier<Item> KLADRUBER_SPAWN_EGG = registerHorseBreedSpawnEgg("kladruber", HorseBreed.KLADRUBER);
+    public static final Supplier<Item> FJORD_SPAWN_EGG = registerHorseBreedSpawnEgg("fjord", HorseBreed.FJORD);
+    public static final Supplier<Item> THOROUGHBRED_SPAWN_EGG = registerHorseBreedSpawnEgg("thoroughbred", HorseBreed.THOROUGHBRED);
+    public static final Supplier<Item> FRIESIAN_SPAWN_EGG = registerHorseBreedSpawnEgg("friesian", HorseBreed.FRIESIAN);
+    public static final Supplier<Item> IRISH_COB_SPAWN_EGG = registerHorseBreedSpawnEgg("irish_cob", HorseBreed.IRISH_COB);
+    public static final Supplier<Item> AMERICAN_QUARTER_SPAWN_EGG = registerHorseBreedSpawnEgg("american_quarter", HorseBreed.AMERICAN_QUARTER);
+    public static final Supplier<Item> PERCHERON_SPAWN_EGG = registerHorseBreedSpawnEgg("percheron", HorseBreed.PERCHERON);
+    public static final Supplier<Item> SELLE_FRANCAIS_SPAWN_EGG = registerHorseBreedSpawnEgg("selle_francais", HorseBreed.SELLE_FRANCAIS);
+    public static final Supplier<Item> MARWARI_SPAWN_EGG = registerHorseBreedSpawnEgg("marwari", HorseBreed.MARWARI);
+    public static final Supplier<Item> MONGOLIAN_SPAWN_EGG = registerHorseBreedSpawnEgg("mongolian", HorseBreed.MONGOLIAN);
+    public static final Supplier<Item> SHIRE_SPAWN_EGG = registerHorseBreedSpawnEgg("shire", HorseBreed.SHIRE);
+    public static final Supplier<Item> AKHAL_TEKE_SPAWN_EGG = registerHorseBreedSpawnEgg("akhal_teke", HorseBreed.AKHAL_TEKE);
+    public static final Supplier<Item> AMERICAN_SOLDIER_SPAWN_EGG = registerHorseBreedSpawnEgg("american_soldier", HorseBreed.AMERICAN_SOLDIER);
+    public static final Supplier<Item> WELSH_SPAWN_EGG = registerHorseBreedSpawnEgg("welsh", HorseBreed.WELSH);
+    public static final Supplier<Item> CONNEMARA_SPAWN_EGG = registerHorseBreedSpawnEgg("connemara", HorseBreed.CONNEMARA);
+    public static final Supplier<Item> HAFLINGER_SPAWN_EGG = registerHorseBreedSpawnEgg("haflinger", HorseBreed.HAFLINGER);
+    public static final Supplier<Item> OLDENBURGER_SPAWN_EGG = registerHorseBreedSpawnEgg("oldenburger", HorseBreed.OLDENBURGER);
+    public static final Supplier<Item> SHETLAND_SPAWN_EGG = registerHorseBreedSpawnEgg("shetland", HorseBreed.SHETLAND);
+    public static final Supplier<Item> STANDARDBRED_SPAWN_EGG = registerHorseBreedSpawnEgg("standardbred", HorseBreed.STANDARDBRED);
+    public static final Supplier<Item> TRAKEHNER_SPAWN_EGG = registerHorseBreedSpawnEgg("trakehner", HorseBreed.TRAKEHNER);
+    public static final Supplier<Item> BOULONNAIS_SPAWN_EGG = registerHorseBreedSpawnEgg("boulonnais", HorseBreed.BOULONNAIS);
+    public static final Supplier<Item> PAINT_HORSE_SPAWN_EGG = registerHorseBreedSpawnEgg("paint_horse", HorseBreed.PAINT_HORSE);
+    public static final Supplier<Item> APPALOOSA_SPAWN_EGG = registerHorseBreedSpawnEgg("appaloosa", HorseBreed.APPALOOSA);
+    public static final Supplier<Item> MORGAN_SPAWN_EGG = registerHorseBreedSpawnEgg("morgan", HorseBreed.MORGAN);
+    public static final Supplier<Item> DUTCH_WARMBLOOD_SPAWN_EGG = registerHorseBreedSpawnEgg("dutch_warmblood", HorseBreed.DUTCH_WARMBLOOD);
+    public static final Supplier<Item> CLYDESDALE_SPAWN_EGG = registerHorseBreedSpawnEgg("clydesdale", HorseBreed.CLYDESDALE);
+    public static final Supplier<Item> LIPIZZANER_SPAWN_EGG = registerHorseBreedSpawnEgg("lipizzaner", HorseBreed.LIPIZZANER);
+    public static final Supplier<Item> BELGIAN_DRAFT_SPAWN_EGG = registerHorseBreedSpawnEgg("belgian_draft", HorseBreed.BELGIAN_DRAFT);
+    public static final Supplier<Item> TENNESSEE_WALKING_HORSE_SPAWN_EGG = registerHorseBreedSpawnEgg("tennessee_walking_horse", HorseBreed.TENNESSEE_WALKING_HORSE);
+    public static final Supplier<Item> CANADIAN_SPAWN_EGG = registerHorseBreedSpawnEgg("canadian", HorseBreed.CANADIAN);
+    public static final Supplier<Item> ARABIAN_SPAWN_EGG = registerHorseBreedSpawnEgg("arabian", HorseBreed.ARABIAN);
     public static final Supplier<Item> O_COW_SPAWN_EGG = ITEMS.register("o_cow_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityTypes.O_COW_ENTITY, 0x4f402e, 0xdbdbdb, new Item.Properties().stacksTo(64)));
     public static final Supplier<Item> O_CHICKEN_SPAWN_EGG = ITEMS.register("o_chicken_spawn_egg",
