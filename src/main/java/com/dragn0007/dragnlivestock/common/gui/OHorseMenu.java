@@ -1,6 +1,7 @@
 package com.dragn0007.dragnlivestock.common.gui;
 
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
+import com.dragn0007.dragnlivestock.items.custom.BlanketItem;
 import com.dragn0007.dragnlivestock.items.custom.CaparisonItem;
 import com.dragn0007.dragnlivestock.items.custom.LightHorseArmorItem;
 import com.dragn0007.dragnlivestock.items.custom.RumpStrapItem;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.ItemStack;
 
 public class OHorseMenu extends AbstractContainerMenu {
@@ -20,7 +22,11 @@ public class OHorseMenu extends AbstractContainerMenu {
     public OHorse oHorse;
 
     public OHorseMenu(int containerId, Inventory inventory, FriendlyByteBuf extraData) {
-        this(containerId, inventory, new SimpleContainer(extraData.readInt()), (OHorse) inventory.player.level().getEntity(extraData.readInt()));
+        this(containerId, inventory, new SimpleContainer(getSafeHorseContainerSize(extraData.readInt())), (OHorse) inventory.player.level().getEntity(extraData.readInt()));
+    }
+
+    private static int getSafeHorseContainerSize(int containerSize) {
+        return Math.max(3, containerSize);
     }
 
     public OHorseMenu(int containerId, Inventory inventory, Container container, OHorse abstractOMount) {
@@ -32,19 +38,19 @@ public class OHorseMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.container, oHorseSlots++, 8, 18) {
             @Override
             public boolean mayPlace(ItemStack itemStack) {
-                return itemStack.is(LOTags.Items.SADDLE) && !this.hasItem() && OHorseMenu.this.oHorse.isSaddleable();
+                return !this.hasItem() && (OHorseMenu.this.oHorse.isSaddle(itemStack) || itemStack.is(LOTags.Items.SADDLE));
             }
 
             @Override
             public boolean isActive() {
-                return OHorseMenu.this.oHorse.isSaddleable();
+                return true;
             }
         });
 
         this.addSlot(new Slot(this.container, oHorseSlots++, 8, 36) {
             @Override
             public boolean mayPlace(ItemStack itemStack) {
-                if (itemStack.getItem() instanceof LightHorseArmorItem ||
+                if (itemStack.getItem() instanceof AnimalArmorItem || itemStack.getItem() instanceof LightHorseArmorItem ||
                         itemStack.getItem() instanceof CaparisonItem || itemStack.getItem() instanceof RumpStrapItem) {
                     return !this.hasItem() && OHorseMenu.this.oHorse.canWearArmor();
                 }
@@ -63,7 +69,8 @@ public class OHorseMenu extends AbstractContainerMenu {
         this.addSlot(new Slot(this.container, oHorseSlots++, 8, 54) {
             @Override
             public boolean mayPlace(ItemStack itemStack) {
-                if (itemStack.is(LOTags.Items.DECOR_FOR_O_MOUNTS) || itemStack.getItem() instanceof CaparisonItem ||
+                if (itemStack.is(LOTags.Items.DECOR_FOR_O_MOUNTS) || itemStack.getItem() instanceof BlanketItem ||
+                        itemStack.getItem() instanceof CaparisonItem ||
                         itemStack.getItem() instanceof RumpStrapItem) {
                     return !this.hasItem() && OHorseMenu.this.oHorse.canWearArmor();
                 }
@@ -75,40 +82,6 @@ public class OHorseMenu extends AbstractContainerMenu {
                 return OHorseMenu.this.oHorse.canWearArmor();
             }
         });
-
-        if (this.oHorse.hasChest()) {
-            if (this.oHorse.isStockBreed() || this.oHorse.isWarmbloodedBreed()) { //stock or warmblood
-                for (int y = 0; y < 3; y++) {
-                    for (int x = 0; x < 3; x++) {
-                        this.addSlot(new Slot(this.container, oHorseSlots++, 80 + x * 18, 18 + y * 18));
-                    }
-                }
-            }
-
-            if (this.oHorse.isDraftBreed()) { //draft or coldblood
-                for (int y = 0; y < 3; y++) {
-                    for (int x = 0; x < 5; x++) {
-                        this.addSlot(new Slot(this.container, oHorseSlots++, 80 + x * 18, 18 + y * 18));
-                    }
-                }
-            }
-
-            if (this.oHorse.isPonyBreed()) { //pony
-                for (int y = 0; y < 3; y++) {
-                    for (int x = 0; x < 4; x++) {
-                        this.addSlot(new Slot(this.container, oHorseSlots++, 80 + x * 18, 18 + y * 18));
-                    }
-                }
-            }
-
-            if (this.oHorse.isRacingBreed()) { //racer
-                for (int y = 0; y < 3; y++) {
-                    for (int x = 0; x < 1; x++) {
-                        this.addSlot(new Slot(this.container, oHorseSlots++, 80 + x * 18, 18 + y * 18));
-                    }
-                }
-            }
-        }
 
         for(int y = 0; y < 3; y++) {
             for(int x = 0; x < 9; x++) {

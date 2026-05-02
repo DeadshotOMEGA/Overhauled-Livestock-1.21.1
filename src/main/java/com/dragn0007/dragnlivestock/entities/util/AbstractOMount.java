@@ -277,7 +277,7 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
     }
 
     public boolean isArmor(ItemStack itemStack) {
-        return itemStack.is(LOTags.Items.ARMOR_SLOT_OTHER) || itemStack.getItem() instanceof LightHorseArmorItem;
+        return itemStack.getItem() instanceof AnimalArmorItem || itemStack.is(LOTags.Items.ARMOR_SLOT_OTHER) || itemStack.getItem() instanceof LightHorseArmorItem;
     }
 
     public double getPassengersRidingOffset() {
@@ -798,6 +798,7 @@ public abstract class AbstractOMount extends AbstractChestedHorse {
     public void containerChanged(Container container) {
         ItemStack prevArmor = this.getArmor();
         super.containerChanged(container);
+        this.updateContainerEquipment();
         ItemStack newArmor = this.getArmor();
         if(this.tickCount > 20 && this.isArmor(newArmor) && prevArmor != newArmor) {
             this.playSound(SoundEvents.HORSE_ARMOR, 0.5f, 1f);

@@ -4,6 +4,7 @@ import com.dragn0007.dragnlivestock.LivestockOverhaul;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulClientConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -38,7 +39,8 @@ public class OHorseSaddleLayer extends GeoRenderLayer<OHorse> {
             // this works for all equines and caribou too, no extra steps required
             if (itemStack.getItem() instanceof SaddleItem saddleItem && !animatable.isWearingHarness()) {
                 if (!LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
-                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/tack/" + saddleItem + ".png");
+                    ResourceLocation saddleId = BuiltInRegistries.ITEM.getKey(saddleItem);
+                    resourceLocation = ResourceLocation.fromNamespaceAndPath(saddleId.getNamespace(), "textures/entity/horse/tack/" + saddleId.getPath() + ".png");
                 } else {
                     resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/config_simplified/horse/tack/saddle.png");
                 }

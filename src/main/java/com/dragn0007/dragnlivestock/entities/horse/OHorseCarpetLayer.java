@@ -10,6 +10,7 @@ import com.dragn0007.dragnlivestock.util.LOTags;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulClientConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
@@ -188,8 +189,7 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
     @Override
     public void render(PoseStack poseStack, OHorse animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
         ItemStack itemStack = animatable.getDecorItem();
-        List<ItemStack> armorSlots = (List<ItemStack>) animatable.getArmorSlots();
-        ItemStack armorItemStack = armorSlots.get(2);
+        ItemStack armorItemStack = animatable.getArmor();
 
         ResourceLocation resourceLocation = null;
 
@@ -223,7 +223,7 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
                             itemStack.is(LOTags.Items.RACING_BLANKETS) || itemStack.is(LOTags.Items.WESTERN_BLANKETS)) {
                         resourceLocation = ARMOR_COLOR[((BlanketItem) itemStack.getItem()).getColor().getId()];
                     } else if (itemStack.getItem() instanceof BlanketItem blanketItem) {
-                        String name = blanketItem.toString();
+                        String name = BuiltInRegistries.ITEM.getKey(blanketItem).getPath();
                         String noSuffix = name.replaceAll("_.+", "");
                         // ^ if youre another modder adding new blankets, make sure your blanket name is just one word
                         // (i.e american_western_blanket.png)
@@ -251,7 +251,7 @@ public class OHorseCarpetLayer extends GeoRenderLayer<OHorse> {
                     // make sure to put your blanket in the dragnlivestock:special_blankets tag so you can actually put it in the slot
                     // this works for all equines and caribou too, no extra steps required
                 } else if (itemStack.getItem() instanceof BlanketItem blanketItem) {
-                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/special/" + blanketItem + ".png");
+                    resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "textures/entity/horse/carpet/special/" + BuiltInRegistries.ITEM.getKey(blanketItem).getPath() + ".png");
                 }
             }
 

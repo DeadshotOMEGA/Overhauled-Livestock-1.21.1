@@ -39,6 +39,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
@@ -494,12 +495,41 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	@Override
 	public void openInventory(Player player) {
 		if(player instanceof ServerPlayer serverPlayer && this.isTamed() && ((this.isOwnedBy(player) && this.isLocked()) || !this.isLocked())) {
+			if (this.inventory.getContainerSize() < this.getSafeOHorseInventorySize()) {
+				this.createInventory();
+			}
+
 			serverPlayer.openMenu(new SimpleMenuProvider((containerId, inventory, p) ->
 					new OHorseMenu(containerId, inventory, this.inventory, this), this.getDisplayName()), data -> {
-				data.writeInt(this.getInventorySize());
+				data.writeInt(this.inventory.getContainerSize());
 				data.writeInt(this.getId());
 			});
 		}
+	}
+
+	@Override
+	public void createInventory() {
+		SimpleContainer previousInventory = this.inventory;
+		this.inventory = new SimpleContainer(this.getSafeOHorseInventorySize());
+		if (previousInventory != null) {
+			previousInventory.removeListener(this);
+			int copySlots = Math.min(previousInventory.getContainerSize(), this.inventory.getContainerSize());
+
+			for (int slot = 0; slot < copySlots; ++slot) {
+				ItemStack itemStack = previousInventory.getItem(slot);
+				if (!itemStack.isEmpty()) {
+					this.inventory.setItem(slot, itemStack.copy());
+				}
+			}
+		}
+
+		this.inventory.addListener(this);
+		this.updateContainerEquipment();
+		this.itemHandler = new net.neoforged.neoforge.items.wrapper.InvWrapper(this.inventory);
+	}
+
+	private int getSafeOHorseInventorySize() {
+		return Math.max(3, this.getInventorySize());
 	}
 
 	@Override

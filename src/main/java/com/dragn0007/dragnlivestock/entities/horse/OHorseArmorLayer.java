@@ -10,18 +10,18 @@ import com.dragn0007.dragnlivestock.util.LOTags;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulClientConfig;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.AnimalArmorItem;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
-
-import java.util.List;
 
 @OnlyIn(Dist.CLIENT)
 public class OHorseArmorLayer extends GeoRenderLayer<OHorse> {
@@ -31,8 +31,7 @@ public class OHorseArmorLayer extends GeoRenderLayer<OHorse> {
 
     @Override
     public void render(PoseStack poseStack, OHorse animatable, BakedGeoModel bakedModel, RenderType renderType, MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
-        List<ItemStack> armorSlots = (List<ItemStack>) animatable.getArmorSlots();
-        ItemStack armorItemStack = armorSlots.get(2);
+        ItemStack armorItemStack = animatable.getArmor();
 
         if (armorItemStack.isEmpty()) {
             return;
@@ -58,8 +57,11 @@ public class OHorseArmorLayer extends GeoRenderLayer<OHorse> {
                 // if youre another modder looking to add new armor, use this pathway v
                 // it'll find the name for you so long as your registry item is named the same as your texture AND it's a HorseAmorItem or LightHorseArmorItem
                 // this works for all equines and caribou too, no extra steps required
+            } else if (armorItemStack.getItem() instanceof AnimalArmorItem animalArmorItem) {
+                resourceLocation = animalArmorItem.getTexture();
             } else if (armorItemStack.getItem() instanceof LightHorseArmorItem horseArmorItem) {
-                resourceLocation = ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, armorpath + horseArmorItem + ".png");
+                ResourceLocation armorId = BuiltInRegistries.ITEM.getKey(horseArmorItem);
+                resourceLocation = ResourceLocation.fromNamespaceAndPath(armorId.getNamespace(), armorpath + armorId.getPath() + ".png");
             } else if ((armorItemStack.getItem() instanceof RumpStrapItem rumpStrapItem) && !armorItemStack.isEmpty() && !LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
                 resourceLocation = ResourceLocation.fromNamespaceAndPath("medievalembroidery", "textures/entity/horse/caparison/" + rumpStrapItem + ".png");
             } else if ((armorItemStack.getItem() instanceof CaparisonItem caparisonItem) && !armorItemStack.isEmpty() && !LivestockOverhaulClientConfig.SIMPLE_MODELS.get()) {
