@@ -72,6 +72,12 @@ public class LivestockOverhaulCommonConfig {
     public static final ModConfigSpec.BooleanValue ALLOW_HORSE_TRAINING;
     public static final ModConfigSpec.ConfigValue<Integer> HORSE_TRAIN_TIME;
     public static final ModConfigSpec.ConfigValue<Integer> HORSE_TRAIN_AMOUNT;
+    public static final ModConfigSpec.BooleanValue HORSE_FOAL_AGE_BY_DAYS;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_FOAL_GROWTH_TICKS;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_FOAL_GROWTH_DAYS;
+    public static final ModConfigSpec.BooleanValue HORSE_LIFE_STAGE_AGE_BY_DAYS;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_DAYS_PER_YEAR;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_TICKS_PER_YEAR;
     public static final ModConfigSpec.BooleanValue COW_BELL_SOUND;
     public static final ModConfigSpec.BooleanValue HORSE_HERD_ANIMALS;
     public static final ModConfigSpec.BooleanValue ALLOW_SPECIAL_BLANKET_CRAFTING;
@@ -239,7 +245,8 @@ public class LivestockOverhaulCommonConfig {
         USE_VANILLA_LOOT = BUILDER.comment("Should O-Animals use vanilla loot instead of the loot included in the mod?")
                 .define("Use Vanilla Animal Loot", false);
 
-        NATURAL_HORSE_BREEDS = BUILDER.comment("Should O-Horses be able to spawn with any breed naturally? Default is Mustangs only.")
+        NATURAL_HORSE_BREEDS = BUILDER.comment("Should natural O-Horses in unlisted biomes be able to spawn with any breed? " +
+                        "Listed O-Horse spawn biomes use the built-in biome-weighted breed table.")
                 .define("Naturally Spawning O-Horse Breeds", false);
 
         BASE_HORSE_SPRINT_TIME = BUILDER.comment("Base time an O-Horse can run for at full speed, in seconds. Default is 45s.")
@@ -255,6 +262,30 @@ public class LivestockOverhaulCommonConfig {
 
         HORSE_TRAIN_AMOUNT = BUILDER.comment("Amount of times a player can level up their O-Horse's stats. Default is 5.")
                 .define("Stat Training Max", 5);
+
+        HORSE_FOAL_AGE_BY_DAYS = BUILDER.comment("Should young O-Horses age by completed in-game days instead of real-time ticks? " +
+                        "When false, Horse Foal Growth Ticks controls growth. When true, Horse Foal Growth Days controls growth.")
+                .define("Horse Foal Age By In-Game Days", true);
+
+        HORSE_FOAL_GROWTH_TICKS = BUILDER.comment("How many real-time ticks equal one young O-Horse life-stage year when Horse Foal Age By In-Game Days is false. " +
+                        "Foals become yearlings after one configured year and stop being Minecraft babies after two configured years.")
+                .define("Horse Foal Growth Ticks", 24000);
+
+        HORSE_FOAL_GROWTH_DAYS = BUILDER.comment("How many completed Minecraft days equal one young O-Horse life-stage year when Horse Foal Age By In-Game Days is true. " +
+                        "Foals become yearlings after one configured year and stop being Minecraft babies after two configured years.")
+                .define("Horse Foal Growth Days", 30);
+
+        HORSE_LIFE_STAGE_AGE_BY_DAYS = BUILDER.comment("Should O-Horse life stages be calculated from completed Minecraft days instead of real-time ticks? " +
+                        "Default is true.")
+                .define("Horse Life Stage Age By In-Game Days", true);
+
+        HORSE_DAYS_PER_YEAR = BUILDER.comment("How many completed Minecraft days equal one O-Horse life-stage year when Horse Life Stage Age By In-Game Days is true. " +
+                        "Default is 30.")
+                .define("Horse Days Per Year", 30);
+
+        HORSE_TICKS_PER_YEAR = BUILDER.comment("How many real-time ticks equal one O-Horse life-stage year when Horse Life Stage Age By In-Game Days is false. " +
+                        "Default is 720000 ticks, equivalent to 30 Minecraft days.")
+                .define("Horse Ticks Per Year", 720000);
 
         HORSE_HAIR_GROWTH = BUILDER.comment("Should O-Horses's manes and tails be able to grow over time?")
                 .define("Horse Hair Growth Progression", true);

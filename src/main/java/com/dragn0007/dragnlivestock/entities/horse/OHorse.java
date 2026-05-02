@@ -757,12 +757,75 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 
 	@Override
 	public void aiStep() {
+		int ageBeforeStep = this.getAge();
 		super.aiStep();
+		this.tickConfiguredFoalGrowth(ageBeforeStep);
+
 		if (this.isUndead() && !this.isHallow()) {
 			this.level().addParticle(ParticleTypes.ASH, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
 		} else if (this.isHallow()) {
 			this.level().addParticle(ParticleTypes.SOUL, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
 		}
+	}
+
+	private void tickConfiguredFoalGrowth(int ageBeforeStep) {
+		if (this.level().isClientSide || ageBeforeStep >= 0) {
+			if (!this.level().isClientSide && ageBeforeStep >= 0) {
+				this.foalGrowthProgress = 0;
+				this.lastFoalGrowthDay = -1L;
+			}
+			return;
+		}
+
+		if (this.getAge() > ageBeforeStep) {
+			this.setAge(ageBeforeStep);
+		}
+
+		int totalGrowthUnits = this.getFoalGrowthTotalUnits();
+		this.foalGrowthProgress = Math.max(this.foalGrowthProgress, this.progressFromCurrentFoalAge(totalGrowthUnits));
+
+		if (LivestockOverhaulCommonConfig.HORSE_FOAL_AGE_BY_DAYS.get()) {
+			long currentDay = this.level().getDayTime() / 24000L;
+			if (this.lastFoalGrowthDay < 0L) {
+				this.lastFoalGrowthDay = currentDay;
+				return;
+			}
+
+			if (currentDay <= this.lastFoalGrowthDay) {
+				return;
+			}
+
+			this.foalGrowthProgress += (int) Math.min(Integer.MAX_VALUE, currentDay - this.lastFoalGrowthDay);
+			this.lastFoalGrowthDay = currentDay;
+		} else {
+			this.foalGrowthProgress++;
+		}
+
+		this.setAge(this.ageFromFoalProgress(totalGrowthUnits));
+	}
+
+	private int getFoalGrowthTotalUnits() {
+		if (LivestockOverhaulCommonConfig.HORSE_FOAL_AGE_BY_DAYS.get()) {
+			return Math.max(1, LivestockOverhaulCommonConfig.HORSE_FOAL_GROWTH_DAYS.get()) * 2;
+		}
+
+		return Math.max(1, LivestockOverhaulCommonConfig.HORSE_FOAL_GROWTH_TICKS.get()) * 2;
+	}
+
+	private int progressFromCurrentFoalAge(int totalGrowthUnits) {
+		double grownFraction = Math.max(0.0D, Math.min(1.0D, (24000.0D + this.getAge()) / 24000.0D));
+		return (int) Math.floor(grownFraction * totalGrowthUnits);
+	}
+
+	private int ageFromFoalProgress(int totalGrowthUnits) {
+		if (this.foalGrowthProgress >= totalGrowthUnits) {
+			this.foalGrowthProgress = 0;
+			this.lastFoalGrowthDay = -1L;
+			return 0;
+		}
+
+		double grownFraction = this.foalGrowthProgress / (double) totalGrowthUnits;
+		return Math.min(-1, -24000 + (int) Math.floor(24000.0D * grownFraction));
 	}
 
 	@Override
@@ -807,10 +870,18 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	public int tailGrowthTick;
 	public int decompTick;
 	public int trainStatsTick;
+	public int foalGrowthProgress;
+	public long lastFoalGrowthDay = -1L;
+	public long horseAgeTicks;
+	public long horseAgeDays;
+	public long lastHorseAgeDay = -1L;
+	public boolean horseLifeStageAgeInitialized;
 
 	@Override
 	public void tick() {
 		super.tick();
+		this.initializeMissingHorseLifeStageAge();
+		this.tickHorseLifeStageAge();
 
 		if (this.hasFollowers() && this.level().random.nextInt(200) == 1) {
 			List<? extends OHorse> list = this.level().getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
@@ -964,6 +1035,94 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 				}
 			}
 		}
+	}
+
+	private void tickHorseLifeStageAge() {
+		if (this.level().isClientSide) {
+			return;
+		}
+
+		this.horseAgeTicks++;
+
+		long currentDay = this.level().getDayTime() / 24000L;
+		if (this.lastHorseAgeDay < 0L) {
+			this.lastHorseAgeDay = currentDay;
+			return;
+		}
+
+		if (currentDay > this.lastHorseAgeDay) {
+			this.horseAgeDays += currentDay - this.lastHorseAgeDay;
+			this.lastHorseAgeDay = currentDay;
+		}
+
+		this.updateSyncedHorseLifeStage();
+	}
+
+	public double getHorseAgeYears() {
+		if (LivestockOverhaulCommonConfig.HORSE_LIFE_STAGE_AGE_BY_DAYS.get()) {
+			return this.horseAgeDays / (double) Math.max(1, LivestockOverhaulCommonConfig.HORSE_DAYS_PER_YEAR.get());
+		}
+
+		return this.horseAgeTicks / (double) Math.max(1, LivestockOverhaulCommonConfig.HORSE_TICKS_PER_YEAR.get());
+	}
+
+	public HorseLifeStage getHorseLifeStage() {
+		return HorseLifeStage.fromOrdinal(this.entityData.get(HORSE_LIFE_STAGE));
+	}
+
+	private HorseLifeStage getCalculatedHorseLifeStage() {
+		return HorseLifeStage.fromYears(this.getHorseAgeYears(), this.isMale());
+	}
+
+	private void updateSyncedHorseLifeStage() {
+		this.entityData.set(HORSE_LIFE_STAGE, this.getCalculatedHorseLifeStage().ordinal());
+	}
+
+	public void initializeSpawnLifeStageAge() {
+		if (this.isBaby()) {
+			this.initializeFoalLifeStageAge();
+			return;
+		}
+
+		this.initializeAdultLifeStageAge();
+	}
+
+	private void initializeMissingHorseLifeStageAge() {
+		if (this.level().isClientSide || this.horseLifeStageAgeInitialized) {
+			return;
+		}
+
+		this.initializeSpawnLifeStageAge();
+	}
+
+	private void initializeFoalLifeStageAge() {
+		this.horseAgeTicks = 0L;
+		this.horseAgeDays = 0L;
+		this.foalGrowthProgress = 0;
+		this.lastFoalGrowthDay = -1L;
+		this.lastHorseAgeDay = this.level().getDayTime() / 24000L;
+		this.horseLifeStageAgeInitialized = true;
+		this.updateSyncedHorseLifeStage();
+	}
+
+	private void initializeAdultLifeStageAge() {
+		int adultStartYear = 4;
+		int adultEndYear = 25;
+		int spawnedYears = adultStartYear + this.random.nextInt(adultEndYear - adultStartYear + 1);
+
+		if (LivestockOverhaulCommonConfig.HORSE_LIFE_STAGE_AGE_BY_DAYS.get()) {
+			this.horseAgeDays = (long) spawnedYears * Math.max(1, LivestockOverhaulCommonConfig.HORSE_DAYS_PER_YEAR.get());
+			this.horseAgeTicks = this.horseAgeDays * 24000L;
+		} else {
+			this.horseAgeTicks = (long) spawnedYears * Math.max(1, LivestockOverhaulCommonConfig.HORSE_TICKS_PER_YEAR.get());
+			this.horseAgeDays = this.horseAgeTicks / 24000L;
+		}
+
+		this.foalGrowthProgress = 0;
+		this.lastFoalGrowthDay = -1L;
+		this.lastHorseAgeDay = this.level().getDayTime() / 24000L;
+		this.horseLifeStageAgeInitialized = true;
+		this.updateSyncedHorseLifeStage();
 	}
 
 	@Override
@@ -1257,6 +1416,8 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		this.entityData.set(AI_HERD_ANCHOR_DISTANCE_TENTHS, Mth.clamp((int) Math.round(anchorDistance * 10.0D), 0, 10000));
 	}
 
+	public static final EntityDataAccessor<Integer> HORSE_LIFE_STAGE = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
@@ -1346,6 +1507,41 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			this.trainStatsTick = tag.getInt("TrainingTime");
 		}
 
+		if (tag.contains("FoalGrowthProgress")) {
+			this.foalGrowthProgress = tag.getInt("FoalGrowthProgress");
+		}
+
+		if (tag.contains("LastFoalGrowthDay")) {
+			this.lastFoalGrowthDay = tag.getLong("LastFoalGrowthDay");
+		}
+
+		boolean hasHorseLifeStageAge = false;
+
+		if (tag.contains("HorseAgeTicks")) {
+			this.horseAgeTicks = tag.getLong("HorseAgeTicks");
+			hasHorseLifeStageAge = true;
+		}
+
+		if (tag.contains("HorseAgeDays")) {
+			this.horseAgeDays = tag.getLong("HorseAgeDays");
+			hasHorseLifeStageAge = true;
+		}
+
+		if (tag.contains("LastHorseAgeDay")) {
+			this.lastHorseAgeDay = tag.getLong("LastHorseAgeDay");
+			hasHorseLifeStageAge = true;
+		}
+
+		if (tag.contains("HorseLifeStageAgeInitialized")) {
+			this.horseLifeStageAgeInitialized = tag.getBoolean("HorseLifeStageAgeInitialized");
+		} else {
+			this.horseLifeStageAgeInitialized = hasHorseLifeStageAge && (this.isBaby() || this.horseAgeTicks > 0L || this.horseAgeDays > 0L);
+		}
+
+		if (this.horseLifeStageAgeInitialized) {
+			this.updateSyncedHorseLifeStage();
+		}
+
 		if (tag.contains("SpeedTrained")) {
 			this.setSpeedTrained(tag.getInt("SpeedTrained"));
 		}
@@ -1409,6 +1605,12 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		}
 		tag.putBoolean("IsBranded", this.isBranded());
 		tag.putInt("TrainingTime", this.trainStatsTick);
+		tag.putInt("FoalGrowthProgress", this.foalGrowthProgress);
+		tag.putLong("LastFoalGrowthDay", this.lastFoalGrowthDay);
+		tag.putLong("HorseAgeTicks", this.horseAgeTicks);
+		tag.putLong("HorseAgeDays", this.horseAgeDays);
+		tag.putLong("LastHorseAgeDay", this.lastHorseAgeDay);
+		tag.putBoolean("HorseLifeStageAgeInitialized", this.horseLifeStageAgeInitialized);
 		tag.putInt("SpeedTrained", this.getSpeedTrained());
 		tag.putInt("JumpTrained", this.getJumpTrained());
 		tag.putInt("HealthTrained", this.getHealthTrained());
@@ -1429,7 +1631,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 
 		Random random = new Random();
 
-		if (spawnType == MobSpawnType.SPAWN_EGG || LivestockOverhaulCommonConfig.NATURAL_HORSE_BREEDS.get()) {
+		if (spawnType == MobSpawnType.SPAWN_EGG) {
 			if (!ModList.get().isLoaded("deadlydinos")) {
 				int[] breeds = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 20, 21, 22};
 				int randomIndex = new Random().nextInt(breeds.length);
@@ -1437,6 +1639,8 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			} else {
 				this.setBreed(random.nextInt(HorseBreed.values().length));
 			}
+		} else if (this.usesNaturalHorseBreedSelection(spawnType)) {
+			this.setNaturalHorseBreed(random);
 		}
 
 		this.setReindeerVariant(random.nextInt(REINDEER_VARIANT_COUNT));
@@ -1465,7 +1669,141 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		this.setTailType(randomTail);
 
 		this.randomizeOHorseAttributes();
-		return super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
+		SpawnGroupData spawnData = super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
+		if (spawnType == MobSpawnType.SPAWN_EGG && this.isBaby()) {
+			this.setAge(0);
+		}
+		this.initializeSpawnLifeStageAge();
+		return spawnData;
+	}
+
+	private boolean usesNaturalHorseBreedSelection(MobSpawnType spawnType) {
+		return spawnType == MobSpawnType.NATURAL
+				|| spawnType == MobSpawnType.CHUNK_GENERATION
+				|| spawnType == MobSpawnType.STRUCTURE;
+	}
+
+	private void setNaturalHorseBreed(Random random) {
+		ResourceLocation biomeLocation = this.level().getBiome(this.blockPosition())
+				.unwrapKey()
+				.map(ResourceKey::location)
+				.orElse(null);
+		int weightedBreed = this.getWeightedNaturalBreedForBiome(biomeLocation, random);
+		if (weightedBreed >= 0) {
+			this.setBreed(weightedBreed);
+			return;
+		}
+
+		if (LivestockOverhaulCommonConfig.NATURAL_HORSE_BREEDS.get()) {
+			this.setBreed(random.nextInt(HorseBreed.values().length));
+		} else {
+			this.setBreed(HorseBreed.MUSTANG.ordinal());
+		}
+	}
+
+	private int getWeightedNaturalBreedForBiome(@Nullable ResourceLocation biomeLocation, Random random) {
+		int[] breedWeights = this.getNaturalBreedWeightsForBiome(biomeLocation);
+		if (breedWeights.length == 0) {
+			return -1;
+		}
+
+		int totalWeight = 0;
+		for (int i = 1; i < breedWeights.length; i += 2) {
+			totalWeight += breedWeights[i];
+		}
+
+		if (totalWeight <= 0) {
+			return -1;
+		}
+
+		int roll = random.nextInt(totalWeight);
+		for (int i = 0; i < breedWeights.length; i += 2) {
+			roll -= breedWeights[i + 1];
+			if (roll < 0) {
+				return breedWeights[i];
+			}
+		}
+
+		return breedWeights[0];
+	}
+
+	private int[] getNaturalBreedWeightsForBiome(@Nullable ResourceLocation biomeLocation) {
+		if (biomeLocation == null) {
+			return new int[0];
+		}
+
+		return switch (biomeLocation.toString()) {
+			case "minecraft:plains" -> new int[] {
+					0, 10, 1, 10, 2, 10, 4, 10, 5, 10, 6, 10, 7, 10, 8, 10, 9, 10, 11, 10, 12, 10, 14, 10, 16, 10, 18, 10, 20, 10, 21, 10, 22, 10, 15, 5, 10, 1, 13, 1
+			};
+			case "minecraft:sunflower_plains" -> new int[] {
+					0, 10, 4, 5, 7, 5, 9, 5, 20, 5
+			};
+			case "minecraft:savanna" -> new int[] {
+					0, 10, 7, 10, 10, 10, 13, 10, 14, 5, 4, 1, 9, 1, 11, 1, 20, 1
+			};
+			case "minecraft:savanna_plateau" -> new int[] {
+					0, 5, 7, 5, 10, 5, 13, 5
+			};
+			case "minecraft:badlands" -> new int[] {
+					0, 5, 7, 5, 10, 5, 13, 5, 14, 1
+			};
+			case "minecraft:wooded_badlands" -> new int[] {
+					10, 5, 0, 1, 7, 1
+			};
+			case "minecraft:desert" -> new int[] {
+					10, 10, 13, 10, 0, 1, 7, 1
+			};
+			case "minecraft:meadow" -> new int[] {
+					1, 10, 2, 10, 3, 10, 4, 10, 5, 10, 6, 10, 8, 10, 9, 10, 11, 10, 12, 10, 15, 10, 16, 10, 17, 10, 18, 10, 19, 10, 20, 10, 21, 10, 22, 10, 14, 5
+			};
+			case "minecraft:forest" -> new int[] {
+					1, 10, 2, 5, 5, 5, 6, 5, 8, 5, 9, 5, 12, 5, 14, 5, 15, 5, 16, 5, 17, 5, 18, 5, 21, 5, 22, 5, 4, 1, 20, 1
+			};
+			case "minecraft:flower_forest" -> new int[] {
+					1, 5, 2, 5, 4, 5, 5, 5, 6, 5, 8, 5, 9, 5, 12, 5, 18, 5, 20, 5, 22, 5
+			};
+			case "minecraft:taiga" -> new int[] {
+					1, 5, 3, 5, 11, 5, 15, 5, 19, 5, 21, 5, 8, 1, 14, 1, 17, 1
+			};
+			case "minecraft:snowy_plains" -> new int[] {
+					11, 10, 19, 10, 3, 5, 21, 5, 1, 1, 14, 1, 15, 1
+			};
+			case "minecraft:snowy_taiga" -> new int[] {
+					3, 10, 11, 5, 1, 1, 17, 1, 19, 1, 21, 1
+			};
+			case "minecraft:birch_forest" -> new int[] {
+					2, 5, 8, 5, 18, 1
+			};
+			case "minecraft:old_growth_birch_forest" -> new int[] {
+					2, 1
+			};
+			case "minecraft:grove" -> new int[] {
+					3, 10, 17, 10
+			};
+			case "minecraft:windswept_hills" -> new int[] {
+					15, 10, 3, 5, 11, 5, 16, 5, 17, 5, 19, 5, 6, 1
+			};
+			case "minecraft:snowy_slopes" -> new int[] {
+					17, 5, 3, 1
+			};
+			case "minecraft:swamp" -> new int[] {
+					5, 5, 6, 5, 12, 5, 16, 1, 18, 1, 21, 1, 22, 1
+			};
+			case "minecraft:dark_forest" -> new int[] {
+					5, 1, 8, 1, 12, 1
+			};
+			case "minecraft:windswept_savanna" -> new int[] {
+					13, 5
+			};
+			case "minecraft:beach" -> new int[] {
+					16, 5, 19, 5, 22, 5
+			};
+			case "minecraft:stony_shore" -> new int[] {
+					16, 1, 19, 1
+			};
+			default -> new int[0];
+		};
 	}
 
 	@Override
@@ -1500,9 +1838,25 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		builder.define(AI_HERD_STATE, HorseGroupingState.NO_HERD.ordinal());
 		builder.define(AI_HERD_SIZE, 1);
 		builder.define(AI_HERD_ANCHOR_DISTANCE_TENTHS, 0);
+		builder.define(HORSE_LIFE_STAGE, HorseLifeStage.FOAL.ordinal());
 		builder.define(HALLOW, false);
 	}
 
+	@Override
+	public boolean canParent() {
+		return super.canParent() && this.isBreedingAgeHorse();
+	}
+
+	@Override
+	public boolean canFallInLove() {
+		return super.canFallInLove() && this.isBreedingAgeHorse();
+	}
+
+	public boolean isBreedingAgeHorse() {
+		return this.getCalculatedHorseLifeStage().isBreedingAge();
+	}
+
+	@Override
 	public boolean canMate(Animal animal) {
 		if (animal == this) {
 			return false;

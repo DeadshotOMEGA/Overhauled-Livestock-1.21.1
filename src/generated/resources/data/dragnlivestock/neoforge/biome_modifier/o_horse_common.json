@@ -1,0 +1,21 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": [
+    "minecraft:plains",
+    "minecraft:sunflower_plains",
+    "minecraft:savanna",
+    "minecraft:desert",
+    "minecraft:meadow",
+    "minecraft:forest",
+    "minecraft:snowy_plains",
+    "minecraft:snowy_taiga",
+    "minecraft:grove",
+    "minecraft:windswept_hills"
+  ],
+  "spawners": {
+    "type": "dragnlivestock:o_horse",
+    "maxCount": 6,
+    "minCount": 2,
+    "weight": 10
+  }
+}
