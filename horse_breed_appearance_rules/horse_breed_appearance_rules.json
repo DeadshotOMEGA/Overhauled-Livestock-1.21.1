@@ -1,0 +1,1384 @@
+{
+  "schemaVersion": "1.0.0",
+  "description": "Breed appearance permission rules for horse variants. Designed for natural random generation; special/fantasy overrides can be applied separately.",
+  "normalization": {
+    "case": "UPPER_SNAKE_CASE",
+    "compatibilityNote": "TOBAINO is preserved because it was provided in the source options, but visually this likely represents Tobiano."
+  },
+  "globalOptions": {
+    "mane": [
+      "BUTTONS",
+      "LONG",
+      "ROACHED",
+      "SHORT",
+      "NONE"
+    ],
+    "tail": [
+      "TIED",
+      "LONG",
+      "AVERAGE",
+      "SHORT",
+      "TUCKED"
+    ],
+    "feathering": [
+      "NONE",
+      "HALF",
+      "FULL"
+    ],
+    "eyes": [
+      "DARK_BROWN",
+      "BROWN",
+      "AMBER",
+      "GOLD",
+      "DARK_BLUE",
+      "BLUE",
+      "GREEN",
+      "BLUE_GOLD",
+      "BROWN_GREEN",
+      "BROWN_BLUE",
+      "RED"
+    ],
+    "coat": [
+      "BAY",
+      "BLACK",
+      "BLUE_ROAN",
+      "BUCKSKIN",
+      "CHAMPAGNE",
+      "CHESTNUT",
+      "CHOCOLATE",
+      "COPPER",
+      "CREAM",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "DUN",
+      "FLAXEN_CHESTNUT",
+      "GOLD_CHAMPAGNE",
+      "GRULLO",
+      "LIGHT_GRAY",
+      "PALOMINO",
+      "PERLINO",
+      "RED_DUN",
+      "ROSE_GRAY",
+      "SEAL_BROWN",
+      "SILVER",
+      "STRAWBERRY_ROAN",
+      "STEEL_GREY"
+    ],
+    "marking": [
+      "NONE",
+      "APPALOOSA",
+      "BALD",
+      "BLANKET_APPALOOSA",
+      "BLAZE",
+      "FLEABITTEN",
+      "FULL_SOCKS",
+      "HALF_SOCKS",
+      "OVERO",
+      "OVERO_SPLASH",
+      "PAINT",
+      "REVERSED_HALF_SOCKS",
+      "REVERSED_FULL_SOCKS",
+      "ROAN",
+      "SNIP",
+      "SPLASH_OVERO",
+      "SPLASHED",
+      "SPLASHED_PAINT",
+      "SPOTTED",
+      "STAR",
+      "TOBAINO",
+      "HALF_SILVER",
+      "FULL_SILVER",
+      "CORONET",
+      "FEW_SPOT_LEOPARD",
+      "LEOPARD",
+      "PURE_WHITE",
+      "RABICANO",
+      "SNOWCAP",
+      "PINK_NOSE_APPALOOSA",
+      "PINK_NOSE_BALD",
+      "PINK_NOSE_BLAZE",
+      "PINK_NOSE_FEW_SPOT_LEOPARD",
+      "PINK_NOSE_HALF_BALD",
+      "PINK_NOSE_LEOPARD",
+      "PINK_NOSE_OVERO",
+      "PINK_NOSE_PURE_WHITE",
+      "PINK_NOSE_SNIP",
+      "PINK_NOSE_SPLASH_OVERO",
+      "PINK_NOSE_SPOTTED",
+      "REVERSE_HALF_SILVER",
+      "REVERSE_FULL_SILVER",
+      "MINIMAL_SABINO",
+      "LIGHT_MARKER_OVERO",
+      "HALF_BALD",
+      "DAPPLES"
+    ]
+  },
+  "specialHandling": {
+    "maneNone": "Do not use for natural random spawns unless a clipped/cosmetic variant is intended.",
+    "tailTucked": "Treat as animation/state-driven, not normal breed cosmetic generation.",
+    "redEyes": "Fantasy-only by default.",
+    "pureWhite": "Use sparingly. Most white-looking horses should prefer grey-family coats/markings."
+  },
+  "coatPools": {
+    "STOCK_BROAD": [
+      "BAY",
+      "BLACK",
+      "BLUE_ROAN",
+      "BUCKSKIN",
+      "CHAMPAGNE",
+      "CHESTNUT",
+      "CHOCOLATE",
+      "COPPER",
+      "CREAM",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "DUN",
+      "FLAXEN_CHESTNUT",
+      "GOLD_CHAMPAGNE",
+      "GRULLO",
+      "LIGHT_GRAY",
+      "PALOMINO",
+      "PERLINO",
+      "RED_DUN",
+      "ROSE_GRAY",
+      "SEAL_BROWN",
+      "SILVER",
+      "STRAWBERRY_ROAN",
+      "STEEL_GREY"
+    ],
+    "BASIC_LIGHT": [
+      "BAY",
+      "BLACK",
+      "CHESTNUT",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "LIGHT_GRAY",
+      "ROSE_GRAY",
+      "SEAL_BROWN",
+      "STEEL_GREY"
+    ],
+    "WARMBLOOD": [
+      "BAY",
+      "BLACK",
+      "CHESTNUT",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "LIGHT_GRAY",
+      "SEAL_BROWN",
+      "STEEL_GREY"
+    ],
+    "ARABIAN": [
+      "BAY",
+      "BLACK",
+      "CHESTNUT",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "LIGHT_GRAY",
+      "ROSE_GRAY",
+      "SEAL_BROWN",
+      "STEEL_GREY"
+    ],
+    "AKHAL_TEKE": [
+      "BAY",
+      "BLACK",
+      "BUCKSKIN",
+      "CHAMPAGNE",
+      "CHESTNUT",
+      "CHOCOLATE",
+      "COPPER",
+      "CREAM",
+      "DARK_BAY",
+      "GOLD_CHAMPAGNE",
+      "LIGHT_GRAY",
+      "PALOMINO",
+      "PERLINO",
+      "SEAL_BROWN",
+      "STEEL_GREY"
+    ],
+    "MARWARI": [
+      "BAY",
+      "BLACK",
+      "BUCKSKIN",
+      "CHESTNUT",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "LIGHT_GRAY",
+      "PALOMINO",
+      "ROSE_GRAY",
+      "SEAL_BROWN",
+      "STEEL_GREY"
+    ],
+    "BAROQUE": [
+      "BAY",
+      "BLACK",
+      "CHESTNUT",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "LIGHT_GRAY",
+      "ROSE_GRAY",
+      "SEAL_BROWN",
+      "STEEL_GREY"
+    ],
+    "FRIESIAN_BLACK": [
+      "BLACK"
+    ],
+    "KLADRUBER": [
+      "BLACK",
+      "DAPPLE_GRAY",
+      "LIGHT_GRAY",
+      "STEEL_GREY"
+    ],
+    "LIPIZZANER": [
+      "DAPPLE_GRAY",
+      "LIGHT_GRAY",
+      "ROSE_GRAY",
+      "STEEL_GREY",
+      "BLACK",
+      "BAY",
+      "DARK_BAY"
+    ],
+    "CAMARGUE_GRAY": [
+      "DAPPLE_GRAY",
+      "LIGHT_GRAY",
+      "ROSE_GRAY",
+      "STEEL_GREY"
+    ],
+    "FJORD_DUN": [
+      "DUN",
+      "RED_DUN",
+      "GRULLO",
+      "BUCKSKIN"
+    ],
+    "HAFLINGER": [
+      "CHESTNUT",
+      "COPPER",
+      "FLAXEN_CHESTNUT"
+    ],
+    "PONY_BROAD": [
+      "BAY",
+      "BLACK",
+      "BLUE_ROAN",
+      "BUCKSKIN",
+      "CHESTNUT",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "DUN",
+      "FLAXEN_CHESTNUT",
+      "GRULLO",
+      "LIGHT_GRAY",
+      "PALOMINO",
+      "RED_DUN",
+      "SEAL_BROWN",
+      "SILVER",
+      "STRAWBERRY_ROAN",
+      "STEEL_GREY"
+    ],
+    "CONNEMARA": [
+      "BAY",
+      "BLACK",
+      "BUCKSKIN",
+      "CHESTNUT",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "DUN",
+      "GRULLO",
+      "LIGHT_GRAY",
+      "PALOMINO",
+      "ROSE_GRAY",
+      "SEAL_BROWN",
+      "STEEL_GREY"
+    ],
+    "PRIMITIVE_BROAD": [
+      "BAY",
+      "BLACK",
+      "BUCKSKIN",
+      "CHESTNUT",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "DUN",
+      "GRULLO",
+      "LIGHT_GRAY",
+      "RED_DUN",
+      "SEAL_BROWN",
+      "STRAWBERRY_ROAN",
+      "STEEL_GREY"
+    ],
+    "COB_BROAD": [
+      "BAY",
+      "BLACK",
+      "BLUE_ROAN",
+      "BUCKSKIN",
+      "CHESTNUT",
+      "CHOCOLATE",
+      "CREAM",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "DUN",
+      "FLAXEN_CHESTNUT",
+      "GRULLO",
+      "LIGHT_GRAY",
+      "PALOMINO",
+      "PERLINO",
+      "RED_DUN",
+      "ROSE_GRAY",
+      "SEAL_BROWN",
+      "SILVER",
+      "STRAWBERRY_ROAN",
+      "STEEL_GREY"
+    ],
+    "DRAFT_GRAY_BLACK": [
+      "BAY",
+      "BLACK",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "LIGHT_GRAY",
+      "SEAL_BROWN",
+      "STEEL_GREY"
+    ],
+    "DRAFT_ROAN": [
+      "BAY",
+      "BLACK",
+      "BLUE_ROAN",
+      "CHESTNUT",
+      "COPPER",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "FLAXEN_CHESTNUT",
+      "LIGHT_GRAY",
+      "SEAL_BROWN",
+      "STRAWBERRY_ROAN",
+      "STEEL_GREY"
+    ],
+    "BELGIAN_DRAFT": [
+      "BAY",
+      "BLACK",
+      "BLUE_ROAN",
+      "CHESTNUT",
+      "COPPER",
+      "FLAXEN_CHESTNUT",
+      "LIGHT_GRAY",
+      "SEAL_BROWN",
+      "STRAWBERRY_ROAN",
+      "STEEL_GREY"
+    ],
+    "BOULONNAIS": [
+      "DAPPLE_GRAY",
+      "LIGHT_GRAY",
+      "STEEL_GREY",
+      "BLACK",
+      "CHESTNUT"
+    ],
+    "MORGAN": [
+      "BAY",
+      "BLACK",
+      "BUCKSKIN",
+      "CHESTNUT",
+      "CHOCOLATE",
+      "CREAM",
+      "DARK_BAY",
+      "DAPPLE_GRAY",
+      "FLAXEN_CHESTNUT",
+      "LIGHT_GRAY",
+      "PALOMINO",
+      "PERLINO",
+      "SEAL_BROWN",
+      "SILVER",
+      "STEEL_GREY"
+    ],
+    "CANADIAN": [
+      "BLACK",
+      "BAY",
+      "DARK_BAY",
+      "CHESTNUT",
+      "SEAL_BROWN"
+    ]
+  },
+  "markingGroups": {
+    "MINIMAL": [
+      "NONE",
+      "STAR",
+      "SNIP",
+      "BLAZE",
+      "CORONET",
+      "HALF_SOCKS"
+    ],
+    "BASIC": [
+      "NONE",
+      "STAR",
+      "SNIP",
+      "BLAZE",
+      "BALD",
+      "HALF_BALD",
+      "CORONET",
+      "HALF_SOCKS",
+      "FULL_SOCKS",
+      "REVERSED_HALF_SOCKS",
+      "REVERSED_FULL_SOCKS",
+      "PINK_NOSE_SNIP",
+      "PINK_NOSE_BLAZE",
+      "PINK_NOSE_HALF_BALD",
+      "PINK_NOSE_BALD"
+    ],
+    "DRAFT_WHITE": [
+      "NONE",
+      "STAR",
+      "SNIP",
+      "BLAZE",
+      "BALD",
+      "HALF_BALD",
+      "CORONET",
+      "HALF_SOCKS",
+      "FULL_SOCKS",
+      "REVERSED_HALF_SOCKS",
+      "REVERSED_FULL_SOCKS",
+      "MINIMAL_SABINO",
+      "PINK_NOSE_SNIP",
+      "PINK_NOSE_BLAZE",
+      "PINK_NOSE_HALF_BALD",
+      "PINK_NOSE_BALD"
+    ],
+    "GREY": [
+      "FLEABITTEN",
+      "DAPPLES"
+    ],
+    "ROAN": [
+      "ROAN",
+      "RABICANO"
+    ],
+    "PINTO": [
+      "OVERO",
+      "OVERO_SPLASH",
+      "SPLASH_OVERO",
+      "SPLASHED",
+      "SPLASHED_PAINT",
+      "PAINT",
+      "TOBAINO",
+      "MINIMAL_SABINO",
+      "LIGHT_MARKER_OVERO",
+      "PINK_NOSE_OVERO",
+      "PINK_NOSE_SPLASH_OVERO"
+    ],
+    "APPALOOSA": [
+      "APPALOOSA",
+      "BLANKET_APPALOOSA",
+      "FEW_SPOT_LEOPARD",
+      "LEOPARD",
+      "SNOWCAP",
+      "SPOTTED",
+      "PINK_NOSE_APPALOOSA",
+      "PINK_NOSE_FEW_SPOT_LEOPARD",
+      "PINK_NOSE_LEOPARD",
+      "PINK_NOSE_SPOTTED"
+    ],
+    "SILVER": [
+      "HALF_SILVER",
+      "FULL_SILVER",
+      "REVERSE_HALF_SILVER",
+      "REVERSE_FULL_SILVER"
+    ],
+    "PURE_WHITE": [
+      "PURE_WHITE",
+      "PINK_NOSE_PURE_WHITE"
+    ]
+  },
+  "eyeRules": {
+    "defaultWeights": {
+      "DARK_BROWN": 70,
+      "BROWN": 25,
+      "AMBER": 5
+    },
+    "rules": [
+      {
+        "id": "COMMON_NATURAL",
+        "eyes": [
+          "DARK_BROWN",
+          "BROWN",
+          "AMBER"
+        ],
+        "allowedForAllBreeds": true
+      },
+      {
+        "id": "GOLD_STYLIZED_OR_DILUTE",
+        "eyes": [
+          "GOLD"
+        ],
+        "allowedCoats": [
+          "CHAMPAGNE",
+          "GOLD_CHAMPAGNE",
+          "PALOMINO",
+          "PERLINO",
+          "CREAM",
+          "BUCKSKIN"
+        ],
+        "allowedBreeds": [
+          "AKHAL_TEKE",
+          "ARABIAN",
+          "MARWARI",
+          "UNICORN"
+        ]
+      },
+      {
+        "id": "BLUE_MARKING_OR_DILUTE_GATED",
+        "eyes": [
+          "DARK_BLUE",
+          "BLUE"
+        ],
+        "allowedCoats": [
+          "CREAM",
+          "PERLINO"
+        ],
+        "allowedMarkingGroups": [
+          "PINTO",
+          "APPALOOSA",
+          "PURE_WHITE"
+        ],
+        "allowedMarkings": [
+          "BALD",
+          "HALF_BALD",
+          "OVERO",
+          "OVERO_SPLASH",
+          "SPLASH_OVERO",
+          "SPLASHED",
+          "SPLASHED_PAINT",
+          "PINK_NOSE_BALD",
+          "PINK_NOSE_HALF_BALD",
+          "PINK_NOSE_OVERO",
+          "PINK_NOSE_SPLASH_OVERO",
+          "FEW_SPOT_LEOPARD",
+          "PINK_NOSE_FEW_SPOT_LEOPARD"
+        ]
+      },
+      {
+        "id": "GREEN_STYLIZED_OR_CHAMPAGNE",
+        "eyes": [
+          "GREEN",
+          "BROWN_GREEN"
+        ],
+        "allowedCoats": [
+          "CHAMPAGNE",
+          "GOLD_CHAMPAGNE",
+          "CREAM",
+          "PERLINO"
+        ],
+        "allowedBreeds": [
+          "UNICORN"
+        ]
+      },
+      {
+        "id": "HETEROCHROMIA",
+        "eyes": [
+          "BLUE_GOLD",
+          "BROWN_BLUE"
+        ],
+        "allowedCoats": [
+          "CREAM",
+          "PERLINO"
+        ],
+        "allowedMarkingGroups": [
+          "PINTO",
+          "APPALOOSA",
+          "PURE_WHITE"
+        ],
+        "allowedBreeds": [
+          "PAINT_HORSE",
+          "APPALOOSA",
+          "ICELANDIC_HORSE",
+          "UNICORN"
+        ]
+      },
+      {
+        "id": "FANTASY_ONLY",
+        "eyes": [
+          "RED"
+        ],
+        "allowedBreeds": [
+          "UNICORN"
+        ]
+      }
+    ]
+  },
+  "breeds": {
+    "MUSTANG": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "STOCK_BROAD",
+      "markingGroups": [
+        "BASIC",
+        "GREY",
+        "ROAN",
+        "PINTO",
+        "APPALOOSA"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "ARDENNES": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "AVERAGE",
+        "SHORT",
+        "TIED"
+      ],
+      "feathering": [
+        "HALF",
+        "FULL"
+      ],
+      "coatPool": "DRAFT_ROAN",
+      "markingGroups": [
+        "DRAFT_WHITE",
+        "GREY",
+        "ROAN"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "KLADRUBER": {
+      "mane": [
+        "BUTTONS",
+        "LONG",
+        "SHORT"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "KLADRUBER",
+      "markingGroups": [
+        "MINIMAL",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "FJORD": {
+      "mane": [
+        "ROACHED",
+        "SHORT",
+        "LONG"
+      ],
+      "tail": [
+        "AVERAGE",
+        "SHORT"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "FJORD_DUN",
+      "markingGroups": [
+        "MINIMAL"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "THOROUGHBRED": {
+      "mane": [
+        "BUTTONS",
+        "LONG",
+        "SHORT"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "BASIC_LIGHT",
+      "markingGroups": [
+        "BASIC",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "FRIESIAN": {
+      "mane": [
+        "LONG",
+        "BUTTONS"
+      ],
+      "tail": [
+        "LONG",
+        "TIED"
+      ],
+      "feathering": [
+        "HALF",
+        "FULL"
+      ],
+      "coatPool": "FRIESIAN_BLACK",
+      "markingGroups": [
+        "MINIMAL"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "IRISH_COB": {
+      "mane": [
+        "LONG",
+        "SHORT"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "FULL",
+        "HALF"
+      ],
+      "coatPool": "COB_BROAD",
+      "markingGroups": [
+        "BASIC",
+        "PINTO",
+        "ROAN",
+        "GREY",
+        "SILVER"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "AMERICAN_QUARTER": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "STOCK_BROAD",
+      "markingGroups": [
+        "BASIC",
+        "ROAN",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "PERCHERON": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "AVERAGE",
+        "SHORT",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "DRAFT_GRAY_BLACK",
+      "markingGroups": [
+        "DRAFT_WHITE",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "SELLE_FRANCAIS": {
+      "mane": [
+        "BUTTONS",
+        "LONG",
+        "SHORT"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "WARMBLOOD",
+      "markingGroups": [
+        "BASIC",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "MARWARI": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "BUTTONS"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "MARWARI",
+      "markingGroups": [
+        "BASIC",
+        "PINTO",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "MONGOLIAN": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "PRIMITIVE_BROAD",
+      "markingGroups": [
+        "MINIMAL",
+        "GREY",
+        "ROAN"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "SHIRE": {
+      "mane": [
+        "LONG",
+        "SHORT"
+      ],
+      "tail": [
+        "AVERAGE",
+        "SHORT",
+        "TIED"
+      ],
+      "feathering": [
+        "FULL"
+      ],
+      "coatPool": "DRAFT_GRAY_BLACK",
+      "markingGroups": [
+        "DRAFT_WHITE",
+        "GREY",
+        "ROAN"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "AKHAL_TEKE": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "AKHAL_TEKE",
+      "markingGroups": [
+        "MINIMAL",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "WELSH": {
+      "mane": [
+        "BUTTONS",
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "PONY_BROAD",
+      "markingGroups": [
+        "BASIC",
+        "GREY",
+        "ROAN",
+        "PINTO",
+        "SILVER"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "CONNEMARA": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "CONNEMARA",
+      "markingGroups": [
+        "BASIC",
+        "GREY",
+        "ROAN"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "HAFLINGER": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "HAFLINGER",
+      "markingGroups": [
+        "MINIMAL"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "OLDENBURGER": {
+      "mane": [
+        "BUTTONS",
+        "LONG",
+        "SHORT"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "WARMBLOOD",
+      "markingGroups": [
+        "BASIC",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "SHETLAND": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF",
+        "FULL"
+      ],
+      "coatPool": "PONY_BROAD",
+      "markingGroups": [
+        "BASIC",
+        "GREY",
+        "ROAN",
+        "PINTO",
+        "SILVER"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "STANDARDBRED": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "BASIC_LIGHT",
+      "markingGroups": [
+        "BASIC",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "TRAKEHNER": {
+      "mane": [
+        "BUTTONS",
+        "LONG",
+        "SHORT"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "WARMBLOOD",
+      "markingGroups": [
+        "BASIC",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "BOULONNAIS": {
+      "mane": [
+        "LONG",
+        "SHORT"
+      ],
+      "tail": [
+        "AVERAGE",
+        "SHORT",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "BOULONNAIS",
+      "markingGroups": [
+        "BASIC",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "ARABIAN": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "BUTTONS"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "ARABIAN",
+      "markingGroups": [
+        "BASIC",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "ANDALUSIAN": {
+      "mane": [
+        "LONG",
+        "BUTTONS",
+        "SHORT"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "BAROQUE",
+      "markingGroups": [
+        "BASIC",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "APPALOOSA": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "STOCK_BROAD",
+      "markingGroups": [
+        "BASIC",
+        "APPALOOSA",
+        "ROAN",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "PAINT_HORSE": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "STOCK_BROAD",
+      "markingGroups": [
+        "BASIC",
+        "PINTO",
+        "ROAN",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "MORGAN": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED",
+        "BUTTONS"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "MORGAN",
+      "markingGroups": [
+        "BASIC",
+        "GREY",
+        "ROAN",
+        "SILVER"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "CLYDESDALE": {
+      "mane": [
+        "LONG",
+        "SHORT"
+      ],
+      "tail": [
+        "AVERAGE",
+        "SHORT",
+        "TIED"
+      ],
+      "feathering": [
+        "FULL"
+      ],
+      "coatPool": "DRAFT_ROAN",
+      "markingGroups": [
+        "DRAFT_WHITE",
+        "GREY",
+        "ROAN"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "BELGIAN_DRAFT": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "AVERAGE",
+        "SHORT",
+        "TIED"
+      ],
+      "feathering": [
+        "HALF",
+        "FULL"
+      ],
+      "coatPool": "BELGIAN_DRAFT",
+      "markingGroups": [
+        "DRAFT_WHITE",
+        "GREY",
+        "ROAN"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "LIPIZZANER": {
+      "mane": [
+        "BUTTONS",
+        "LONG",
+        "SHORT"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "LIPIZZANER",
+      "markingGroups": [
+        "MINIMAL",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "ICELANDIC_HORSE": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF",
+        "FULL"
+      ],
+      "coatPool": "PONY_BROAD",
+      "markingGroups": [
+        "BASIC",
+        "GREY",
+        "ROAN",
+        "PINTO",
+        "SILVER"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "TENNESSEE_WALKING_HORSE": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "STOCK_BROAD",
+      "markingGroups": [
+        "BASIC",
+        "PINTO",
+        "ROAN",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "DUTCH_WARMBLOOD": {
+      "mane": [
+        "BUTTONS",
+        "LONG",
+        "SHORT"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "TIED"
+      ],
+      "feathering": [
+        "NONE"
+      ],
+      "coatPool": "WARMBLOOD",
+      "markingGroups": [
+        "BASIC",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED",
+      "notes": "PINTO can be added as a rare override if desired."
+    },
+    "CAMARGUE": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE",
+        "SHORT"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "CAMARGUE_GRAY",
+      "markingGroups": [
+        "MINIMAL",
+        "GREY"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED"
+    },
+    "CANADIAN": {
+      "mane": [
+        "LONG",
+        "SHORT",
+        "ROACHED"
+      ],
+      "tail": [
+        "LONG",
+        "AVERAGE"
+      ],
+      "feathering": [
+        "NONE",
+        "HALF"
+      ],
+      "coatPool": "CANADIAN",
+      "markingGroups": [
+        "MINIMAL",
+        "BASIC"
+      ],
+      "eyeRuleSet": "COAT_AND_MARKING_GATED",
+      "notes": "Optional if replacing or adding alongside MORGAN."
+    }
+  }
+}

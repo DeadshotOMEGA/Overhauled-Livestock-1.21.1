@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "AKHAL_TEKE",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "TIED"
+    ],
+    "feathering": [
+      "NONE"
+    ],
+    "coatPool": "AKHAL_TEKE",
+    "markingGroups": [
+      "MINIMAL",
+      "GREY"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

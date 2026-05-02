@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "BELGIAN_DRAFT",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED"
+    ],
+    "tail": [
+      "AVERAGE",
+      "SHORT",
+      "TIED"
+    ],
+    "feathering": [
+      "HALF",
+      "FULL"
+    ],
+    "coatPool": "BELGIAN_DRAFT",
+    "markingGroups": [
+      "DRAFT_WHITE",
+      "GREY",
+      "ROAN"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

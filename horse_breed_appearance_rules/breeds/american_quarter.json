@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "AMERICAN_QUARTER",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "SHORT",
+      "TIED"
+    ],
+    "feathering": [
+      "NONE"
+    ],
+    "coatPool": "STOCK_BROAD",
+    "markingGroups": [
+      "BASIC",
+      "ROAN",
+      "GREY"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

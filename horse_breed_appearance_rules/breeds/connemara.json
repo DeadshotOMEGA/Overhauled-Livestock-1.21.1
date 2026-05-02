@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "CONNEMARA",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "SHORT"
+    ],
+    "feathering": [
+      "NONE",
+      "HALF"
+    ],
+    "coatPool": "CONNEMARA",
+    "markingGroups": [
+      "BASIC",
+      "GREY",
+      "ROAN"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

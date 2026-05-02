@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "ARABIAN",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "BUTTONS"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "TIED"
+    ],
+    "feathering": [
+      "NONE"
+    ],
+    "coatPool": "ARABIAN",
+    "markingGroups": [
+      "BASIC",
+      "GREY"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

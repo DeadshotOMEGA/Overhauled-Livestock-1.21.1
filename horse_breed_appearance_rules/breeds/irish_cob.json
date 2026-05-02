@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "IRISH_COB",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "TIED"
+    ],
+    "feathering": [
+      "FULL",
+      "HALF"
+    ],
+    "coatPool": "COB_BROAD",
+    "markingGroups": [
+      "BASIC",
+      "PINTO",
+      "ROAN",
+      "GREY",
+      "SILVER"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

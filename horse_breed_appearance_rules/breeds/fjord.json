@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "FJORD",
+  "appearance": {
+    "mane": [
+      "ROACHED",
+      "SHORT",
+      "LONG"
+    ],
+    "tail": [
+      "AVERAGE",
+      "SHORT"
+    ],
+    "feathering": [
+      "NONE",
+      "HALF"
+    ],
+    "coatPool": "FJORD_DUN",
+    "markingGroups": [
+      "MINIMAL"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}
