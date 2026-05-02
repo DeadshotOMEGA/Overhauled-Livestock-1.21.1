@@ -8,6 +8,8 @@ import com.dragn0007.dragnlivestock.common.network.LOPackets;
 import com.dragn0007.dragnlivestock.client.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.datagen.JsonDataGenerator;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
+import com.dragn0007.dragnlivestock.entities.ai.LOMemoryTypes;
+import com.dragn0007.dragnlivestock.entities.ai.LOSensorTypes;
 import com.dragn0007.dragnlivestock.items.LOItemGroup;
 import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.util.LONetwork;
@@ -40,6 +42,8 @@ public class LivestockOverhaul {
 
     public LivestockOverhaul(IEventBus eventBus, ModContainer modContainer) {
         EntityTypes.register(eventBus);
+        LOMemoryTypes.register(eventBus);
+        LOSensorTypes.register(eventBus);
         LOItems.register(eventBus);
         LOItemGroup.register(eventBus);
         LOBlocks.register(eventBus);

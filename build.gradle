@@ -98,6 +98,7 @@ dependencies {
     def medievalEmbroideryRuntime = (findProperty('compatMedievalEmbroideryRuntime') ?: '').toString().trim()
 
     implementation 'software.bernie.geckolib:geckolib-neoforge-1.21.1:4.8.4'
+    implementation "curse.maven:smartbrainlib-661293:6762621"
     compileOnly "curse.maven:jade-324717:7545219"
 
     if (enableCompatRuntimes && allowPatchouliRuntime) {

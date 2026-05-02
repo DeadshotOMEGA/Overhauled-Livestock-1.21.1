@@ -34,6 +34,16 @@ public class LivestockOverhaulCommonConfig {
     public static final ModConfigSpec.ConfigValue<Integer> COW_HERD_MAX;
     public static final ModConfigSpec.ConfigValue<Integer> LLAMA_HERD_MAX;
     public static final ModConfigSpec.ConfigValue<Integer> HORSE_HERD_MAX;
+    public static final ModConfigSpec.BooleanValue HORSE_AI_ENABLED;
+    public static final ModConfigSpec.BooleanValue HORSE_AI_DEBUG;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_AI_SENSOR_RADIUS;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_AI_INTENT_INTERVAL_TICKS;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_AI_INTENT_HOLD_TICKS;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_AI_REGROUP_WALK_DISTANCE;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_AI_REGROUP_TROT_DISTANCE;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_AI_REGROUP_RUN_DISTANCE;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_AI_REGROUP_SPRINT_DISTANCE;
+    public static final ModConfigSpec.ConfigValue<Integer> HORSE_AI_CALM_ANIMATION_CHANCE;
     public static final ModConfigSpec.BooleanValue USE_VANILLA_LOOT;
     public static final ModConfigSpec.BooleanValue NATURAL_HORSE_BREEDS;
     public static final ModConfigSpec.ConfigValue<Integer> CHICKEN_EGG_LAY_TIME;
@@ -199,6 +209,26 @@ public class LivestockOverhaulCommonConfig {
                 .define("Cow Herd Maximum", 8);
         HORSE_HERD_MAX = BUILDER.comment("Maximum amount of O-Horses that can herd together. Default is 3.")
                 .define("Horse Herd Maximum", 3);
+        HORSE_AI_ENABLED = BUILDER.comment("Should O-Horses use the SmartBrainLib AI system?")
+                .define("Horse AI Enabled", true);
+        HORSE_AI_DEBUG = BUILDER.comment("Should O-Horse SmartBrainLib AI debug logs run? This is intended for development validation only.")
+                .define("Horse AI Debug", false);
+        HORSE_AI_SENSOR_RADIUS = BUILDER.comment("Base radius, in blocks, used by O-Horse SmartBrainLib sensors. Herd sensing can use this full value for Phase 1 gait testing, while expensive resource/threat sensors cap lower.")
+                .define("Horse AI Sensor Radius", 128);
+        HORSE_AI_INTENT_INTERVAL_TICKS = BUILDER.comment("How often, in ticks, O-Horses re-score SmartBrainLib intents. Phase 1 caps this to 20-40 ticks for responsive herd testing.")
+                .define("Horse AI Intent Interval", 30);
+        HORSE_AI_INTENT_HOLD_TICKS = BUILDER.comment("Minimum ticks to hold a non-emergency O-Horse intent before switching. Default is 80.")
+                .define("Horse AI Intent Hold", 80);
+        HORSE_AI_REGROUP_WALK_DISTANCE = BUILDER.comment("Anchor distance, in blocks, where regrouping starts at walk speed. Default is 12.")
+                .define("Horse AI Regroup Walk Distance", 12);
+        HORSE_AI_REGROUP_TROT_DISTANCE = BUILDER.comment("Anchor distance, in blocks, where regrouping starts at trot speed. Default is 30. Run and sprint are currently disabled for REGROUP testing.")
+                .define("Horse AI Regroup Trot Distance", 30);
+        HORSE_AI_REGROUP_RUN_DISTANCE = BUILDER.comment("Anchor distance, in blocks, where regrouping starts at run speed. Currently unused while REGROUP is limited to walk/trot.")
+                .define("Horse AI Regroup Run Distance", 999);
+        HORSE_AI_REGROUP_SPRINT_DISTANCE = BUILDER.comment("Anchor distance, in blocks, where regrouping starts at sprint speed. Currently unused while REGROUP is limited to walk/trot.")
+                .define("Horse AI Regroup Sprint Distance", 999);
+        HORSE_AI_CALM_ANIMATION_CHANCE = BUILDER.comment("Random chance denominator for calm O-Horse AI animations. Lower is more frequent. Default is 8.")
+                .define("Horse AI Calm Animation Chance", 8);
         SHEEP_HERD_MAX = BUILDER.comment("Maximum amount of O-Sheep that can herd together. Default is 8.")
                 .define("Sheep Herd Maximum", 8);
         LLAMA_HERD_MAX = BUILDER.comment("Maximum amount of O-Llamas that can herd together. Default is 3.")

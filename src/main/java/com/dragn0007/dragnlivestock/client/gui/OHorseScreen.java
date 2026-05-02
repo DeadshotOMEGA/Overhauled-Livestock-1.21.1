@@ -282,7 +282,7 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
     //This code is slightly altered to fit as a label rather than a tooltip
     private void renderSpeedLabel(GuiGraphics graphics) {
 
-        double speed = oHorse.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) * 42.16;
+        double speed = oHorse.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) * 20.00;
 
         DecimalFormat limitDec = new DecimalFormat("#.###");
         String num = limitDec.format(speed);

@@ -34,6 +34,13 @@ ordering="NONE"
 side="BOTH"
 
 [[dependencies.${mod_id}]]
+modId="smartbrainlib"
+type="required"
+versionRange="[1.16.10,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.${mod_id}]]
 modId="patchouli"
 type="optional"
 versionRange="[0,)"

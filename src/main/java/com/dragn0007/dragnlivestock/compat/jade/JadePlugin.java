@@ -6,6 +6,7 @@ import com.dragn0007.dragnlivestock.compat.jade.block.CheeseTooltipProvider;
 import com.dragn0007.dragnlivestock.compat.jade.block.JerkyTooltipProvider;
 import com.dragn0007.dragnlivestock.compat.jade.breed.*;
 import com.dragn0007.dragnlivestock.compat.jade.gender.*;
+import com.dragn0007.dragnlivestock.compat.jade.herd.HorseHerdTooltip;
 import com.dragn0007.dragnlivestock.compat.jade.other.*;
 import com.dragn0007.dragnlivestock.entities.bee.OBee;
 import com.dragn0007.dragnlivestock.entities.camel.OCamel;
@@ -21,9 +22,15 @@ import com.dragn0007.dragnlivestock.entities.rabbit.ORabbit;
 import com.dragn0007.dragnlivestock.entities.sheep.OSheep;
 import com.dragn0007.dragnlivestock.entities.unicorn.Unicorn;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOMount;
+import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
+import snownee.jade.api.JadeIds;
 import snownee.jade.api.WailaPlugin;
+import snownee.jade.api.ui.IElement;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @WailaPlugin
 public class JadePlugin implements IWailaPlugin {
@@ -42,6 +49,7 @@ public class JadePlugin implements IWailaPlugin {
         registration.registerEntityComponent(new ChickenBreedTooltip(), OChicken.class);
         registration.registerEntityComponent(new CowBreedTooltip(), OCow.class);
         registration.registerEntityComponent(new HorseBreedTooltip(), OHorse.class);
+        registration.registerEntityComponent(new HorseHerdTooltip(), OHorse.class);
         registration.registerEntityComponent(new LlamaBreedTooltip(), OLlama.class);
         registration.registerEntityComponent(new MuleBreedTooltip(), OMule.class);
         registration.registerEntityComponent(new PigBreedTooltip(), OPig.class);
@@ -60,5 +68,39 @@ public class JadePlugin implements IWailaPlugin {
         registration.registerEntityComponent(new PigQualityTooltip(), OPig.class);
         registration.registerEntityComponent(new RabbitQualityTooltip(), ORabbit.class);
         registration.registerEntityComponent(new SheepQualityTooltip(), OSheep.class);
+
+        registration.addTooltipCollectedCallback((tooltip, accessor) -> {
+            if (!(accessor instanceof EntityAccessor entityAccessor) || !(entityAccessor.getEntity() instanceof OHorse)) {
+                return;
+            }
+
+            tooltip.getTooltip().replace(JadeIds.MC_HORSE_STATS, JadePlugin::removeVanillaHorseSpeedLine);
+        });
+    }
+
+    public static List<List<IElement>> removeVanillaHorseSpeedLine(List<List<IElement>> lines) {
+        List<List<IElement>> filteredLines = new ArrayList<>();
+
+        for (List<IElement> line : lines) {
+            if (!isVanillaHorseSpeedLine(line)) {
+                filteredLines.add(line);
+            }
+        }
+
+        return filteredLines;
+    }
+
+    public static boolean isVanillaHorseSpeedLine(List<IElement> line) {
+        for (IElement element : line) {
+            String message = element.getCachedMessage();
+            if (message != null) {
+                String normalizedMessage = message.toLowerCase();
+                if (normalizedMessage.contains("speed") || normalizedMessage.contains("jade.horsestat.speed")) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }

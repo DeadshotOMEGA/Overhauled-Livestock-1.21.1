@@ -5,6 +5,15 @@ import com.dragn0007.dragnlivestock.client.event.LivestockOverhaulClientEvent;
 import com.dragn0007.dragnlivestock.common.gui.OHorseMenu;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.*;
+import com.dragn0007.dragnlivestock.entities.horse.ai.HorseAiAction;
+import com.dragn0007.dragnlivestock.entities.horse.ai.HorseAiGait;
+import com.dragn0007.dragnlivestock.entities.horse.ai.HorseAnimationState;
+import com.dragn0007.dragnlivestock.entities.horse.ai.HorseGrazeWander;
+import com.dragn0007.dragnlivestock.entities.horse.ai.HorseGroupingState;
+import com.dragn0007.dragnlivestock.entities.horse.ai.HorseHerdSensor;
+import com.dragn0007.dragnlivestock.entities.horse.ai.HorseIntentEvaluator;
+import com.dragn0007.dragnlivestock.entities.horse.ai.HorseThreatSensor;
+import com.dragn0007.dragnlivestock.entities.horse.ai.SetHorseHerdAnchorTarget;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOMount;
 import com.dragn0007.dragnlivestock.entities.util.LOAnimations;
 import com.dragn0007.dragnlivestock.entities.util.marking_layer.EquineEyeColorOverlay;
@@ -34,6 +43,7 @@ import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -55,6 +65,11 @@ import net.neoforged.fml.ModList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import org.jetbrains.annotations.NotNull;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.tslat.smartbrainlib.api.SmartBrainOwner;
+import net.tslat.smartbrainlib.api.core.BrainActivityGroup;
+import net.tslat.smartbrainlib.api.core.SmartBrainProvider;
+import net.tslat.smartbrainlib.api.core.sensor.ExtendedSensor;
 import software.bernie.geckolib.animatable.GeoEntity;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -70,7 +85,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Stream;
 
-public class OHorse extends AbstractOMount implements GeoEntity {
+public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner<OHorse> {
 
 	protected static final ResourceKey<LootTable> LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "entities/o_horse"));
 	protected static final ResourceKey<LootTable> VANILLA_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath("minecraft", "entities/horse"));
@@ -91,12 +106,40 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		return true;
 	}
 
+	// Legacy vanilla-goal herd fields. Phase 0 SmartBrainLib grouping does not use these,
+	// but they are retained temporarily to keep the migration small and rollback-friendly.
 	public OHorse leader;
 	public int herdSize = 1;
 
 	public OHorse(EntityType<? extends OHorse> type, Level level) {
 		super(type, level);
 		this.setCanDecompose(true);
+	}
+
+	@Override
+	public Brain.Provider<OHorse> brainProvider() {
+		return new SmartBrainProvider<>(this);
+	}
+
+	@Override
+	public List<? extends ExtendedSensor<? extends OHorse>> getSensors() {
+		return ObjectArrayList.of(
+				new HorseHerdSensor(),
+				new HorseThreatSensor()
+		);
+	}
+
+	@Override
+	public BrainActivityGroup<? extends OHorse> getIdleTasks() {
+		return BrainActivityGroup.idleTasks(
+				new HorseIntentEvaluator(),
+				new HorseAiAction()
+		);
+	}
+
+	@Override
+	protected void customServerAiStep() {
+		tickBrain(this);
 	}
 
 	@Override
@@ -114,6 +157,7 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 	}
 
 	public void randomizeOHorseAttributes() {
+		this.randomizeOHorseGaitLevels();
 		this.getAttribute(Attributes.MAX_HEALTH).setBaseValue(this.generateRandomOHorseMaxHealth());
 		this.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(this.generateRandomOHorseSpeed());
 		this.getAttribute(Attributes.JUMP_STRENGTH).setBaseValue(this.generateRandomOHorseJumpStrength());
@@ -121,24 +165,9 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 
 	@Override
 	public void registerGoals() {
-		super.registerGoals();
-
-		this.goalSelector.addGoal(1, new HurtByTargetGoal(this));
-		this.goalSelector.addGoal(4, new WaterAvoidingRandomStrollGoal(this, 0.7D));
-		this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.4, true));
-		this.goalSelector.addGoal(1, new FloatGoal(this));
-		this.goalSelector.addGoal(1, new BreedGoal(this, 1.0D, AbstractOMount.class));
-		this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-
-		this.goalSelector.addGoal(1, new OAvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, entity ->
-				(entity.getType().is(LOTags.Entity_Types.WOLVES) && !this.isTamed()) ||
-						(entity.getType().is(LOTags.Entity_Types.WOLVES) && (entity instanceof TamableAnimal && !((TamableAnimal) entity).isTame())) && this.isTamed()
-		));
-
-		this.goalSelector.addGoal(1, new OAvoidEntityGoal<>(this, LivingEntity.class, 15.0F, 1.8F, 1.8F, livingEntity ->
-				livingEntity.getType().is(LOTags.Entity_Types.HORSES) && (livingEntity instanceof AbstractHorse && livingEntity.isVehicle()) && !this.isLeashed() && LivestockOverhaulCommonConfig.HORSE_HERD_ANIMALS.get() && (this.isWearingRodeoHarness() || !this.isTamed())
-		));
-
+		this.goalSelector.addGoal(0, new FloatGoal(this));
+		this.goalSelector.addGoal(1, new PanicGoal(this, 1.5D));
+		this.goalSelector.addGoal(2, new RunAroundLikeCrazyGoal(this, 1.2D));
 	}
 
 	public float generateRandomOHorseMaxHealth() {
@@ -209,27 +238,42 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 	}
 
 	public double generateRandomOHorseSpeed() {
-		double baseSpeed = 0.0F;
-		double multiplier = (this.random.nextDouble() * 0.1D + this.random.nextDouble() * 0.1D + this.random.nextDouble() * 0.1D) * 0.30D;
+		return this.rawSpeedForGait(HorseAiGait.WALK);
+	}
 
-		switch (this.getBreed()) {
-			case 0:
-			default:
-				baseSpeed = 0.2F;
-				return baseSpeed + multiplier;
-			case 1, 3, 6, 8, 17:
-				baseSpeed = 0.15F;
-				return baseSpeed + multiplier;
-            case 4, 20:
-				baseSpeed = 0.28F;
-				return baseSpeed + multiplier;
-            case 13:
-				baseSpeed = 0.3F;
-				return baseSpeed + multiplier;
-			case 19:
-				baseSpeed = 0.1F;
-				return baseSpeed + multiplier;
-        }
+	public void randomizeOHorseGaitLevels() {
+		this.setWalkGaitLevel(1 + this.random.nextInt(5));
+		this.setTrotGaitLevel(1 + this.random.nextInt(4));
+		this.setCanterGaitLevel(1 + this.random.nextInt(3));
+		this.setGallopGaitLevel(1 + this.random.nextInt(2));
+		this.setSprintGaitLevel(1);
+	}
+
+	public HorseBreedSpeedProfile getSpeedProfile() {
+		return HorseBreedSpeedProfile.forBreed(this.getBreed());
+	}
+
+	public int getGaitLevel(HorseAiGait gait) {
+		return switch (gait) {
+			case TROT -> this.getTrotGaitLevel();
+			case CANTER -> this.getCanterGaitLevel();
+			case GALLOP -> this.getGallopGaitLevel();
+			case SPRINT -> this.getSprintGaitLevel();
+			case NONE, WALK -> this.getWalkGaitLevel();
+		};
+	}
+
+	public double rawSpeedForGait(HorseAiGait gait) {
+		return this.getSpeedProfile().rawSpeed(gait, this.getGaitLevel(gait));
+	}
+
+	public double navigationSpeedForGait(HorseAiGait gait) {
+		double baseSpeed = this.getAttributeBaseValue(Attributes.MOVEMENT_SPEED);
+		if (baseSpeed <= 0.0D || gait == HorseAiGait.NONE) {
+			return 1.0D;
+		}
+
+		return this.rawSpeedForGait(gait) / baseSpeed;
 	}
 
 	public boolean isDraftBreed() {
@@ -501,6 +545,16 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		} else if (this.isJumping()) {
 			controller.setAnimation(RawAnimation.begin().then("jump", Animation.LoopType.PLAY_ONCE));
 			controller.setAnimationSpeed(1.0);
+		} else if (!this.isVehicle() && this.getAiGaitState() != HorseAiGait.NONE && (isMoving || (this.getNavigation() != null && !this.getNavigation().isDone()))) {
+			HorseAiGait aiGait = this.getAiGaitState();
+			switch (aiGait) {
+				case WALK -> controller.setAnimation(RawAnimation.begin().then("walk", Animation.LoopType.LOOP));
+				case TROT -> controller.setAnimation(RawAnimation.begin().then("trot", Animation.LoopType.LOOP));
+				case CANTER, GALLOP -> controller.setAnimation(RawAnimation.begin().then("run", Animation.LoopType.LOOP));
+				case SPRINT -> controller.setAnimation(RawAnimation.begin().then("sprint", Animation.LoopType.LOOP));
+				default -> controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+			}
+			controller.setAnimationSpeed(1.0);
 		} else {
 			if (isMoving) {
 				if (!LivestockOverhaulClientEvent.HORSE_WALK_BACKWARDS.isDown()) {
@@ -562,10 +616,19 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 				}
 
 			} else {
-				if (this.isVehicle() || !LivestockOverhaulCommonConfig.GROUND_TIE.get()) {
+				HorseAnimationState aiAnimationState = this.getAiAnimationState();
+
+				if (!this.isVehicle() && !this.isLeashed() && aiAnimationState.hasPoseAnimation()) {
+					controller.setAnimation(RawAnimation.begin().then(aiAnimationState.animationName(), Animation.LoopType.LOOP));
+				} else if (!this.isVehicle() && !this.isLeashed() && aiAnimationState == HorseAnimationState.IDLE) {
+					controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
+				} else if (this.isVehicle() || !LivestockOverhaulCommonConfig.GROUND_TIE.get()) {
 					controller.setAnimation(RawAnimation.begin().then("idle", Animation.LoopType.LOOP));
 				} else {
 					controller.setAnimation(RawAnimation.begin().then("ground_tie", Animation.LoopType.LOOP));
+				}
+				if (this.getAiGaitState() != HorseAiGait.NONE && this.getNavigation().isDone()) {
+					this.setAiGaitState(HorseAiGait.NONE);
 				}
 				controller.setAnimationSpeed(1.0);
 			}
@@ -601,6 +664,8 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		return PlayState.CONTINUE;
 	}
 
+	// Legacy vanilla-goal herd helpers. Phase 0 SmartBrainLib grouping intentionally
+	// leaves these inactive by not registering HorseFollowHerdLeaderGoal.
 	public boolean isFollower() {
 		return this.leader != null && this.leader.isAlive() && (!this.isSaddled() && !this.isLeashed() && !this.isGroundTied());
 	}
@@ -726,23 +791,12 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 
 		if (this.isVehicle() && this.getControllingPassenger() == this.getOwner() && this.getClass() == OHorse.class) {
 			if (this.isTamed() && this.isSaddled()) {
-				if (this.getSpeedTrained() < LivestockOverhaulCommonConfig.HORSE_TRAIN_AMOUNT.get()
-						|| this.getJumpTrained() < LivestockOverhaulCommonConfig.HORSE_TRAIN_AMOUNT.get()
+				if (this.getJumpTrained() < LivestockOverhaulCommonConfig.HORSE_TRAIN_AMOUNT.get()
 						|| this.getHealthTrained() < LivestockOverhaulCommonConfig.HORSE_TRAIN_AMOUNT.get()) {
 
 					trainStatsTick++;
 
 					if (trainStatsTick >= LivestockOverhaulCommonConfig.HORSE_TRAIN_TIME.get()) {
-						AttributeInstance speedAttribute = this.getAttribute(Attributes.MOVEMENT_SPEED);
-						assert speedAttribute != null;
-						double speedValue = speedAttribute.getBaseValue();
-						if (speedValue < 0.284F && !(getSpeedTrained() >= LivestockOverhaulCommonConfig.HORSE_TRAIN_AMOUNT.get())) {
-							speedAttribute.setBaseValue(speedValue + 0.005);
-							setSpeedTrained(getSpeedTrained() + 1);
-						} else if (speedValue > 0.284F) {
-							setSpeedTrained(LivestockOverhaulCommonConfig.HORSE_TRAIN_AMOUNT.get());
-						}
-
 						AttributeInstance jumpAttribute = this.getAttribute(Attributes.JUMP_STRENGTH);
 						assert jumpAttribute != null;
 						double jumpValue = jumpAttribute.getBaseValue();
@@ -1093,6 +1147,86 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		this.entityData.set(HEALTH_TRAINED, trained);
 	}
 
+	public static final EntityDataAccessor<Integer> WALK_GAIT_LEVEL = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public int getWalkGaitLevel() {
+		return Math.max(1, this.entityData.get(WALK_GAIT_LEVEL));
+	}
+	public void setWalkGaitLevel(int level) {
+		this.entityData.set(WALK_GAIT_LEVEL, Math.max(1, Math.min(5, level)));
+	}
+
+	public static final EntityDataAccessor<Integer> TROT_GAIT_LEVEL = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public int getTrotGaitLevel() {
+		return Math.max(1, this.entityData.get(TROT_GAIT_LEVEL));
+	}
+	public void setTrotGaitLevel(int level) {
+		this.entityData.set(TROT_GAIT_LEVEL, Math.max(1, Math.min(5, level)));
+	}
+
+	public static final EntityDataAccessor<Integer> CANTER_GAIT_LEVEL = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public int getCanterGaitLevel() {
+		return Math.max(1, this.entityData.get(CANTER_GAIT_LEVEL));
+	}
+	public void setCanterGaitLevel(int level) {
+		this.entityData.set(CANTER_GAIT_LEVEL, Math.max(1, Math.min(5, level)));
+	}
+
+	public static final EntityDataAccessor<Integer> GALLOP_GAIT_LEVEL = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public int getGallopGaitLevel() {
+		return Math.max(1, this.entityData.get(GALLOP_GAIT_LEVEL));
+	}
+	public void setGallopGaitLevel(int level) {
+		this.entityData.set(GALLOP_GAIT_LEVEL, Math.max(1, Math.min(5, level)));
+	}
+
+	public static final EntityDataAccessor<Integer> SPRINT_GAIT_LEVEL = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public int getSprintGaitLevel() {
+		return Math.max(1, this.entityData.get(SPRINT_GAIT_LEVEL));
+	}
+	public void setSprintGaitLevel(int level) {
+		this.entityData.set(SPRINT_GAIT_LEVEL, Math.max(1, Math.min(5, level)));
+	}
+
+	public static final EntityDataAccessor<Integer> AI_ANIMATION_STATE = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public HorseAnimationState getAiAnimationState() {
+		return HorseAnimationState.fromOrdinal(this.entityData.get(AI_ANIMATION_STATE));
+	}
+	public void setAiAnimationState(HorseAnimationState animationState) {
+		this.entityData.set(AI_ANIMATION_STATE, animationState.ordinal());
+	}
+
+	public static final EntityDataAccessor<Integer> AI_GAIT_STATE = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public HorseAiGait getAiGaitState() {
+		return HorseAiGait.fromOrdinal(this.entityData.get(AI_GAIT_STATE));
+	}
+	public void setAiGaitState(HorseAiGait gaitState) {
+		this.entityData.set(AI_GAIT_STATE, gaitState.ordinal());
+	}
+
+	public static final EntityDataAccessor<Integer> AI_HERD_STATE = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public HorseGroupingState getAiHerdState() {
+		return HorseGroupingState.fromOrdinal(this.entityData.get(AI_HERD_STATE));
+	}
+	public void setAiHerdState(HorseGroupingState herdState) {
+		this.entityData.set(AI_HERD_STATE, herdState.ordinal());
+	}
+
+	public static final EntityDataAccessor<Integer> AI_HERD_SIZE = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public int getAiHerdSize() {
+		return this.entityData.get(AI_HERD_SIZE);
+	}
+	public void setAiHerdSize(int herdSize) {
+		this.entityData.set(AI_HERD_SIZE, herdSize);
+	}
+
+	public static final EntityDataAccessor<Integer> AI_HERD_ANCHOR_DISTANCE_TENTHS = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public double getAiHerdAnchorDistance() {
+		return this.entityData.get(AI_HERD_ANCHOR_DISTANCE_TENTHS) / 10.0D;
+	}
+	public void setAiHerdAnchorDistance(double anchorDistance) {
+		this.entityData.set(AI_HERD_ANCHOR_DISTANCE_TENTHS, Mth.clamp((int) Math.round(anchorDistance * 10.0D), 0, 10000));
+	}
+
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
@@ -1194,6 +1328,26 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 			this.setHealthTrained(tag.getInt("HealthTrained"));
 		}
 
+		if (tag.contains("WalkGaitLevel")) {
+			this.setWalkGaitLevel(tag.getInt("WalkGaitLevel"));
+		}
+
+		if (tag.contains("TrotGaitLevel")) {
+			this.setTrotGaitLevel(tag.getInt("TrotGaitLevel"));
+		}
+
+		if (tag.contains("CanterGaitLevel")) {
+			this.setCanterGaitLevel(tag.getInt("CanterGaitLevel"));
+		}
+
+		if (tag.contains("GallopGaitLevel")) {
+			this.setGallopGaitLevel(tag.getInt("GallopGaitLevel"));
+		}
+
+		if (tag.contains("SprintGaitLevel")) {
+			this.setSprintGaitLevel(tag.getInt("SprintGaitLevel"));
+		}
+
 		if (tag.contains("IsHallow")) {
 			this.setHallow(tag.getBoolean("IsHallow"));
 		}
@@ -1228,6 +1382,11 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		tag.putInt("SpeedTrained", this.getSpeedTrained());
 		tag.putInt("JumpTrained", this.getJumpTrained());
 		tag.putInt("HealthTrained", this.getHealthTrained());
+		tag.putInt("WalkGaitLevel", this.getWalkGaitLevel());
+		tag.putInt("TrotGaitLevel", this.getTrotGaitLevel());
+		tag.putInt("CanterGaitLevel", this.getCanterGaitLevel());
+		tag.putInt("GallopGaitLevel", this.getGallopGaitLevel());
+		tag.putInt("SprintGaitLevel", this.getSprintGaitLevel());
 		tag.putBoolean("IsHallow", this.isHallow());
 	}
 
@@ -1301,6 +1460,16 @@ public class OHorse extends AbstractOMount implements GeoEntity {
 		builder.define(SPEED_TRAINED, 0);
 		builder.define(JUMP_TRAINED, 0);
 		builder.define(HEALTH_TRAINED, 0);
+		builder.define(WALK_GAIT_LEVEL, 1);
+		builder.define(TROT_GAIT_LEVEL, 1);
+		builder.define(CANTER_GAIT_LEVEL, 1);
+		builder.define(GALLOP_GAIT_LEVEL, 1);
+		builder.define(SPRINT_GAIT_LEVEL, 1);
+		builder.define(AI_ANIMATION_STATE, HorseAnimationState.NONE.ordinal());
+		builder.define(AI_GAIT_STATE, HorseAiGait.NONE.ordinal());
+		builder.define(AI_HERD_STATE, HorseGroupingState.NO_HERD.ordinal());
+		builder.define(AI_HERD_SIZE, 1);
+		builder.define(AI_HERD_ANCHOR_DISTANCE_TENTHS, 0);
 		builder.define(HALLOW, false);
 	}
 
