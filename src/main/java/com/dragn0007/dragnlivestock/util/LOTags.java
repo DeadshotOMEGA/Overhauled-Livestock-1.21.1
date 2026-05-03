@@ -148,9 +148,14 @@ public class LOTags {
 
     public static class Blocks {
 
+        public static final TagKey<Block> HORSE_GRAZING_PLANTS = tag("horse_grazing_plants");
         public static final TagKey<Block> SAND = forgeTag("sand");
         public static final TagKey<Block> DIRT = forgeTag("dirt");
         public static final TagKey<Block> RABBIT_HUTCHES = forgeTag("rabbit_hutches");
+
+        public static TagKey<Block> tag(String name) {
+            return BlockTags.create(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, name));
+        }
 
         public static TagKey<Block> forgeTag (String name) {
             return BlockTags.create(ResourceLocation.fromNamespaceAndPath("forge", name));

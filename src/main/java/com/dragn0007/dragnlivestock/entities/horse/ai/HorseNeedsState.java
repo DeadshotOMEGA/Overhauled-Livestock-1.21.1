@@ -45,4 +45,16 @@ public record HorseNeedsState(
                 gameTime
         );
     }
+
+    public HorseNeedsState afterGrazing(long gameTime) {
+        return new HorseNeedsState(
+                18.0D,
+                this.thirst,
+                Math.max(0.0D, this.fatigue - 8.0D),
+                this.fear,
+                this.socialStress,
+                this.drinkCooldownUntilGameTime,
+                gameTime
+        );
+    }
 }

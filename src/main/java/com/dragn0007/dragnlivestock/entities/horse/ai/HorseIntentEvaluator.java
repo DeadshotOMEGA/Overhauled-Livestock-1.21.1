@@ -75,6 +75,10 @@ public class HorseIntentEvaluator extends ExtendedBehaviour<OHorse> {
             return snapshot(HorseIntent.REGROUP, gaitForRegroupDistance(herd.anchorDistance()), HorseAnimationState.NONE, 80.0D + herd.anchorDistance(), gameTime);
         }
 
+        if (horse.isWildFamilyBandForager() && resource.hasForage() && needs.hunger() > 20.0D) {
+            return snapshot(HorseIntent.GRAZE, HorseAiGait.WALK, HorseAnimationState.NONE, 55.0D + needs.hunger(), gameTime);
+        }
+
         if (needs.hunger() > 45.0D) {
             return snapshot(HorseIntent.GRAZE, HorseAiGait.WALK, HorseAnimationState.NONE, needs.hunger(), gameTime);
         }
@@ -110,7 +114,7 @@ public class HorseIntentEvaluator extends ExtendedBehaviour<OHorse> {
 
         this.nextDebugTick = gameTime + 100L;
         LivestockOverhaul.LOGGER.info(
-                "[DragN's Livestock Overhaul!][OHorse SBL Phase 1 Family Band Intent] id={} intent={} score={} familyBandSize={} anchorDistance={} gait={} animation={} threatDistance={} waterDistance={} hunger={} thirst={} fatigue={} fear={}",
+                "[DragN's Livestock Overhaul!][OHorse SBL Phase 1 Family Band Intent] id={} intent={} score={} familyBandSize={} anchorDistance={} gait={} animation={} threatDistance={} waterDistance={} forageDistance={} hunger={} thirst={} fatigue={} fear={}",
                 horse.getId(),
                 intent.intent(),
                 String.format("%.1f", intent.score()),
@@ -120,6 +124,7 @@ public class HorseIntentEvaluator extends ExtendedBehaviour<OHorse> {
                 intent.animationState(),
                 threat.hasThreat() ? String.format("%.1f", threat.distance()) : "none",
                 resource.hasWater() ? String.format("%.1f", resource.waterDistance()) : "none",
+                resource.hasForage() ? String.format("%.1f", resource.forageDistance()) : "none",
                 String.format("%.1f", Mth.clamp(needs.hunger(), 0.0D, 100.0D)),
                 String.format("%.1f", Mth.clamp(needs.thirst(), 0.0D, 100.0D)),
                 String.format("%.1f", Mth.clamp(needs.fatigue(), 0.0D, 100.0D)),

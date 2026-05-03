@@ -13,6 +13,7 @@ import com.dragn0007.dragnlivestock.entities.horse.ai.HorseGroupingState;
 import com.dragn0007.dragnlivestock.entities.horse.ai.HorseHerdSensor;
 import com.dragn0007.dragnlivestock.entities.horse.ai.HorseIntent;
 import com.dragn0007.dragnlivestock.entities.horse.ai.HorseIntentEvaluator;
+import com.dragn0007.dragnlivestock.entities.horse.ai.HorseResourceSensor;
 import com.dragn0007.dragnlivestock.entities.horse.ai.HorseThreatSensor;
 import com.dragn0007.dragnlivestock.entities.horse.ai.SetHorseHerdAnchorTarget;
 import com.dragn0007.dragnlivestock.entities.horse.spawn.HorseBreedSpawnRules;
@@ -26,6 +27,7 @@ import com.dragn0007.dragnlivestock.util.LOTags;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulClientConfig;
 import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -138,6 +140,7 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	public List<? extends ExtendedSensor<? extends OHorse>> getSensors() {
 		return ObjectArrayList.of(
 				new HorseHerdSensor(),
+				new HorseResourceSensor(),
 				new HorseThreatSensor()
 		);
 	}
@@ -858,6 +861,54 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 				.orElse(false);
 	}
 
+	public boolean isWildFamilyBandForager() {
+		return this.hasFamilyBandId()
+				&& HorseHerdSensor.isEligibleForPhase0Grouping(this)
+				&& !this.isSaddled();
+	}
+
+	@Nullable
+	public BlockPos getActiveForageTarget() {
+		return this.activeForageTarget;
+	}
+
+	public boolean isForageOnCooldown(long gameTime) {
+		return gameTime < this.forageCooldownUntilGameTime;
+	}
+
+	public void beginForageSession(BlockPos target) {
+		BlockPos immutableTarget = target.immutable();
+		if (!immutableTarget.equals(this.activeForageTarget)) {
+			this.activeForageTarget = immutableTarget;
+			this.forageTicks = 0;
+			this.forageStartBowTriggered = false;
+		}
+	}
+
+	public boolean hasForageStartBowTriggered() {
+		return this.forageStartBowTriggered;
+	}
+
+	public void markForageStartBowTriggered() {
+		this.forageStartBowTriggered = true;
+	}
+
+	public int tickForageSession() {
+		this.forageTicks++;
+		return this.forageTicks;
+	}
+
+	public void completeForageSession(long cooldownUntilGameTime) {
+		this.resetForageSession();
+		this.forageCooldownUntilGameTime = cooldownUntilGameTime;
+	}
+
+	public void resetForageSession() {
+		this.activeForageTarget = null;
+		this.forageTicks = 0;
+		this.forageStartBowTriggered = false;
+	}
+
 	private void tickConfiguredFoalGrowth(int ageBeforeStep) {
 		if (this.level().isClientSide || ageBeforeStep >= 0) {
 			if (!this.level().isClientSide && ageBeforeStep >= 0) {
@@ -973,6 +1024,11 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	@Nullable
 	private UUID damUuid;
 	private final Map<UUID, SocialRelationship> socialRelationships = new HashMap<>();
+	@Nullable
+	private BlockPos activeForageTarget;
+	private int forageTicks;
+	private boolean forageStartBowTriggered;
+	private long forageCooldownUntilGameTime;
 
 	@Override
 	public void tick() {

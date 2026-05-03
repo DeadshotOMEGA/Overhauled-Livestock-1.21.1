@@ -3,13 +3,20 @@ package com.dragn0007.dragnlivestock.entities.horse.ai;
 import com.dragn0007.dragnlivestock.entities.ai.LOMemoryTypes;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse;
 import com.dragn0007.dragnlivestock.entities.horse.OHorse.FamilyBandRole;
+import com.dragn0007.dragnlivestock.util.LOTags;
 import com.mojang.datafixers.util.Pair;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.memory.MemoryStatus;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.phys.Vec3;
 import net.tslat.smartbrainlib.api.core.behaviour.ExtendedBehaviour;
 
@@ -48,32 +55,51 @@ public class HorseAiAction extends ExtendedBehaviour<OHorse> {
             return;
         }
 
-        horse.setAiAnimationState(intent.animationState());
+        if (intent.intent() != HorseIntent.GRAZE || !horse.hasForageStartBowTriggered()) {
+            horse.setAiAnimationState(intent.animationState());
+        }
         horse.setAiGaitState(intent.gait());
+
+        if (intent.intent() != HorseIntent.GRAZE) {
+            horse.resetForageSession();
+        }
 
         switch (intent.intent()) {
             case FLEE -> flee(horse, intent);
             case REGROUP -> moveToHerdAnchor(horse, intent);
             case DRINK -> drink(horse, intent);
-            case GRAZE -> wander(horse, intent, 8, 3);
+            case GRAZE -> graze(horse, intent);
             case PLAY -> wander(horse, intent, 10, 3);
             case CHASE -> chaseNearbyHorse(horse, intent);
-            case RELAX, SLEEP, REST, IDLE -> horse.getNavigation().stop();
+            case RELAX, SLEEP, REST, IDLE -> {
+                horse.getNavigation().stop();
+            }
         }
     }
 
     @Override
     protected boolean shouldKeepRunning(OHorse horse) {
         updateActiveRegroupGait(horse);
+        HorseIntentSnapshot intent = horse.getBrain().getMemory(LOMemoryTypes.HORSE_INTENT.get()).orElse(null);
+
+        if (intent == null) {
+            return false;
+        }
+
+        if (intent.intent() == HorseIntent.GRAZE) {
+            graze(horse, intent);
+        }
 
         return HorseHerdSensor.isEligibleForPhase0Grouping(horse)
-                && horse.getBrain().getMemory(LOMemoryTypes.HORSE_INTENT.get()).isPresent()
                 && (!horse.getNavigation().isDone() || horse.getAiAnimationState().hasPoseAnimation());
     }
 
     @Override
     protected void stop(OHorse horse) {
-        if (!horse.getBrain().getMemory(LOMemoryTypes.HORSE_INTENT.get()).map(snapshot -> snapshot.animationState().hasPoseAnimation()).orElse(false)) {
+        boolean activeGrazing = horse.getBrain().getMemory(LOMemoryTypes.HORSE_INTENT.get())
+                .map(snapshot -> snapshot.intent() == HorseIntent.GRAZE && horse.getActiveForageTarget() != null && horse.hasForageStartBowTriggered())
+                .orElse(false);
+        if (!activeGrazing && !horse.getBrain().getMemory(LOMemoryTypes.HORSE_INTENT.get()).map(snapshot -> snapshot.animationState().hasPoseAnimation()).orElse(false)) {
             horse.setAiAnimationState(HorseAnimationState.NONE);
         }
         boolean isRegrouping = horse.getBrain().getMemory(LOMemoryTypes.HORSE_INTENT.get())
@@ -164,6 +190,112 @@ public class HorseAiAction extends ExtendedBehaviour<OHorse> {
                         .ifPresent(needs -> horse.getBrain().setMemory(LOMemoryTypes.HORSE_NEEDS.get(), needs));
             }
         });
+    }
+
+    private static void graze(OHorse horse, HorseIntentSnapshot intent) {
+        if (!horse.isWildFamilyBandForager()) {
+            resetForageAndAnimation(horse);
+            wander(horse, intent, 8, 3);
+            return;
+        }
+
+        if (horse.isForageOnCooldown(horse.level().getGameTime())) {
+            resetForageAndAnimation(horse);
+            wander(horse, intent, 8, 3);
+            return;
+        }
+
+        Optional<BlockPos> foragePosition = horse.getBrain().getMemory(LOMemoryTypes.HORSE_RESOURCE.get()).flatMap(HorseResourceSnapshot::foragePosition);
+        if (foragePosition.isEmpty()) {
+            resetForageAndAnimation(horse);
+            wander(horse, intent, 8, 3);
+            return;
+        }
+
+        BlockPos forageTarget = foragePosition.get();
+        if (!isGrazingPlant(horse, forageTarget)) {
+            resetForageAndAnimation(horse);
+            wander(horse, intent, 8, 3);
+            return;
+        }
+
+        horse.beginForageSession(forageTarget);
+        Vec3 targetCenter = Vec3.atBottomCenterOf(forageTarget);
+        if (horse.position().distanceTo(targetCenter) > 1.8D) {
+            horse.setAiGaitState(HorseAiGait.WALK);
+            horse.getNavigation().moveTo(targetCenter.x, targetCenter.y, targetCenter.z, horse.navigationSpeedForGait(HorseAiGait.WALK));
+            return;
+        }
+
+        horse.getNavigation().stop();
+        horse.getLookControl().setLookAt(targetCenter.x, targetCenter.y + 0.2D, targetCenter.z);
+        if (!horse.hasForageStartBowTriggered()) {
+            horse.setAiAnimationState(HorseAnimationState.BOW);
+            horse.markForageStartBowTriggered();
+        }
+
+        int grazeTicks = horse.tickForageSession();
+        int requiredTicks = 100 + Math.floorMod(forageTarget.asLong() ^ horse.getUUID().getLeastSignificantBits(), 81);
+        if (grazeTicks < requiredTicks) {
+            return;
+        }
+
+        long gameTime = horse.level().getGameTime();
+        horse.getBrain().getMemory(LOMemoryTypes.HORSE_NEEDS.get())
+                .map(needs -> needs.afterGrazing(gameTime))
+                .ifPresent(needs -> horse.getBrain().setMemory(LOMemoryTypes.HORSE_NEEDS.get(), needs));
+        consumeForagePlant(horse, forageTarget);
+        horse.completeForageSession(gameTime + 160L + horse.getRandom().nextInt(80));
+        horse.setAiAnimationState(HorseAnimationState.NONE);
+
+        if (!trySocialVisit(horse, intent)) {
+            wander(horse, intent, 8, 3);
+        }
+    }
+
+    private static void resetForageAndAnimation(OHorse horse) {
+        horse.resetForageSession();
+        horse.setAiAnimationState(HorseAnimationState.NONE);
+    }
+
+    private static boolean isGrazingPlant(OHorse horse, BlockPos pos) {
+        return horse.level().getBlockState(pos).is(LOTags.Blocks.HORSE_GRAZING_PLANTS);
+    }
+
+    private static void consumeForagePlant(OHorse horse, BlockPos pos) {
+        if (!(horse.level() instanceof ServerLevel serverLevel) || !serverLevel.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING)) {
+            return;
+        }
+
+        BlockState state = serverLevel.getBlockState(pos);
+        if (!state.is(LOTags.Blocks.HORSE_GRAZING_PLANTS)) {
+            return;
+        }
+
+        if (state.hasProperty(DoublePlantBlock.HALF)) {
+            DoubleBlockHalf half = state.getValue(DoublePlantBlock.HALF);
+            BlockPos otherHalf = half == DoubleBlockHalf.LOWER ? pos.above() : pos.below();
+            if (serverLevel.getBlockState(otherHalf).is(LOTags.Blocks.HORSE_GRAZING_PLANTS)) {
+                serverLevel.setBlock(otherHalf, Blocks.AIR.defaultBlockState(), 3);
+            }
+        }
+
+        serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+    }
+
+    private static boolean trySocialVisit(OHorse horse, HorseIntentSnapshot intent) {
+        if (horse.getRandom().nextFloat() >= 0.25F) {
+            return false;
+        }
+
+        Optional<OHorse> socialPartner = preferredSocialPartner(horse);
+        if (socialPartner.isEmpty() || horse.distanceToSqr(socialPartner.get()) <= 16.0D) {
+            return false;
+        }
+
+        horse.setAiGaitState(HorseAiGait.WALK);
+        horse.getNavigation().moveTo(socialPartner.get(), horse.navigationSpeedForGait(HorseAiGait.WALK));
+        return true;
     }
 
     private static void wander(OHorse horse, HorseIntentSnapshot intent, int horizontalRange, int verticalRange) {
@@ -273,6 +405,17 @@ public class HorseAiAction extends ExtendedBehaviour<OHorse> {
         return nearbyBandMembers(horse, 32.0D).stream()
                 .filter(member -> horse.getDamUuid().equals(member.getUUID()))
                 .findFirst();
+    }
+
+    private static Optional<OHorse> preferredSocialPartner(OHorse horse) {
+        Optional<OHorse> dam = findDam(horse);
+        if (dam.isPresent()) {
+            return dam;
+        }
+
+        return nearbyBandMembers(horse, 24.0D).stream()
+                .filter(member -> horse.hasBondWith(member))
+                .max((left, right) -> Integer.compare(bondScore(horse, left), bondScore(horse, right)));
     }
 
     private static boolean isYoung(OHorse horse) {
