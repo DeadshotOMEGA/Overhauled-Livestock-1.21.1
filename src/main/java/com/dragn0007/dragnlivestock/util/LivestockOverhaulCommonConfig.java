@@ -213,13 +213,13 @@ public class LivestockOverhaulCommonConfig {
                 .define("Animals Herd Together", true);
         COW_HERD_MAX = BUILDER.comment("Maximum amount of O-Cows that can herd together. Default is 8.")
                 .define("Cow Herd Maximum", 8);
-        HORSE_HERD_MAX = BUILDER.comment("Maximum amount of O-Horses that can herd together. Default is 3.")
-                .define("Horse Herd Maximum", 3);
+        HORSE_HERD_MAX = BUILDER.comment("Maximum amount of O-Horses that can stay together as a wild family band. Default is 14.")
+                .define("Horse Herd Maximum", 14);
         HORSE_AI_ENABLED = BUILDER.comment("Should O-Horses use the SmartBrainLib AI system?")
                 .define("Horse AI Enabled", true);
         HORSE_AI_DEBUG = BUILDER.comment("Should O-Horse SmartBrainLib AI debug logs run? This is intended for development validation only.")
                 .define("Horse AI Debug", false);
-        HORSE_AI_SENSOR_RADIUS = BUILDER.comment("Base radius, in blocks, used by O-Horse SmartBrainLib sensors. Herd sensing can use this full value for Phase 1 gait testing, while expensive resource/threat sensors cap lower.")
+        HORSE_AI_SENSOR_RADIUS = BUILDER.comment("Base radius, in blocks, used by O-Horse SmartBrainLib sensors. Family band sensing can use this full value for Phase 1 gait testing, while expensive resource/threat sensors cap lower.")
                 .define("Horse AI Sensor Radius", 128);
         HORSE_AI_INTENT_INTERVAL_TICKS = BUILDER.comment("How often, in ticks, O-Horses re-score SmartBrainLib intents. Phase 1 caps this to 20-40 ticks for responsive herd testing.")
                 .define("Horse AI Intent Interval", 30);
@@ -315,7 +315,7 @@ public class LivestockOverhaulCommonConfig {
         COW_BELL_SOUND = BUILDER.comment("Should cow bells make noise/ ding?")
                 .define("Cow Bell Ding", true);
 
-        HORSE_HERD_ANIMALS = BUILDER.comment("Should O-Cows, O-Sheep, and wild O-Horses herd/ run away from mounted horses?")
+        HORSE_HERD_ANIMALS = BUILDER.comment("Should O-Cows, O-Sheep, and wild O-Horses group up or run away from mounted horses?")
                 .define("Horses Scare Herd Animals", true);
 
         GROUND_TIE = BUILDER.comment("Should O-Mounts \"ground tie\", or stop moving around, when saddled & dismounted?")

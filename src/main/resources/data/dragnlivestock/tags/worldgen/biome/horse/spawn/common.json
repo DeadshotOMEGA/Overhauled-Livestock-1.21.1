@@ -25,6 +25,14 @@
     {
       "id": "terralith:fractured_savanna",
       "required": false
+    },
+    {
+      "id": "terralith:valley_clearing",
+      "required": false
+    },
+    {
+      "id": "terralith:shield_clearing",
+      "required": false
     }
   ]
 }

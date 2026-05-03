@@ -63,8 +63,12 @@ public class HorseIntentEvaluator extends ExtendedBehaviour<OHorse> {
             return snapshot(HorseIntent.IDLE, HorseAiGait.NONE, HorseAnimationState.NONE, 0.0D, gameTime);
         }
 
-        if (threat.hasThreat() && threat.distance() < 18.0D) {
-            return snapshot(HorseIntent.FLEE, HorseAiGait.WALK, HorseAnimationState.NONE, 100.0D, gameTime);
+        if (threat.hasThreat() && threat.distance() < 12.0D) {
+            return snapshot(HorseIntent.FLEE, HorseAiGait.TROT, HorseAnimationState.NONE, 100.0D, gameTime);
+        }
+
+        if (threat.hasThreat() && threat.distance() < 20.0D && herd.herdSize() > 1) {
+            return snapshot(HorseIntent.REGROUP, HorseAiGait.WALK, HorseAnimationState.NONE, 95.0D, gameTime);
         }
 
         if (herd.shouldRegroup()) {
@@ -106,7 +110,7 @@ public class HorseIntentEvaluator extends ExtendedBehaviour<OHorse> {
 
         this.nextDebugTick = gameTime + 100L;
         LivestockOverhaul.LOGGER.info(
-                "[DragN's Livestock Overhaul!][OHorse SBL Phase 1 Intent] id={} intent={} score={} herdSize={} anchorDistance={} gait={} animation={} threatDistance={} waterDistance={} hunger={} thirst={} fatigue={} fear={}",
+                "[DragN's Livestock Overhaul!][OHorse SBL Phase 1 Family Band Intent] id={} intent={} score={} familyBandSize={} anchorDistance={} gait={} animation={} threatDistance={} waterDistance={} hunger={} thirst={} fatigue={} fear={}",
                 horse.getId(),
                 intent.intent(),
                 String.format("%.1f", intent.score()),

@@ -18,7 +18,12 @@ public class HorseHerdTooltip implements IEntityComponentProvider {
             return;
         }
 
-        tooltip.add(Component.literal("Herd: " + horse.getAiHerdState() + " | Size: " + horse.getAiHerdSize() + " | Anchor: " + String.format("%.1f", horse.getAiHerdAnchorDistance())));
+        tooltip.add(Component.literal("Family Band: " + horse.getAiHerdState() + " | Size: " + horse.getAiHerdSize() + " | Anchor: " + String.format("%.1f", horse.getAiHerdAnchorDistance())));
+        tooltip.add(Component.literal("Band ID: " + horse.getFamilyBandDisplayId()));
+        tooltip.add(Component.literal("Role: " + horse.getFamilyBandRoleDisplayName() + " | Rank: " + horse.getFamilyBandRank()));
+        tooltip.add(Component.literal("Dam ID: " + horse.getDamDisplayId()));
+        tooltip.add(Component.literal("Preferred Bond: " + horse.getPreferredSocialSummary()));
+        tooltip.add(Component.literal("Social State: " + horse.getIntroductionStateSummary()));
         tooltip.add(Component.literal("Life Stage: " + horse.getHorseLifeStage().displayName()));
         tooltip.add(Component.literal("Gait: " + gaitLevel(horse)));
         tooltip.add(Component.literal("Animation: " + currentAnimation(horse)));

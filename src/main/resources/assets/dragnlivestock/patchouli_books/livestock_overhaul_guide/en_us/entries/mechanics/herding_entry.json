@@ -1,15 +1,15 @@
 {
-  "name": "Herding",
+  "name": "Grouping",
   "icon": "minecraft:lead",
   "category": "dragnlivestock:mechanics_category",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Lots of O-Animals herd together naturally. They'll follow a 'leader' around in order to stay safe. This also means you can easily corral a group of cows, for example, without having to use a billion leads."
+      "text": "Lots of O-Animals group together naturally. Wild O-Horses spawn as family bands with one shared breed and coordinated ages. This also means you can easily corral a group of cows, for example, without having to use a billion leads."
     },
     {
       "type": "patchouli:text",
-      "text": "O-Horses can herd other animals while being ridden. These animals include Cows, Sheep, and Wild O-Horses. These animals will naturally run from your horse, so you can corral them into your pens."
+      "text": "O-Horses can move other animals while being ridden. These animals include Cows, Sheep, and Wild O-Horses. These animals will naturally run from your horse, so you can corral them into your pens."
     }
   ]
 }

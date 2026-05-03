@@ -27,6 +27,8 @@ import com.dragn0007.dragnlivestock.util.LivestockOverhaulCommonConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -39,6 +41,7 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.SimpleMenuProvider;
@@ -83,9 +86,15 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner<OHorse> {
@@ -884,12 +893,20 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	public long horseAgeDays;
 	public long lastHorseAgeDay = -1L;
 	public boolean horseLifeStageAgeInitialized;
+	@Nullable
+	private UUID familyBandId;
+	private FamilyBandRole familyBandRole = FamilyBandRole.UNASSIGNED;
+	private int familyBandRank;
+	@Nullable
+	private UUID damUuid;
+	private final Map<UUID, SocialRelationship> socialRelationships = new HashMap<>();
 
 	@Override
 	public void tick() {
 		super.tick();
 		this.initializeMissingHorseLifeStageAge();
 		this.tickHorseLifeStageAge();
+		this.tickFamilyBandSocialMemory();
 
 		if (this.hasFollowers() && this.level().random.nextInt(200) == 1) {
 			List<? extends OHorse> list = this.level().getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
@@ -1118,16 +1135,48 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		int adultEndYear = 25;
 		int spawnedYears = adultStartYear + this.random.nextInt(adultEndYear - adultStartYear + 1);
 
+		this.setHorseAgeYears(spawnedYears);
+		this.foalGrowthProgress = 0;
+		this.lastFoalGrowthDay = -1L;
+	}
+
+	private void forceHorseLifeStage(HorseLifeStage stage) {
+		if (stage == HorseLifeStage.FOAL || stage == HorseLifeStage.YEARLING) {
+			this.setAge(stage == HorseLifeStage.FOAL ? -24000 : -12000);
+			this.setHorseAgeYears(stage == HorseLifeStage.FOAL ? 0.0D : 1.0D);
+			this.foalGrowthProgress = stage == HorseLifeStage.FOAL ? 0 : this.getFoalGrowthTotalUnits() / 2;
+			this.lastFoalGrowthDay = this.level().getDayTime() / 24000L;
+			this.updateSyncedHorseLifeStage();
+			return;
+		}
+
+		this.setAge(0);
+		this.setHorseAgeYears(this.randomYearsForLifeStage(stage));
+		this.foalGrowthProgress = 0;
+		this.lastFoalGrowthDay = -1L;
+	}
+
+	private int randomYearsForLifeStage(HorseLifeStage stage) {
+		return switch (stage) {
+			case YOUNG_ADULT -> 4;
+			case EARLY_PRIME -> 5 + this.random.nextInt(3);
+			case PRIME_ADULT -> 8 + this.random.nextInt(7);
+			case SENIOR -> 15 + this.random.nextInt(5);
+			case ELDER -> 20 + this.random.nextInt(5);
+			case VERY_OLD -> 25 + this.random.nextInt(6);
+			default -> 8;
+		};
+	}
+
+	private void setHorseAgeYears(double years) {
 		if (LivestockOverhaulCommonConfig.HORSE_LIFE_STAGE_AGE_BY_DAYS.get()) {
-			this.horseAgeDays = (long) spawnedYears * Math.max(1, LivestockOverhaulCommonConfig.HORSE_DAYS_PER_YEAR.get());
+			this.horseAgeDays = Math.round(years * Math.max(1, LivestockOverhaulCommonConfig.HORSE_DAYS_PER_YEAR.get()));
 			this.horseAgeTicks = this.horseAgeDays * 24000L;
 		} else {
-			this.horseAgeTicks = (long) spawnedYears * Math.max(1, LivestockOverhaulCommonConfig.HORSE_TICKS_PER_YEAR.get());
+			this.horseAgeTicks = Math.round(years * Math.max(1, LivestockOverhaulCommonConfig.HORSE_TICKS_PER_YEAR.get()));
 			this.horseAgeDays = this.horseAgeTicks / 24000L;
 		}
 
-		this.foalGrowthProgress = 0;
-		this.lastFoalGrowthDay = -1L;
 		this.lastHorseAgeDay = this.level().getDayTime() / 24000L;
 		this.horseLifeStageAgeInitialized = true;
 		this.updateSyncedHorseLifeStage();
@@ -1428,6 +1477,378 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	}
 
 	public static final EntityDataAccessor<Integer> HORSE_LIFE_STAGE = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Optional<UUID>> FAMILY_BAND_ID = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.OPTIONAL_UUID);
+	public static final EntityDataAccessor<Integer> FAMILY_BAND_ROLE = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Integer> FAMILY_BAND_RANK = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.INT);
+	public static final EntityDataAccessor<Optional<UUID>> FAMILY_BAND_DAM_UUID = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.OPTIONAL_UUID);
+	public static final EntityDataAccessor<String> FAMILY_BAND_PREFERRED_SOCIAL = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.STRING);
+	public static final EntityDataAccessor<String> FAMILY_BAND_SOCIAL_STATE = SynchedEntityData.defineId(OHorse.class, EntityDataSerializers.STRING);
+
+	public boolean hasFamilyBandId() {
+		return this.getFamilyBandId() != null;
+	}
+
+	@Nullable
+	public UUID getFamilyBandId() {
+		return this.entityData.get(FAMILY_BAND_ID).orElse(this.familyBandId);
+	}
+
+	public String getFamilyBandDisplayId() {
+		UUID syncedFamilyBandId = this.getFamilyBandId();
+		return syncedFamilyBandId == null ? "None" : syncedFamilyBandId.toString().substring(0, 8);
+	}
+
+	public void setFamilyBandId(@Nullable UUID familyBandId) {
+		this.familyBandId = familyBandId;
+		this.entityData.set(FAMILY_BAND_ID, Optional.ofNullable(familyBandId));
+	}
+
+	public boolean hasSameFamilyBandAs(OHorse otherHorse) {
+		UUID syncedFamilyBandId = this.getFamilyBandId();
+		return syncedFamilyBandId != null && syncedFamilyBandId.equals(otherHorse.getFamilyBandId());
+	}
+
+	public FamilyBandRole getFamilyBandRole() {
+		return FamilyBandRole.fromOrdinal(this.entityData.get(FAMILY_BAND_ROLE));
+	}
+
+	public String getFamilyBandRoleDisplayName() {
+		return this.familyBandRole.displayName();
+	}
+
+	public void setFamilyBandRole(FamilyBandRole familyBandRole) {
+		this.familyBandRole = familyBandRole == null ? FamilyBandRole.UNASSIGNED : familyBandRole;
+		this.entityData.set(FAMILY_BAND_ROLE, this.familyBandRole.ordinal());
+	}
+
+	public int getFamilyBandRank() {
+		return this.entityData.get(FAMILY_BAND_RANK);
+	}
+
+	public void setFamilyBandRank(int familyBandRank) {
+		this.familyBandRank = Mth.clamp(familyBandRank, 0, 100);
+		this.entityData.set(FAMILY_BAND_RANK, this.familyBandRank);
+	}
+
+	@Nullable
+	public UUID getDamUuid() {
+		return this.entityData.get(FAMILY_BAND_DAM_UUID).orElse(this.damUuid);
+	}
+
+	public String getDamDisplayId() {
+		UUID syncedDamUuid = this.getDamUuid();
+		return syncedDamUuid == null ? "None" : syncedDamUuid.toString().substring(0, 8);
+	}
+
+	public void setDamUuid(@Nullable UUID damUuid) {
+		this.damUuid = damUuid;
+		this.entityData.set(FAMILY_BAND_DAM_UUID, Optional.ofNullable(damUuid));
+	}
+
+	@Nullable
+	public SocialRelationship getRelationship(UUID horseId) {
+		return this.socialRelationships.get(horseId);
+	}
+
+	public Collection<SocialRelationship> getSocialRelationships() {
+		return this.socialRelationships.values();
+	}
+
+	public boolean hasBondWith(OHorse horse) {
+		SocialRelationship relationship = this.getRelationship(horse.getUUID());
+		return relationship != null && relationship.bond() >= 55;
+	}
+
+	public boolean isHigherRankThan(OHorse horse) {
+		return this.familyBandRank > horse.getFamilyBandRank() + 5;
+	}
+
+	public boolean shouldYieldTo(OHorse horse) {
+		if (!this.hasSameFamilyBandAs(horse)) {
+			return false;
+		}
+
+		SocialRelationship relationship = this.getRelationship(horse.getUUID());
+		int pressure = relationship == null ? 0 : relationship.rankPressure();
+		return horse.getFamilyBandRank() > this.familyBandRank + 8 || pressure > 25;
+	}
+
+	public String getPreferredSocialSummary() {
+		if (this.level().isClientSide) {
+			return this.entityData.get(FAMILY_BAND_PREFERRED_SOCIAL);
+		}
+
+		return this.computePreferredSocialSummary();
+	}
+
+	private String computePreferredSocialSummary() {
+		return this.socialRelationships.entrySet().stream()
+				.max(Comparator.comparingInt(entry -> entry.getValue().bond()))
+				.map(entry -> entry.getKey().toString().substring(0, 8) + " b" + entry.getValue().bond())
+				.orElse("None");
+	}
+
+	public String getIntroductionStateSummary() {
+		if (this.level().isClientSide) {
+			return this.entityData.get(FAMILY_BAND_SOCIAL_STATE);
+		}
+
+		return this.computeIntroductionStateSummary();
+	}
+
+	private String computeIntroductionStateSummary() {
+		long count = this.socialRelationships.values().stream().filter(SocialRelationship::newIntroduction).count();
+		if (count > 0) {
+			return "Introducing " + count;
+		}
+
+		if (this.socialRelationships.isEmpty()) {
+			return "Solo";
+		}
+
+		return "Stable";
+	}
+
+	private void refreshFamilyBandSocialDebug() {
+		if (!this.level().isClientSide) {
+			this.entityData.set(FAMILY_BAND_PREFERRED_SOCIAL, this.computePreferredSocialSummary());
+			this.entityData.set(FAMILY_BAND_SOCIAL_STATE, this.computeIntroductionStateSummary());
+		}
+	}
+
+	private void tickFamilyBandSocialMemory() {
+		if (this.level().isClientSide || !this.hasFamilyBandId() || this.tickCount % 40 != Math.floorMod(this.getId(), 40)) {
+			return;
+		}
+
+		long gameTime = this.level().getGameTime();
+		List<OHorse> nearbyBandMembers = this.level().getEntitiesOfClass(
+				OHorse.class,
+				this.getBoundingBox().inflate(20.0D),
+				horse -> horse != this && horse.isAlive() && this.hasSameFamilyBandAs(horse)
+		);
+
+		for (OHorse bandMember : nearbyBandMembers) {
+			SocialRelationship relationship = this.rememberRelationshipWith(bandMember, 1, false, false, false);
+			boolean calmNearby = this.distanceToSqr(bandMember) < 100.0D && this.getAiHerdState() != HorseGroupingState.REGROUPING;
+			relationship.setLastSeenGameTime(gameTime);
+			relationship.adjustFamiliarity(calmNearby ? 2 : 1);
+			relationship.adjustBond(this.hasStrongRoleBondWith(bandMember) ? 2 : 1);
+			relationship.setRankPressure(this.computeRankPressureToward(bandMember));
+			if (relationship.newIntroduction() && relationship.familiarity() >= 45) {
+				relationship.setNewIntroduction(false);
+			}
+		}
+
+		for (SocialRelationship relationship : this.socialRelationships.values()) {
+			long unseenTicks = gameTime - relationship.lastSeenGameTime();
+			if (unseenTicks > 12000L && gameTime % 1200L == 0L) {
+				relationship.adjustBond(-1);
+				relationship.adjustFamiliarity(-1);
+			}
+		}
+
+		if (gameTime % 1200L == 0L) {
+			this.driftFamilyBandRankTowardRole();
+		}
+
+		this.refreshFamilyBandSocialDebug();
+	}
+
+	public SocialRelationship rememberRelationshipWith(OHorse otherHorse, int bond, boolean dam, boolean foal, boolean preferredPartner) {
+		SocialRelationship relationship = this.socialRelationships.computeIfAbsent(otherHorse.getUUID(), uuid -> new SocialRelationship(uuid, 0, 0, 0, this.level().getGameTime(), false, false, false, true));
+		relationship.adjustBond(bond);
+		relationship.adjustFamiliarity(10);
+		relationship.setRankPressure(this.computeRankPressureToward(otherHorse));
+		relationship.setLastSeenGameTime(this.level().getGameTime());
+		relationship.setDam(relationship.dam() || dam);
+		relationship.setFoal(relationship.foal() || foal);
+		relationship.setPreferredPartner(relationship.preferredPartner() || preferredPartner);
+		this.refreshFamilyBandSocialDebug();
+		return relationship;
+	}
+
+	private boolean hasStrongRoleBondWith(OHorse otherHorse) {
+		return this.damUuid != null && this.damUuid.equals(otherHorse.getUUID())
+				|| otherHorse.getDamUuid() != null && otherHorse.getDamUuid().equals(this.getUUID())
+				|| this.familyBandRole == FamilyBandRole.MARE && otherHorse.getFamilyBandRole() == FamilyBandRole.MARE;
+	}
+
+	private int computeRankPressureToward(OHorse otherHorse) {
+		return Mth.clamp(otherHorse.getFamilyBandRank() - this.familyBandRank, -100, 100);
+	}
+
+	private void driftFamilyBandRankTowardRole() {
+		int baseline = this.baselineRankForRole();
+		if (this.familyBandRank < baseline) {
+			this.setFamilyBandRank(this.familyBandRank + 1);
+		} else if (this.familyBandRank > baseline) {
+			this.setFamilyBandRank(this.familyBandRank - 1);
+		}
+	}
+
+	private int baselineRankForRole() {
+		return switch (this.familyBandRole) {
+			case PRIMARY_STALLION -> 100;
+			case MARE -> 70;
+			case YEARLING -> 24;
+			case FOAL -> 14;
+			case SUBORDINATE_STALLION -> 55;
+			case UNASSIGNED -> 0;
+		};
+	}
+
+	public enum FamilyBandRole {
+		PRIMARY_STALLION("Primary Stallion"),
+		MARE("Mare"),
+		FOAL("Foal"),
+		YEARLING("Yearling"),
+		SUBORDINATE_STALLION("Subordinate Stallion"),
+		UNASSIGNED("Unassigned");
+
+		private final String displayName;
+
+		FamilyBandRole(String displayName) {
+			this.displayName = displayName;
+		}
+
+		public String displayName() {
+			return this.displayName;
+		}
+
+		public static FamilyBandRole fromOrdinal(int ordinal) {
+			FamilyBandRole[] values = values();
+			return ordinal >= 0 && ordinal < values.length ? values[ordinal] : UNASSIGNED;
+		}
+	}
+
+	public static final class SocialRelationship {
+		private final UUID horseId;
+		private int bond;
+		private int familiarity;
+		private int rankPressure;
+		private long lastSeenGameTime;
+		private boolean dam;
+		private boolean foal;
+		private boolean preferredPartner;
+		private boolean newIntroduction;
+
+		private SocialRelationship(UUID horseId, int bond, int familiarity, int rankPressure, long lastSeenGameTime, boolean dam, boolean foal, boolean preferredPartner, boolean newIntroduction) {
+			this.horseId = horseId;
+			this.bond = clampSocial(bond);
+			this.familiarity = clampSocial(familiarity);
+			this.rankPressure = Mth.clamp(rankPressure, -100, 100);
+			this.lastSeenGameTime = lastSeenGameTime;
+			this.dam = dam;
+			this.foal = foal;
+			this.preferredPartner = preferredPartner;
+			this.newIntroduction = newIntroduction;
+		}
+
+		public UUID horseId() {
+			return this.horseId;
+		}
+
+		public int bond() {
+			return this.bond;
+		}
+
+		public int familiarity() {
+			return this.familiarity;
+		}
+
+		public int rankPressure() {
+			return this.rankPressure;
+		}
+
+		public long lastSeenGameTime() {
+			return this.lastSeenGameTime;
+		}
+
+		public boolean dam() {
+			return this.dam;
+		}
+
+		public boolean foal() {
+			return this.foal;
+		}
+
+		public boolean preferredPartner() {
+			return this.preferredPartner;
+		}
+
+		public boolean newIntroduction() {
+			return this.newIntroduction;
+		}
+
+		public void adjustBond(int amount) {
+			this.bond = clampSocial(this.bond + amount);
+		}
+
+		public void adjustFamiliarity(int amount) {
+			this.familiarity = clampSocial(this.familiarity + amount);
+		}
+
+		public void setRankPressure(int rankPressure) {
+			this.rankPressure = Mth.clamp(rankPressure, -100, 100);
+		}
+
+		public void setLastSeenGameTime(long lastSeenGameTime) {
+			this.lastSeenGameTime = lastSeenGameTime;
+		}
+
+		public void setDam(boolean dam) {
+			this.dam = dam;
+		}
+
+		public void setFoal(boolean foal) {
+			this.foal = foal;
+		}
+
+		public void setPreferredPartner(boolean preferredPartner) {
+			this.preferredPartner = preferredPartner;
+		}
+
+		public void setNewIntroduction(boolean newIntroduction) {
+			this.newIntroduction = newIntroduction;
+		}
+
+		private CompoundTag save() {
+			CompoundTag tag = new CompoundTag();
+			tag.putUUID("HorseId", this.horseId);
+			tag.putInt("Bond", this.bond);
+			tag.putInt("Familiarity", this.familiarity);
+			tag.putInt("RankPressure", this.rankPressure);
+			tag.putLong("LastSeenGameTime", this.lastSeenGameTime);
+			tag.putBoolean("Dam", this.dam);
+			tag.putBoolean("Foal", this.foal);
+			tag.putBoolean("PreferredPartner", this.preferredPartner);
+			tag.putBoolean("NewIntroduction", this.newIntroduction);
+			return tag;
+		}
+
+		private static Optional<SocialRelationship> load(CompoundTag tag) {
+			if (!tag.hasUUID("HorseId")) {
+				return Optional.empty();
+			}
+
+			return Optional.of(new SocialRelationship(
+					tag.getUUID("HorseId"),
+					tag.getInt("Bond"),
+					tag.getInt("Familiarity"),
+					tag.getInt("RankPressure"),
+					tag.getLong("LastSeenGameTime"),
+					tag.getBoolean("Dam"),
+					tag.getBoolean("Foal"),
+					tag.getBoolean("PreferredPartner"),
+					tag.getBoolean("NewIntroduction")
+			));
+		}
+
+		private static int clampSocial(int value) {
+			return Mth.clamp(value, 0, 100);
+		}
+	}
 
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
@@ -1517,6 +1938,28 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		if (tag.contains("TrainingTime")) {
 			this.trainStatsTick = tag.getInt("TrainingTime");
 		}
+
+		if (tag.hasUUID("FamilyBandId")) {
+			this.setFamilyBandId(tag.getUUID("FamilyBandId"));
+		} else {
+			this.setFamilyBandId(null);
+		}
+
+		this.setFamilyBandRole(tag.contains("FamilyBandRole", Tag.TAG_INT)
+				? FamilyBandRole.fromOrdinal(tag.getInt("FamilyBandRole"))
+				: FamilyBandRole.UNASSIGNED);
+		this.setFamilyBandRank(tag.contains("FamilyBandRank", Tag.TAG_INT)
+				? Mth.clamp(tag.getInt("FamilyBandRank"), 0, 100)
+				: 0);
+		this.setDamUuid(tag.hasUUID("DamUuid") ? tag.getUUID("DamUuid") : null);
+		this.socialRelationships.clear();
+		if (tag.contains("SocialRelationships", Tag.TAG_LIST)) {
+			ListTag relationships = tag.getList("SocialRelationships", Tag.TAG_COMPOUND);
+			for (int i = 0; i < relationships.size(); i++) {
+				SocialRelationship.load(relationships.getCompound(i)).ifPresent(relationship -> this.socialRelationships.put(relationship.horseId(), relationship));
+			}
+		}
+		this.refreshFamilyBandSocialDebug();
 
 		if (tag.contains("FoalGrowthProgress")) {
 			this.foalGrowthProgress = tag.getInt("FoalGrowthProgress");
@@ -1641,6 +2084,19 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			tag.put("FlowerItem", this.getFlowerItem().save(this.registryAccess()));
 		}
 		tag.putBoolean("IsBranded", this.isBranded());
+		if (this.familyBandId != null) {
+			tag.putUUID("FamilyBandId", this.familyBandId);
+		}
+		tag.putInt("FamilyBandRole", this.familyBandRole.ordinal());
+		tag.putInt("FamilyBandRank", this.familyBandRank);
+		if (this.damUuid != null) {
+			tag.putUUID("DamUuid", this.damUuid);
+		}
+		if (!this.socialRelationships.isEmpty()) {
+			ListTag relationships = new ListTag();
+			this.socialRelationships.values().forEach(relationship -> relationships.add(relationship.save()));
+			tag.put("SocialRelationships", relationships);
+		}
 		tag.putInt("TrainingTime", this.trainStatsTick);
 		tag.putInt("FoalGrowthProgress", this.foalGrowthProgress);
 		tag.putLong("LastFoalGrowthDay", this.lastFoalGrowthDay);
@@ -1662,7 +2118,17 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	@Override
 	@Nullable
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor serverLevelAccessor, DifficultyInstance instance, MobSpawnType spawnType, @Nullable SpawnGroupData data) {
-		if (data == null) {
+		FamilyBandSpawnGroupData familyBandData = null;
+		if (this.usesNaturalHorseBreedSelection(spawnType)) {
+			if (data instanceof FamilyBandSpawnGroupData existingFamilyBandData) {
+				familyBandData = existingFamilyBandData;
+				this.setBreed(familyBandData.breed());
+			} else {
+				this.setNaturalHorseBreed(new Random());
+				familyBandData = new FamilyBandSpawnGroupData(this.getBreed(), this.getRandom());
+				data = familyBandData;
+			}
+		} else if (data == null) {
 			data = new AgeableMobGroupData(0.2F);
 		}
 
@@ -1674,8 +2140,6 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 			} else {
 				this.setBreed(random.nextInt(HorseBreed.values().length));
 			}
-		} else if (this.usesNaturalHorseBreedSelection(spawnType)) {
-			this.setNaturalHorseBreed(random);
 		}
 
 		this.setReindeerVariant(random.nextInt(REINDEER_VARIANT_COUNT));
@@ -1709,8 +2173,199 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		if (spawnType == MobSpawnType.SPAWN_EGG && this.isBaby()) {
 			this.setAge(0);
 		}
-		this.initializeSpawnLifeStageAge();
-		return spawnData;
+		if (familyBandData != null) {
+			familyBandData.assignNextRole(this);
+		} else {
+			this.initializeSpawnLifeStageAge();
+		}
+		return familyBandData != null ? familyBandData : spawnData;
+	}
+
+	private static final class FamilyBandSpawnGroupData extends AgeableMobGroupData {
+		private final UUID familyBandId = UUID.randomUUID();
+		private final int breed;
+		private final boolean includeSubordinateStallion;
+		private final List<OHorse> members = new ObjectArrayList<>();
+		private final List<OHorse> mares = new ObjectArrayList<>();
+		private int assignedCount;
+		private int mareCount;
+		private int youngCount;
+		private boolean subordinateStallionAssigned;
+
+		private FamilyBandSpawnGroupData(int breed, RandomSource random) {
+			super(false);
+			this.breed = breed;
+			this.includeSubordinateStallion = random.nextFloat() < 0.25F;
+		}
+
+		private int breed() {
+			return this.breed;
+		}
+
+		private void assignNextRole(OHorse horse) {
+			horse.setFamilyBandId(this.familyBandId);
+			horse.setBreed(this.breed);
+			horse.setDamUuid(null);
+
+			int roleIndex = this.assignedCount++;
+			if (roleIndex == 0) {
+				horse.setGender(Gender.MALE.ordinal());
+				horse.setFamilyBandRole(FamilyBandRole.PRIMARY_STALLION);
+				horse.setFamilyBandRank(100);
+				horse.forceHorseLifeStage(HorseLifeStage.PRIME_ADULT);
+				this.rememberMember(horse);
+				return;
+			}
+
+			if (this.mareCount < 3) {
+				this.assignMare(horse);
+				this.rememberMember(horse);
+				return;
+			}
+
+			if (this.youngCount < 1) {
+				this.assignYoung(horse);
+				this.rememberMember(horse);
+				return;
+			}
+
+			if (this.includeSubordinateStallion && !this.subordinateStallionAssigned) {
+				this.subordinateStallionAssigned = true;
+				horse.setGender(Gender.MALE.ordinal());
+				horse.setFamilyBandRole(FamilyBandRole.SUBORDINATE_STALLION);
+				horse.setFamilyBandRank(55);
+				horse.forceHorseLifeStage(this.pickSubordinateStallionStage(horse.getRandom()));
+				this.rememberMember(horse);
+				return;
+			}
+
+			if (this.mareCount < 6) {
+				this.assignMare(horse);
+				this.rememberMember(horse);
+				return;
+			}
+
+			if (this.youngCount < 6) {
+				this.assignYoung(horse);
+				this.rememberMember(horse);
+				return;
+			}
+
+			this.assignMare(horse);
+			this.rememberMember(horse);
+		}
+
+		private void assignMare(OHorse horse) {
+			this.mareCount++;
+			horse.setGender(Gender.FEMALE.ordinal());
+			horse.setFamilyBandRole(FamilyBandRole.MARE);
+			horse.setFamilyBandRank(62 + horse.getRandom().nextInt(17));
+			horse.forceHorseLifeStage(this.pickMareStage(horse.getRandom()));
+			this.mares.add(horse);
+		}
+
+		private void assignYoung(OHorse horse) {
+			this.youngCount++;
+			horse.setGender(horse.getRandom().nextInt(Gender.values().length));
+			HorseLifeStage youngStage = horse.getRandom().nextFloat() < 0.55F ? HorseLifeStage.FOAL : HorseLifeStage.YEARLING;
+			horse.setFamilyBandRole(youngStage == HorseLifeStage.FOAL ? FamilyBandRole.FOAL : FamilyBandRole.YEARLING);
+			horse.setFamilyBandRank(youngStage == HorseLifeStage.FOAL ? 14 : 24);
+			if (!this.mares.isEmpty()) {
+				OHorse dam = this.mares.get(Math.floorMod(this.youngCount - 1, this.mares.size()));
+				horse.setDamUuid(dam.getUUID());
+			}
+			horse.forceHorseLifeStage(youngStage);
+		}
+
+		private void rememberMember(OHorse horse) {
+			for (OHorse member : this.members) {
+				this.seedRelationship(horse, member);
+			}
+
+			this.members.add(horse);
+		}
+
+		private void seedRelationship(OHorse horse, OHorse member) {
+			int bond = this.spawnBondBetween(horse, member);
+			boolean memberIsHorseDam = horse.getDamUuid() != null && horse.getDamUuid().equals(member.getUUID());
+			boolean horseIsMemberDam = member.getDamUuid() != null && member.getDamUuid().equals(horse.getUUID());
+			boolean preferredMareBond = horse.getFamilyBandRole() == FamilyBandRole.MARE && member.getFamilyBandRole() == FamilyBandRole.MARE;
+
+			SocialRelationship horseRelationship = horse.rememberRelationshipWith(member, bond, memberIsHorseDam, horseIsMemberDam, preferredMareBond);
+			horseRelationship.adjustFamiliarity(90);
+			horseRelationship.setNewIntroduction(false);
+			horse.refreshFamilyBandSocialDebug();
+
+			SocialRelationship memberRelationship = member.rememberRelationshipWith(horse, bond, horseIsMemberDam, memberIsHorseDam, preferredMareBond);
+			memberRelationship.adjustFamiliarity(90);
+			memberRelationship.setNewIntroduction(false);
+			member.refreshFamilyBandSocialDebug();
+		}
+
+		private int spawnBondBetween(OHorse horse, OHorse member) {
+			boolean damFoal = horse.getDamUuid() != null && horse.getDamUuid().equals(member.getUUID())
+					|| member.getDamUuid() != null && member.getDamUuid().equals(horse.getUUID());
+			if (damFoal) {
+				return 85;
+			}
+
+			FamilyBandRole horseRole = horse.getFamilyBandRole();
+			FamilyBandRole memberRole = member.getFamilyBandRole();
+			if (horseRole == FamilyBandRole.MARE && memberRole == FamilyBandRole.MARE) {
+				return 65;
+			}
+			if (this.isYoungRole(horseRole) && this.isYoungRole(memberRole)) {
+				return 55;
+			}
+			if (horseRole == FamilyBandRole.PRIMARY_STALLION && memberRole == FamilyBandRole.MARE
+					|| memberRole == FamilyBandRole.PRIMARY_STALLION && horseRole == FamilyBandRole.MARE) {
+				return 45;
+			}
+			if (horseRole == FamilyBandRole.PRIMARY_STALLION && this.isYoungRole(memberRole)
+					|| memberRole == FamilyBandRole.PRIMARY_STALLION && this.isYoungRole(horseRole)) {
+				return 35;
+			}
+			if (horseRole == FamilyBandRole.SUBORDINATE_STALLION || memberRole == FamilyBandRole.SUBORDINATE_STALLION) {
+				return 30;
+			}
+
+			return 35;
+		}
+
+		private boolean isYoungRole(FamilyBandRole role) {
+			return role == FamilyBandRole.FOAL || role == FamilyBandRole.YEARLING;
+		}
+
+		private HorseLifeStage pickMareStage(RandomSource random) {
+			int roll = random.nextInt(16);
+			if (roll < 6) {
+				return HorseLifeStage.PRIME_ADULT;
+			}
+			if (roll < 10) {
+				return HorseLifeStage.EARLY_PRIME;
+			}
+			if (roll < 12) {
+				return HorseLifeStage.YOUNG_ADULT;
+			}
+			if (roll < 14) {
+				return HorseLifeStage.SENIOR;
+			}
+			if (roll < 15) {
+				return HorseLifeStage.ELDER;
+			}
+			return HorseLifeStage.VERY_OLD;
+		}
+
+		private HorseLifeStage pickSubordinateStallionStage(RandomSource random) {
+			int roll = random.nextInt(10);
+			if (roll < 7) {
+				return HorseLifeStage.EARLY_PRIME;
+			}
+			if (roll < 9) {
+				return HorseLifeStage.ELDER;
+			}
+			return HorseLifeStage.VERY_OLD;
+		}
 	}
 
 	private boolean usesNaturalHorseBreedSelection(MobSpawnType spawnType) {
@@ -1782,6 +2437,12 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		builder.define(AI_HERD_SIZE, 1);
 		builder.define(AI_HERD_ANCHOR_DISTANCE_TENTHS, 0);
 		builder.define(HORSE_LIFE_STAGE, HorseLifeStage.FOAL.ordinal());
+		builder.define(FAMILY_BAND_ID, Optional.empty());
+		builder.define(FAMILY_BAND_ROLE, FamilyBandRole.UNASSIGNED.ordinal());
+		builder.define(FAMILY_BAND_RANK, 0);
+		builder.define(FAMILY_BAND_DAM_UUID, Optional.empty());
+		builder.define(FAMILY_BAND_PREFERRED_SOCIAL, "None");
+		builder.define(FAMILY_BAND_SOCIAL_STATE, "Solo");
 		builder.define(HALLOW, false);
 	}
 

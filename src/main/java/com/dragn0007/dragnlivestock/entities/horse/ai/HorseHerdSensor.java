@@ -43,16 +43,21 @@ public class HorseHerdSensor extends ExtendedSensor<OHorse> {
             return;
         }
 
+        if (!horse.hasFamilyBandId()) {
+            rememberSnapshot(level, horse, snapshotFor(horse, HorseGroupingState.NO_HERD, List.of(horse), horse.position()));
+            return;
+        }
+
         double scanRadius = Math.min(128.0D, Math.max(48.0D, LivestockOverhaulCommonConfig.HORSE_AI_SENSOR_RADIUS.get()));
         List<OHorse> nearbyHorses = level.getEntitiesOfClass(
                 OHorse.class,
                 horse.getBoundingBox().inflate(scanRadius),
-                candidate -> candidate != horse && isEligibleForPhase0Grouping(candidate)
+                candidate -> candidate != horse && isEligibleForPhase0Grouping(candidate) && horse.hasSameFamilyBandAs(candidate)
         );
 
         nearbyHorses.sort(Comparator.comparingDouble(horse::distanceToSqr));
 
-        int maxHerdSize = Math.max(1, LivestockOverhaulCommonConfig.HORSE_HERD_MAX.get());
+        int maxHerdSize = Math.max(14, LivestockOverhaulCommonConfig.HORSE_HERD_MAX.get());
         List<OHorse> herd = new ObjectArrayList<>();
         herd.add(horse);
 
@@ -129,7 +134,7 @@ public class HorseHerdSensor extends ExtendedSensor<OHorse> {
 
         this.nextDebugTick = level.getGameTime() + 100;
         LivestockOverhaul.LOGGER.info(
-                "[DragN's Livestock Overhaul!][OHorse SBL Phase 1] id={} state={} herdSize={} anchorDistance={}",
+                "[DragN's Livestock Overhaul!][OHorse SBL Phase 1 Family Band] id={} state={} familyBandSize={} anchorDistance={}",
                 horse.getId(),
                 snapshot.state(),
                 snapshot.herdSize(),

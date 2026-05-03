@@ -3,8 +3,8 @@
   "biomes": "#dragnlivestock:horse/spawn/uncommon",
   "spawners": {
     "type": "dragnlivestock:o_horse",
-    "maxCount": 6,
-    "minCount": 2,
+    "maxCount": 14,
+    "minCount": 5,
     "weight": 5
   }
 }

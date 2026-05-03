@@ -74,17 +74,17 @@ public final class BiomeHitter {
 
         context.register(O_HORSE_COMMON, BiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(
                 biomes.getOrThrow(LOTags.Biomes.HORSE_SPAWN_COMMON),
-                new MobSpawnSettings.SpawnerData(EntityTypes.O_HORSE_ENTITY.get(), 10, 2, 6)
+                new MobSpawnSettings.SpawnerData(EntityTypes.O_HORSE_ENTITY.get(), 10, 5, 14)
         ));
 
         context.register(O_HORSE_UNCOMMON, BiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(
                 biomes.getOrThrow(LOTags.Biomes.HORSE_SPAWN_UNCOMMON),
-                new MobSpawnSettings.SpawnerData(EntityTypes.O_HORSE_ENTITY.get(), 5, 2, 6)
+                new MobSpawnSettings.SpawnerData(EntityTypes.O_HORSE_ENTITY.get(), 5, 5, 14)
         ));
 
         context.register(O_HORSE_RARE, BiomeModifiers.AddSpawnsBiomeModifier.singleSpawn(
                 biomes.getOrThrow(LOTags.Biomes.HORSE_SPAWN_RARE),
-                new MobSpawnSettings.SpawnerData(EntityTypes.O_HORSE_ENTITY.get(), 1, 2, 6)
+                new MobSpawnSettings.SpawnerData(EntityTypes.O_HORSE_ENTITY.get(), 1, 5, 14)
         ));
     }
 
