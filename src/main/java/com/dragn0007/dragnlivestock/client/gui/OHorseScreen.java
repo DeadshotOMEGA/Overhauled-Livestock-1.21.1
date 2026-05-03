@@ -196,6 +196,9 @@ public class OHorseScreen extends AbstractContainerScreen<OHorseMenu> {
             case 30: return "Tennessee Walking Horse (Racer)";
             case 31: return "Canadian (Stock)";
             case 32: return "Arabian (Racer)";
+            case 33: return "Andalusian (Warmblood)";
+            case 34: return "Camargue (Pony)";
+            case 35: return "Icelandic Horse (Pony)";
             default: return "Unknown";
         }
     }

@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "BOULONNAIS",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT"
+    ],
+    "tail": [
+      "AVERAGE",
+      "SHORT",
+      "TIED"
+    ],
+    "feathering": [
+      "NONE",
+      "HALF"
+    ],
+    "coatPool": "BOULONNAIS",
+    "markingGroups": [
+      "BASIC",
+      "GREY"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

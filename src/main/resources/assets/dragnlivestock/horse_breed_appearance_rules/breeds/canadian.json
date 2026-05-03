@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "CANADIAN",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE"
+    ],
+    "feathering": [
+      "NONE",
+      "HALF"
+    ],
+    "coatPool": "CANADIAN",
+    "markingGroups": [
+      "MINIMAL",
+      "BASIC"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED",
+    "notes": "Optional if replacing or adding alongside MORGAN."
+  }
+}

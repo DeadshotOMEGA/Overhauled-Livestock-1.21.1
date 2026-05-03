@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "FRIESIAN",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "BUTTONS"
+    ],
+    "tail": [
+      "LONG",
+      "TIED"
+    ],
+    "feathering": [
+      "HALF",
+      "FULL"
+    ],
+    "coatPool": "FRIESIAN_BLACK",
+    "markingGroups": [
+      "MINIMAL"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

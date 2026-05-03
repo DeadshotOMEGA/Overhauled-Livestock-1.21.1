@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "STANDARDBRED",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "SHORT",
+      "TIED"
+    ],
+    "feathering": [
+      "NONE"
+    ],
+    "coatPool": "BASIC_LIGHT",
+    "markingGroups": [
+      "BASIC",
+      "GREY"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

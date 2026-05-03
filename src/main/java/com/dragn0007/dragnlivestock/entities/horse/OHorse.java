@@ -1692,14 +1692,15 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		if (LivestockOverhaulCommonConfig.EYES_BY_COLOR.get()) {
 			this.setEyeColorByChance();
 		} else {
-			this.setEyeVariant(random.nextInt(EquineMarkingOverlay.values().length));
+			this.setEyeVariant(random.nextInt(EquineEyeColorOverlay.values().length));
 		}
 
+		HorseBreed breed = HorseBreed.breedFromOrdinal(this.getBreed());
 		int randomMane = 1 + this.getRandom().nextInt(3);
-		this.setManeType(randomMane);
+		this.setManeType(HorseAppearanceRules.pickMane(breed, this.getRandom(), randomMane));
 
 		int randomTail = 1 + this.getRandom().nextInt(3);
-		this.setTailType(randomTail);
+		this.setTailType(HorseAppearanceRules.pickTail(breed, this.getRandom(), randomTail));
 
 		this.randomizeOHorseAttributes();
 		SpawnGroupData spawnData = super.finalizeSpawn(serverLevelAccessor, instance, spawnType, data);
@@ -2063,6 +2064,11 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	}
 
 	public void setFeatheringByBreed() {
+		HorseBreed breedRule = HorseBreed.breedFromOrdinal(this.getBreed());
+		if (HorseAppearanceRules.hasBreedRule(breedRule)) {
+			this.setFeathering(HorseAppearanceRules.pickFeathering(breedRule, this.getRandom(), 0));
+			return;
+		}
 
 		final double appearanceRoll = random.nextDouble();
 
@@ -2134,6 +2140,11 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	}
 
 	public void setEyeColorByChance() {
+		HorseBreed breedRule = HorseBreed.breedFromOrdinal(this.getBreed());
+		if (HorseAppearanceRules.hasBreedRule(breedRule)) {
+			this.setEyeVariant(HorseAppearanceRules.pickEyeVariant(breedRule, this.getVariant(), this.getOverlayVariant(), this.getRandom(), 0));
+			return;
+		}
 
 		final double appearanceRoll = random.nextDouble();
 
@@ -2172,6 +2183,12 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	}
 
 	public void setColorByBreed() {
+		HorseBreed breedRule = HorseBreed.breedFromOrdinal(this.getBreed());
+		if (HorseAppearanceRules.hasBreedRule(breedRule)) {
+			this.breedVariantAssigned = true;
+			this.setVariant(HorseAppearanceRules.pickCoatVariant(breedRule, this.getRandom(), random.nextInt(HORSE_VARIANT_COUNT)));
+			return;
+		}
 
 		final double appearanceRoll = random.nextDouble();
 		this.breedVariantAssigned = false;
@@ -2464,6 +2481,11 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	}
 
 	public void setMarkingByBreed() {
+		HorseBreed breedRule = HorseBreed.breedFromOrdinal(this.getBreed());
+		if (HorseAppearanceRules.hasBreedRule(breedRule)) {
+			this.setOverlayVariant(HorseAppearanceRules.pickMarkingVariant(breedRule, this.getRandom(), random.nextInt(EquineMarkingOverlay.values().length)));
+			return;
+		}
 
 		final double appearanceRoll = random.nextDouble();
 		int breed = this.getBreedTemplate();

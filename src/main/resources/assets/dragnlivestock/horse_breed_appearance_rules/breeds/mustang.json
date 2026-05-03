@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "MUSTANG",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "SHORT"
+    ],
+    "feathering": [
+      "NONE",
+      "HALF"
+    ],
+    "coatPool": "STOCK_BROAD",
+    "markingGroups": [
+      "BASIC",
+      "GREY",
+      "ROAN",
+      "PINTO",
+      "APPALOOSA"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

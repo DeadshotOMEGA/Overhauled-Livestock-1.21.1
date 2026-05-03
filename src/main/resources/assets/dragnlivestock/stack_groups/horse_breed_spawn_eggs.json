@@ -35,6 +35,9 @@
     "dragnlivestock:belgian_draft_spawn_egg",
     "dragnlivestock:tennessee_walking_horse_spawn_egg",
     "dragnlivestock:canadian_spawn_egg",
-    "dragnlivestock:arabian_spawn_egg"
+    "dragnlivestock:arabian_spawn_egg",
+    "dragnlivestock:andalusian_spawn_egg",
+    "dragnlivestock:camargue_spawn_egg",
+    "dragnlivestock:icelandic_horse_spawn_egg"
   ]
 }

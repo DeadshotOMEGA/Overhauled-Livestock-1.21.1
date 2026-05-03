@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "MORGAN",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED",
+      "BUTTONS"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "TIED"
+    ],
+    "feathering": [
+      "NONE"
+    ],
+    "coatPool": "MORGAN",
+    "markingGroups": [
+      "BASIC",
+      "GREY",
+      "ROAN",
+      "SILVER"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

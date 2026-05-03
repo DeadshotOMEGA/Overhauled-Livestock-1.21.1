@@ -60,6 +60,9 @@ public class LOItems {
     public static final Supplier<Item> TENNESSEE_WALKING_HORSE_SPAWN_EGG = registerHorseBreedSpawnEgg("tennessee_walking_horse", HorseBreed.TENNESSEE_WALKING_HORSE);
     public static final Supplier<Item> CANADIAN_SPAWN_EGG = registerHorseBreedSpawnEgg("canadian", HorseBreed.CANADIAN);
     public static final Supplier<Item> ARABIAN_SPAWN_EGG = registerHorseBreedSpawnEgg("arabian", HorseBreed.ARABIAN);
+    public static final Supplier<Item> ANDALUSIAN_SPAWN_EGG = registerHorseBreedSpawnEgg("andalusian", HorseBreed.ANDALUSIAN);
+    public static final Supplier<Item> CAMARGUE_SPAWN_EGG = registerHorseBreedSpawnEgg("camargue", HorseBreed.CAMARGUE);
+    public static final Supplier<Item> ICELANDIC_HORSE_SPAWN_EGG = registerHorseBreedSpawnEgg("icelandic_horse", HorseBreed.ICELANDIC_HORSE);
     public static final Supplier<Item> O_COW_SPAWN_EGG = ITEMS.register("o_cow_spawn_egg",
             () -> new DeferredSpawnEggItem(EntityTypes.O_COW_ENTITY, 0x4f402e, 0xdbdbdb, new Item.Properties().stacksTo(64)));
     public static final Supplier<Item> O_CHICKEN_SPAWN_EGG = ITEMS.register("o_chicken_spawn_egg",

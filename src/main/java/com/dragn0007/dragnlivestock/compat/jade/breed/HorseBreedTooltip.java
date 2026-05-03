@@ -57,6 +57,9 @@ public class HorseBreedTooltip implements IEntityComponentProvider {
             case 30: return "Tennessee Walking Horse";
             case 31: return "Canadian";
             case 32: return "Arabian";
+            case 33: return "Andalusian";
+            case 34: return "Camargue";
+            case 35: return "Icelandic Horse";
             default: return "Unknown";
         }
     }

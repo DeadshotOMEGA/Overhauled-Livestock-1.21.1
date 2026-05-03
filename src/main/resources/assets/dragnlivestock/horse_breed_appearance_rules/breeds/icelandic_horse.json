@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "ICELANDIC_HORSE",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "SHORT"
+    ],
+    "feathering": [
+      "NONE",
+      "HALF",
+      "FULL"
+    ],
+    "coatPool": "PONY_BROAD",
+    "markingGroups": [
+      "BASIC",
+      "GREY",
+      "ROAN",
+      "PINTO",
+      "SILVER"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

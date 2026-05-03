@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "KLADRUBER",
+  "appearance": {
+    "mane": [
+      "BUTTONS",
+      "LONG",
+      "SHORT"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "TIED"
+    ],
+    "feathering": [
+      "NONE",
+      "HALF"
+    ],
+    "coatPool": "KLADRUBER",
+    "markingGroups": [
+      "MINIMAL",
+      "GREY"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

@@ -37,6 +37,9 @@ public enum HorseBreed {
     TENNESSEE_WALKING_HORSE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/tennessee_walking_horse.geo.json")),
     CANADIAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/canadian.geo.json")),
     ARABIAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/arabian.geo.json")),
+    ANDALUSIAN(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/andalusian.geo.json")),
+    CAMARGUE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/camargue.geo.json")),
+    ICELANDIC_HORSE(ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, "geo/horse/icelandic_horse.geo.json")),
     ;
 
     public final ResourceLocation resourceLocation;
@@ -59,6 +62,9 @@ public enum HorseBreed {
             case BELGIAN_DRAFT -> ARDENNES.ordinal();
             case TENNESSEE_WALKING_HORSE -> STANDARDBRED.ordinal();
             case ARABIAN -> AKHAL_TEKE.ordinal();
+            case ANDALUSIAN -> LIPIZZANER.ordinal();
+            case CAMARGUE -> CONNEMARA.ordinal();
+            case ICELANDIC_HORSE -> FJORD.ordinal();
             default -> breed.ordinal();
         };
     }

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "ARDENNES",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED"
+    ],
+    "tail": [
+      "AVERAGE",
+      "SHORT",
+      "TIED"
+    ],
+    "feathering": [
+      "HALF",
+      "FULL"
+    ],
+    "coatPool": "DRAFT_ROAN",
+    "markingGroups": [
+      "DRAFT_WHITE",
+      "GREY",
+      "ROAN"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

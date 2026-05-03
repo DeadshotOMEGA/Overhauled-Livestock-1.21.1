@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "APPALOOSA",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "SHORT"
+    ],
+    "feathering": [
+      "NONE"
+    ],
+    "coatPool": "STOCK_BROAD",
+    "markingGroups": [
+      "BASIC",
+      "APPALOOSA",
+      "ROAN",
+      "GREY"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

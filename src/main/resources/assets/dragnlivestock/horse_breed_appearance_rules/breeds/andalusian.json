@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "ANDALUSIAN",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "BUTTONS",
+      "SHORT"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "TIED"
+    ],
+    "feathering": [
+      "NONE",
+      "HALF"
+    ],
+    "coatPool": "BAROQUE",
+    "markingGroups": [
+      "BASIC",
+      "GREY"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

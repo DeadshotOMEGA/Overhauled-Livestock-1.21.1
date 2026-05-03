@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "MARWARI",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "BUTTONS"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "TIED"
+    ],
+    "feathering": [
+      "NONE"
+    ],
+    "coatPool": "MARWARI",
+    "markingGroups": [
+      "BASIC",
+      "PINTO",
+      "GREY"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

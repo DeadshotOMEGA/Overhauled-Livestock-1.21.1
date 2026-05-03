@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "CLYDESDALE",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT"
+    ],
+    "tail": [
+      "AVERAGE",
+      "SHORT",
+      "TIED"
+    ],
+    "feathering": [
+      "FULL"
+    ],
+    "coatPool": "DRAFT_ROAN",
+    "markingGroups": [
+      "DRAFT_WHITE",
+      "GREY",
+      "ROAN"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}

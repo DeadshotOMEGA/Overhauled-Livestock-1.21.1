@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "1.0.0",
+  "eyeRules": {
+    "defaultWeights": {
+      "DARK_BROWN": 70,
+      "BROWN": 25,
+      "AMBER": 5
+    },
+    "rules": [
+      {
+        "id": "COMMON_NATURAL",
+        "eyes": [
+          "DARK_BROWN",
+          "BROWN",
+          "AMBER"
+        ],
+        "allowedForAllBreeds": true
+      },
+      {
+        "id": "GOLD_STYLIZED_OR_DILUTE",
+        "eyes": [
+          "GOLD"
+        ],
+        "allowedCoats": [
+          "CHAMPAGNE",
+          "GOLD_CHAMPAGNE",
+          "PALOMINO",
+          "PERLINO",
+          "CREAM",
+          "BUCKSKIN"
+        ],
+        "allowedBreeds": [
+          "AKHAL_TEKE",
+          "ARABIAN",
+          "MARWARI",
+          "UNICORN"
+        ]
+      },
+      {
+        "id": "BLUE_MARKING_OR_DILUTE_GATED",
+        "eyes": [
+          "DARK_BLUE",
+          "BLUE"
+        ],
+        "allowedCoats": [
+          "CREAM",
+          "PERLINO"
+        ],
+        "allowedMarkingGroups": [
+          "PINTO",
+          "APPALOOSA",
+          "PURE_WHITE"
+        ],
+        "allowedMarkings": [
+          "BALD",
+          "HALF_BALD",
+          "OVERO",
+          "OVERO_SPLASH",
+          "SPLASH_OVERO",
+          "SPLASHED",
+          "SPLASHED_PAINT",
+          "PINK_NOSE_BALD",
+          "PINK_NOSE_HALF_BALD",
+          "PINK_NOSE_OVERO",
+          "PINK_NOSE_SPLASH_OVERO",
+          "FEW_SPOT_LEOPARD",
+          "PINK_NOSE_FEW_SPOT_LEOPARD"
+        ]
+      },
+      {
+        "id": "GREEN_STYLIZED_OR_CHAMPAGNE",
+        "eyes": [
+          "GREEN",
+          "BROWN_GREEN"
+        ],
+        "allowedCoats": [
+          "CHAMPAGNE",
+          "GOLD_CHAMPAGNE",
+          "CREAM",
+          "PERLINO"
+        ],
+        "allowedBreeds": [
+          "UNICORN"
+        ]
+      },
+      {
+        "id": "HETEROCHROMIA",
+        "eyes": [
+          "BLUE_GOLD",
+          "BROWN_BLUE"
+        ],
+        "allowedCoats": [
+          "CREAM",
+          "PERLINO"
+        ],
+        "allowedMarkingGroups": [
+          "PINTO",
+          "APPALOOSA",
+          "PURE_WHITE"
+        ],
+        "allowedBreeds": [
+          "PAINT_HORSE",
+          "APPALOOSA",
+          "ICELANDIC_HORSE",
+          "UNICORN"
+        ]
+      },
+      {
+        "id": "FANTASY_ONLY",
+        "eyes": [
+          "RED"
+        ],
+        "allowedBreeds": [
+          "UNICORN"
+        ]
+      }
+    ]
+  }
+}

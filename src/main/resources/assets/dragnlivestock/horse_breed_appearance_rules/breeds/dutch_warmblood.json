@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "DUTCH_WARMBLOOD",
+  "appearance": {
+    "mane": [
+      "BUTTONS",
+      "LONG",
+      "SHORT"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "TIED"
+    ],
+    "feathering": [
+      "NONE"
+    ],
+    "coatPool": "WARMBLOOD",
+    "markingGroups": [
+      "BASIC",
+      "GREY"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED",
+    "notes": "PINTO can be added as a rare override if desired."
+  }
+}

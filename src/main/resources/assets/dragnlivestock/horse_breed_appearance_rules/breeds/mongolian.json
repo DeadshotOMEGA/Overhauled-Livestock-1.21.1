@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "1.0.0",
+  "breed": "MONGOLIAN",
+  "appearance": {
+    "mane": [
+      "LONG",
+      "SHORT",
+      "ROACHED"
+    ],
+    "tail": [
+      "LONG",
+      "AVERAGE",
+      "SHORT"
+    ],
+    "feathering": [
+      "NONE",
+      "HALF"
+    ],
+    "coatPool": "PRIMITIVE_BROAD",
+    "markingGroups": [
+      "MINIMAL",
+      "GREY",
+      "ROAN"
+    ],
+    "eyeRuleSet": "COAT_AND_MARKING_GATED"
+  }
+}
