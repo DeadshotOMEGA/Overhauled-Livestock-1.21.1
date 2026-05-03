@@ -11,6 +11,7 @@ import com.dragn0007.dragnlivestock.entities.horse.ai.HorseAnimationState;
 import com.dragn0007.dragnlivestock.entities.horse.ai.HorseGrazeWander;
 import com.dragn0007.dragnlivestock.entities.horse.ai.HorseGroupingState;
 import com.dragn0007.dragnlivestock.entities.horse.ai.HorseHerdSensor;
+import com.dragn0007.dragnlivestock.entities.horse.ai.HorseIntent;
 import com.dragn0007.dragnlivestock.entities.horse.ai.HorseIntentEvaluator;
 import com.dragn0007.dragnlivestock.entities.horse.ai.HorseThreatSensor;
 import com.dragn0007.dragnlivestock.entities.horse.ai.SetHorseHerdAnchorTarget;
@@ -774,6 +775,9 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 
 	@Override
 	public void aiStep() {
+		float previousYRot = this.getYRot();
+		float previousBodyRot = this.yBodyRot;
+		float previousHeadRot = this.yHeadRot;
 		int ageBeforeStep = this.getAge();
 		super.aiStep();
 		this.tickConfiguredFoalGrowth(ageBeforeStep);
@@ -783,6 +787,75 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 		} else if (this.isHallow()) {
 			this.level().addParticle(ParticleTypes.SOUL, this.getRandomX(0.6D), this.getRandomY(), this.getRandomZ(0.6D), 0.0D, 0.0D, 0.0D);
 		}
+
+		this.smoothAiTurn(previousYRot, previousBodyRot, previousHeadRot);
+	}
+
+	private void smoothAiTurn(float previousYRot, float previousBodyRot, float previousHeadRot) {
+		if (!this.shouldSmoothAiTurn()) {
+			return;
+		}
+
+		float maxTurn = this.maxTurnDegreesThisTick();
+		float clampedYRot = clampYawToward(previousYRot, this.getYRot(), maxTurn);
+		float clampedBodyRot = clampYawToward(previousBodyRot, this.yBodyRot, maxTurn);
+		float clampedHeadRot = clampYawToward(previousHeadRot, this.yHeadRot, Math.max(maxTurn, 6.0F));
+
+		this.setYRot(clampedYRot);
+		this.yBodyRot = clampedBodyRot;
+
+		float headOffset = Mth.wrapDegrees(clampedHeadRot - clampedBodyRot);
+		this.yHeadRot = clampedBodyRot + Mth.clamp(headOffset, -35.0F, 35.0F);
+	}
+
+	private boolean shouldSmoothAiTurn() {
+		return !this.level().isClientSide
+				&& this.isAlive()
+				&& !this.isNoAi()
+				&& !this.isVehicle()
+				&& !this.isPassenger()
+				&& !this.isLeashed()
+				&& !this.isGroundTied()
+				&& !this.isSaddled()
+				&& !this.isInWaterOrBubble()
+				&& !this.hasUrgentTurnBypass();
+	}
+
+	private float maxTurnDegreesThisTick() {
+		HorseAiGait gait = this.getAiGaitState();
+		if (gait == HorseAiGait.NONE) {
+			return this.getAiAnimationState().hasPoseAnimation() ? 6.0F : 4.0F;
+		}
+
+		return switch (gait) {
+			case WALK -> 12.0F;
+			case TROT -> 8.0F;
+			case CANTER, GALLOP -> 5.0F;
+			case SPRINT -> 4.0F;
+			case NONE -> 4.0F;
+		};
+	}
+
+	private static float clampYawToward(float previousYaw, float currentYaw, float maxDegrees) {
+		float delta = Mth.wrapDegrees(currentYaw - previousYaw);
+		return previousYaw + Mth.clamp(delta, -maxDegrees, maxDegrees);
+	}
+
+	private boolean hasUrgentTurnBypass() {
+		if (this.hurtTime > 0 || this.isAggressive() || this.horizontalCollision) {
+			return true;
+		}
+
+		if (!this.getNavigation().isDone() && this.getDeltaMovement().horizontalDistanceSqr() < 1.0E-5D && this.tickCount > 20) {
+			return true;
+		}
+
+		return this.getBrain().getMemory(LOMemoryTypes.HORSE_INTENT.get())
+				.map(intent -> intent.intent() == HorseIntent.FLEE)
+				.orElse(false)
+				|| this.getBrain().getMemory(LOMemoryTypes.HORSE_THREAT.get())
+				.map(threat -> threat.hasThreat() && threat.distance() < 12.0D)
+				.orElse(false);
 	}
 
 	private void tickConfiguredFoalGrowth(int ageBeforeStep) {
