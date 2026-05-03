@@ -10,6 +10,7 @@ import com.dragn0007.dragnlivestock.datagen.JsonDataGenerator;
 import com.dragn0007.dragnlivestock.entities.EntityTypes;
 import com.dragn0007.dragnlivestock.entities.ai.LOMemoryTypes;
 import com.dragn0007.dragnlivestock.entities.ai.LOSensorTypes;
+import com.dragn0007.dragnlivestock.entities.horse.spawn.HorseBreedSpawnRules;
 import com.dragn0007.dragnlivestock.items.LOItemGroup;
 import com.dragn0007.dragnlivestock.items.LOItems;
 import com.dragn0007.dragnlivestock.util.LONetwork;
@@ -58,6 +59,7 @@ public class LivestockOverhaul {
 
         eventBus.register(LivestockOverhaulCommonEvent.class);
         NeoForge.EVENT_BUS.register(ForgeEvent.class);
+        NeoForge.EVENT_BUS.addListener(HorseBreedSpawnRules::addReloadListener);
         NeoForge.EVENT_BUS.addListener((PlayerEvent.PlayerLoggedInEvent warn) -> warn(warn.getEntity()));
 
         modContainer.registerConfig(ModConfig.Type.COMMON, LivestockOverhaulCommonConfig.SPEC, "livestock-overhaul-common.toml");

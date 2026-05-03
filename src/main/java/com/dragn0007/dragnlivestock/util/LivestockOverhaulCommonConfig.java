@@ -245,9 +245,9 @@ public class LivestockOverhaulCommonConfig {
         USE_VANILLA_LOOT = BUILDER.comment("Should O-Animals use vanilla loot instead of the loot included in the mod?")
                 .define("Use Vanilla Animal Loot", false);
 
-        NATURAL_HORSE_BREEDS = BUILDER.comment("Should natural O-Horses in unlisted biomes be able to spawn with any breed? " +
-                        "Listed O-Horse spawn biomes use the built-in biome-weighted breed table.")
-                .define("Naturally Spawning O-Horse Breeds", false);
+        NATURAL_HORSE_BREEDS = BUILDER.comment("Should natural O-Horses use datapack-controlled biome and village breed rules? " +
+                        "If disabled, natural O-Horses spawn as Mustangs.")
+                .define("Naturally Spawning O-Horse Breeds", true);
 
         BASE_HORSE_SPRINT_TIME = BUILDER.comment("Base time an O-Horse can run for at full speed, in seconds. Default is 45s.")
                 .define("Base Horse Sprint Time", 45);

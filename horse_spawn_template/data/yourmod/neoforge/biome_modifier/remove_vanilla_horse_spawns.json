@@ -1,5 +1,5 @@
 {
   "type": "neoforge:remove_spawns",
-  "biomes": "#dragnlivestock:horse/spawn/all",
+  "biomes": "#yourmod:horse/spawn/all",
   "entity_types": "minecraft:horse"
 }

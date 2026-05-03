@@ -8,6 +8,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
 public class LOTags {
@@ -123,6 +124,25 @@ public class LOTags {
         }
         public static TagKey<EntityType<?>> tag(String name) {
             return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, name));
+        }
+    }
+
+    public static class Biomes {
+        public static final TagKey<Biome> HORSE_SPAWN_ALL = tag("horse/spawn/all");
+        public static final TagKey<Biome> HORSE_SPAWN_COMMON = tag("horse/spawn/common");
+        public static final TagKey<Biome> HORSE_SPAWN_UNCOMMON = tag("horse/spawn/uncommon");
+        public static final TagKey<Biome> HORSE_SPAWN_RARE = tag("horse/spawn/rare");
+
+        public static final TagKey<Biome> HORSE_TYPE_PLAINS_OPEN = tag("horse/type/plains_open");
+        public static final TagKey<Biome> HORSE_TYPE_DRY_OPEN = tag("horse/type/dry_open");
+        public static final TagKey<Biome> HORSE_TYPE_COLD_OPEN = tag("horse/type/cold_open");
+        public static final TagKey<Biome> HORSE_TYPE_MOUNTAIN = tag("horse/type/mountain");
+        public static final TagKey<Biome> HORSE_TYPE_WETLAND = tag("horse/type/wetland");
+        public static final TagKey<Biome> HORSE_TYPE_COASTAL = tag("horse/type/coastal");
+        public static final TagKey<Biome> HORSE_TYPE_FOREST_EDGE = tag("horse/type/forest_edge");
+
+        public static TagKey<Biome> tag(String name) {
+            return TagKey.create(Registries.BIOME, ResourceLocation.fromNamespaceAndPath(LivestockOverhaul.MODID, name));
         }
     }
 

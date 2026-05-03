@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#yourmod:horse/spawn/common",
+    "#yourmod:horse/spawn/uncommon",
+    "#yourmod:horse/spawn/rare"
+  ]
+}

@@ -1,0 +1,164 @@
+{
+  "version": 1,
+  "selection_mode": "sum_all_matching_rules",
+  "fallback": {
+    "MUSTANG": 4,
+    "MORGAN": 3,
+    "AMERICAN_QUARTER": 3,
+    "APPALOOSA": 2,
+    "PAINT_HORSE": 2
+  },
+  "rules": [
+    {
+      "id": "plains_open",
+      "selector": "#dragnlivestock:horse/type/plains_open",
+      "weights": {
+        "MUSTANG": 10,
+        "AMERICAN_QUARTER": 9,
+        "PAINT_HORSE": 8,
+        "APPALOOSA": 8,
+        "MORGAN": 6,
+        "CANADIAN": 5,
+        "STANDARDBRED": 4,
+        "THOROUGHBRED": 4,
+        "WELSH": 3,
+        "CONNEMARA": 3,
+        "SHETLAND": 2,
+        "MONGOLIAN": 2
+      }
+    },
+    {
+      "id": "dry_open",
+      "selector": "#dragnlivestock:horse/type/dry_open",
+      "weights": {
+        "ARABIAN": 10,
+        "MARWARI": 9,
+        "AKHAL_TEKE": 9,
+        "MUSTANG": 6,
+        "AMERICAN_QUARTER": 5,
+        "PAINT_HORSE": 4,
+        "APPALOOSA": 4,
+        "MONGOLIAN": 3,
+        "ANDALUSIAN": 2
+      }
+    },
+    {
+      "id": "cold_open",
+      "selector": "#dragnlivestock:horse/type/cold_open",
+      "weights": {
+        "MONGOLIAN": 10,
+        "ICELANDIC_HORSE": 9,
+        "FJORD": 8,
+        "SHETLAND": 7,
+        "CANADIAN": 6,
+        "HAFLINGER": 5,
+        "WELSH": 3,
+        "CONNEMARA": 3,
+        "MUSTANG": 2
+      }
+    },
+    {
+      "id": "mountain",
+      "selector": "#dragnlivestock:horse/type/mountain",
+      "weights": {
+        "FJORD": 10,
+        "HAFLINGER": 9,
+        "WELSH": 7,
+        "CONNEMARA": 7,
+        "ICELANDIC_HORSE": 6,
+        "SHETLAND": 5,
+        "MONGOLIAN": 4,
+        "CANADIAN": 3,
+        "ARDENNES": 1
+      }
+    },
+    {
+      "id": "wetland",
+      "selector": "#dragnlivestock:horse/type/wetland",
+      "weights": {
+        "CAMARGUE": 10,
+        "IRISH_COB": 6,
+        "CONNEMARA": 5,
+        "FRIESIAN": 3,
+        "SHIRE": 2,
+        "CANADIAN": 2,
+        "MUSTANG": 1
+      }
+    },
+    {
+      "id": "coastal",
+      "selector": "#dragnlivestock:horse/type/coastal",
+      "weights": {
+        "CAMARGUE": 8,
+        "CONNEMARA": 7,
+        "SHETLAND": 6,
+        "ICELANDIC_HORSE": 5,
+        "WELSH": 4,
+        "IRISH_COB": 3,
+        "MORGAN": 2
+      }
+    },
+    {
+      "id": "forest_edge",
+      "selector": "#dragnlivestock:horse/type/forest_edge",
+      "weights": {
+        "MORGAN": 7,
+        "CANADIAN": 7,
+        "WELSH": 5,
+        "CONNEMARA": 5,
+        "FJORD": 4,
+        "HAFLINGER": 4,
+        "FRIESIAN": 2,
+        "IRISH_COB": 2,
+        "MUSTANG": 1
+      }
+    }
+  ],
+  "context_rules": [
+    {
+      "id": "near_village",
+      "condition": {
+        "type": "near_village",
+        "radius": 128,
+        "falloff": "linear"
+      },
+      "add_weights": {
+        "ARDENNES": 8,
+        "KLADRUBER": 6,
+        "THOROUGHBRED": 5,
+        "FRIESIAN": 6,
+        "IRISH_COB": 7,
+        "PERCHERON": 8,
+        "SELLE_FRANCAIS": 5,
+        "SHIRE": 8,
+        "OLDENBURGER": 5,
+        "STANDARDBRED": 5,
+        "TRAKEHNER": 5,
+        "BOULONNAIS": 8,
+        "DUTCH_WARMBLOOD": 5,
+        "CLYDESDALE": 8,
+        "LIPIZZANER": 4,
+        "BELGIAN_DRAFT": 8,
+        "TENNESSEE_WALKING_HORSE": 5,
+        "ANDALUSIAN": 4,
+        "MORGAN": 4,
+        "AMERICAN_QUARTER": 4,
+        "PAINT_HORSE": 3,
+        "APPALOOSA": 3,
+        "CANADIAN": 4,
+        "WELSH": 3,
+        "CONNEMARA": 3,
+        "HAFLINGER": 3,
+        "SHETLAND": 2
+      },
+      "multipliers": {
+        "MUSTANG": 0.65,
+        "MONGOLIAN": 0.7,
+        "CAMARGUE": 0.75,
+        "ARABIAN": 0.9,
+        "MARWARI": 0.9,
+        "AKHAL_TEKE": 0.9
+      }
+    }
+  ]
+}

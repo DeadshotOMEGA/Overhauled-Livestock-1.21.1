@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "#c:is_plains",
+      "required": false
+    },
+    {
+      "id": "#minecraft:is_plains",
+      "required": false
+    },
+    "minecraft:plains",
+    "minecraft:sunflower_plains",
+    "minecraft:meadow",
+    {
+      "id": "terralith:shrubland",
+      "required": false
+    }
+  ]
+}

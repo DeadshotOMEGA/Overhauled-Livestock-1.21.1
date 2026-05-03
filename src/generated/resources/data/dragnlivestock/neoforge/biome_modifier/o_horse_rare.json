@@ -1,10 +1,6 @@
 {
   "type": "neoforge:add_spawns",
-  "biomes": [
-    "minecraft:old_growth_birch_forest",
-    "minecraft:dark_forest",
-    "minecraft:stony_shore"
-  ],
+  "biomes": "#dragnlivestock:horse/spawn/rare",
   "spawners": {
     "type": "dragnlivestock:o_horse",
     "maxCount": 6,

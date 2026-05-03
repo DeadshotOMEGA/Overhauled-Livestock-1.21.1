@@ -1,0 +1,12 @@
+{
+  "type": "neoforge:add_spawns",
+  "biomes": "#yourmod:horse/spawn/rare",
+  "spawners": [
+    {
+      "type": "yourmod:horse",
+      "weight": 1,
+      "minCount": 1,
+      "maxCount": 3
+    }
+  ]
+}

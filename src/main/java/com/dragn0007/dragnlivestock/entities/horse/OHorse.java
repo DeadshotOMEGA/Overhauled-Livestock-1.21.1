@@ -14,6 +14,7 @@ import com.dragn0007.dragnlivestock.entities.horse.ai.HorseHerdSensor;
 import com.dragn0007.dragnlivestock.entities.horse.ai.HorseIntentEvaluator;
 import com.dragn0007.dragnlivestock.entities.horse.ai.HorseThreatSensor;
 import com.dragn0007.dragnlivestock.entities.horse.ai.SetHorseHerdAnchorTarget;
+import com.dragn0007.dragnlivestock.entities.horse.spawn.HorseBreedSpawnRules;
 import com.dragn0007.dragnlivestock.entities.util.AbstractOMount;
 import com.dragn0007.dragnlivestock.entities.util.LOAnimations;
 import com.dragn0007.dragnlivestock.entities.util.marking_layer.EquineEyeColorOverlay;
@@ -83,6 +84,7 @@ import javax.annotation.Nullable;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
+import java.util.OptionalInt;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -1718,21 +1720,20 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 	}
 
 	private void setNaturalHorseBreed(Random random) {
-		ResourceLocation biomeLocation = this.level().getBiome(this.blockPosition())
-				.unwrapKey()
-				.map(ResourceKey::location)
-				.orElse(null);
-		int weightedBreed = this.getWeightedNaturalBreedForBiome(biomeLocation, random);
-		if (weightedBreed >= 0) {
-			this.setBreed(weightedBreed);
+		if (!LivestockOverhaulCommonConfig.NATURAL_HORSE_BREEDS.get()) {
+			this.setBreed(HorseBreed.MUSTANG.ordinal());
 			return;
 		}
 
-		if (LivestockOverhaulCommonConfig.NATURAL_HORSE_BREEDS.get()) {
-			this.setBreed(this.getRandomNaturalHorseBreed(random));
-		} else {
-			this.setBreed(HorseBreed.MUSTANG.ordinal());
+		if (this.level() instanceof ServerLevel serverLevel) {
+			OptionalInt weightedBreed = HorseBreedSpawnRules.selectBreed(serverLevel, this.blockPosition(), this.getRandom());
+			if (weightedBreed.isPresent()) {
+				this.setBreed(weightedBreed.getAsInt());
+				return;
+			}
 		}
+
+		this.setBreed(this.getRandomNaturalHorseBreed(random));
 	}
 
 	private int getRandomNaturalHorseBreed(Random random) {
@@ -1746,123 +1747,6 @@ public class OHorse extends AbstractOMount implements GeoEntity, SmartBrainOwner
 
 	private boolean isNaturalHorseBreedAvailable(int breed) {
 		return breed != HorseBreed.AMERICAN_SOLDIER.ordinal() || ModList.get().isLoaded("deadlydinos");
-	}
-
-	private int getWeightedNaturalBreedForBiome(@Nullable ResourceLocation biomeLocation, Random random) {
-		int[] breedWeights = this.getNaturalBreedWeightsForBiome(biomeLocation);
-		if (breedWeights.length == 0) {
-			return -1;
-		}
-
-		int totalWeight = 0;
-		for (int i = 0; i < breedWeights.length; i += 2) {
-			if (this.isNaturalHorseBreedAvailable(breedWeights[i])) {
-				totalWeight += breedWeights[i + 1];
-			}
-		}
-
-		if (totalWeight <= 0) {
-			return -1;
-		}
-
-		int roll = random.nextInt(totalWeight);
-		for (int i = 0; i < breedWeights.length; i += 2) {
-			if (!this.isNaturalHorseBreedAvailable(breedWeights[i])) {
-				continue;
-			}
-
-			roll -= breedWeights[i + 1];
-			if (roll < 0) {
-				return breedWeights[i];
-			}
-		}
-
-		for (int i = 0; i < breedWeights.length; i += 2) {
-			if (this.isNaturalHorseBreedAvailable(breedWeights[i])) {
-				return breedWeights[i];
-			}
-		}
-
-		return -1;
-	}
-
-	private int[] getNaturalBreedWeightsForBiome(@Nullable ResourceLocation biomeLocation) {
-		if (biomeLocation == null) {
-			return new int[0];
-		}
-
-		return switch (biomeLocation.toString()) {
-			case "minecraft:plains" -> new int[] {
-					0, 10, 1, 10, 2, 10, 4, 10, 5, 10, 6, 10, 7, 10, 8, 10, 9, 10, 11, 10, 12, 10, 14, 10, 16, 10, 18, 10, 20, 10, 21, 10, 22, 10, 15, 5, 10, 1, 13, 1, 32, 1
-			};
-			case "minecraft:sunflower_plains" -> new int[] {
-					0, 10, 4, 5, 7, 5, 9, 5, 20, 5
-			};
-			case "minecraft:savanna" -> new int[] {
-					0, 10, 7, 10, 10, 10, 13, 10, 32, 10, 14, 5, 4, 1, 9, 1, 11, 1, 20, 1
-			};
-			case "minecraft:savanna_plateau" -> new int[] {
-					0, 5, 7, 5, 10, 5, 13, 5, 32, 5
-			};
-			case "minecraft:badlands" -> new int[] {
-					0, 5, 7, 5, 10, 5, 13, 5, 32, 5, 14, 1
-			};
-			case "minecraft:wooded_badlands" -> new int[] {
-					10, 5, 0, 1, 7, 1
-			};
-			case "minecraft:desert" -> new int[] {
-					10, 10, 13, 10, 32, 10, 0, 1, 7, 1
-			};
-			case "minecraft:meadow" -> new int[] {
-					1, 10, 2, 10, 3, 10, 4, 10, 5, 10, 6, 10, 8, 10, 9, 10, 11, 10, 12, 10, 15, 10, 16, 10, 17, 10, 18, 10, 19, 10, 20, 10, 21, 10, 22, 10, 14, 5
-			};
-			case "minecraft:forest" -> new int[] {
-					1, 10, 2, 5, 5, 5, 6, 5, 8, 5, 9, 5, 12, 5, 14, 5, 15, 5, 16, 5, 17, 5, 18, 5, 21, 5, 22, 5, 4, 1, 20, 1
-			};
-			case "minecraft:flower_forest" -> new int[] {
-					1, 5, 2, 5, 4, 5, 5, 5, 6, 5, 8, 5, 9, 5, 12, 5, 18, 5, 20, 5, 22, 5
-			};
-			case "minecraft:taiga" -> new int[] {
-					1, 5, 3, 5, 11, 5, 15, 5, 19, 5, 21, 5, 8, 1, 14, 1, 17, 1
-			};
-			case "minecraft:snowy_plains" -> new int[] {
-					11, 10, 19, 10, 3, 5, 21, 5, 1, 1, 14, 1, 15, 1
-			};
-			case "minecraft:snowy_taiga" -> new int[] {
-					3, 10, 11, 5, 1, 1, 17, 1, 19, 1, 21, 1
-			};
-			case "minecraft:birch_forest" -> new int[] {
-					2, 5, 8, 5, 18, 1
-			};
-			case "minecraft:old_growth_birch_forest" -> new int[] {
-					2, 1
-			};
-			case "minecraft:grove" -> new int[] {
-					3, 10, 17, 10
-			};
-			case "minecraft:windswept_hills" -> new int[] {
-					15, 10, 3, 5, 11, 5, 16, 5, 17, 5, 19, 5, 6, 1
-			};
-			case "minecraft:snowy_slopes" -> new int[] {
-					17, 5, 3, 1
-			};
-			case "minecraft:swamp" -> new int[] {
-					5, 5, 6, 5, 12, 5, 16, 1, 18, 1, 21, 1, 22, 1
-			};
-			case "minecraft:dark_forest" -> new int[] {
-					5, 1, 8, 1, 12, 1
-			};
-			case "minecraft:windswept_savanna" -> new int[] {
-					13, 5, 32, 5
-			};
-			case "minecraft:beach" -> new int[] {
-					16, 5, 19, 5, 22, 5
-			};
-			case "minecraft:stony_shore" -> new int[] {
-					16, 1, 19, 1
-			};
-			default -> new int[0];
-		};
 	}
 
 	@Override

@@ -1,0 +1,15 @@
+{
+  "package": "horse_spawn_template",
+  "created_utc": "2026-05-03T01:04:23Z",
+  "minecraft_version": "1.21.1",
+  "loader": "NeoForge",
+  "modid_placeholder": "yourmod",
+  "contains": [
+    "NeoForge biome modifiers",
+    "Horse spawn-tier biome tags",
+    "Horse biome-type classification tags",
+    "Custom horse breed selection rules",
+    "Wild/domestic/both breed classification",
+    "Design documentation"
+  ]
+}

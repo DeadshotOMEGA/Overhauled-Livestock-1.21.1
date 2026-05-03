@@ -1,0 +1,111 @@
+{
+  "replace": false,
+  "values": [
+    "minecraft:windswept_hills",
+    "minecraft:windswept_gravelly_hills",
+    "minecraft:windswept_savanna",
+    "minecraft:grove",
+    "minecraft:snowy_plains",
+    "minecraft:snowy_taiga",
+    "minecraft:taiga",
+    "minecraft:desert",
+    "minecraft:badlands",
+    "minecraft:wooded_badlands",
+    {
+      "id": "#c:is_desert",
+      "required": false
+    },
+    {
+      "id": "#c:is_badlands",
+      "required": false
+    },
+    {
+      "id": "#c:is_sparse_vegetation",
+      "required": false
+    },
+    {
+      "id": "#c:is_taiga",
+      "required": false
+    },
+    {
+      "id": "#c:is_mountain",
+      "required": false
+    },
+    {
+      "id": "#c:is_mountain/slope",
+      "required": false
+    },
+    {
+      "id": "#c:is_mountain/peak",
+      "required": false
+    },
+    {
+      "id": "#c:is_hill",
+      "required": false
+    },
+    {
+      "id": "#c:is_windswept",
+      "required": false
+    },
+    {
+      "id": "#c:is_snowy",
+      "required": false
+    },
+    {
+      "id": "#terralith:reference/desert_all",
+      "required": false
+    },
+    {
+      "id": "#terralith:reference/badlands_all",
+      "required": false
+    },
+    {
+      "id": "#terralith:reference/taiga",
+      "required": false
+    },
+    {
+      "id": "#terralith:reference/mountain_peak",
+      "required": false
+    },
+    {
+      "id": "#terralith:shrublands",
+      "required": false
+    },
+    {
+      "id": "#terralith:highlands",
+      "required": false
+    },
+    {
+      "id": "#terralith:cliffs",
+      "required": false
+    },
+    {
+      "id": "#terralith:oases",
+      "required": false
+    },
+    {
+      "id": "terralith:haze_mountain",
+      "required": false
+    },
+    {
+      "id": "terralith:stony_spires",
+      "required": false
+    },
+    {
+      "id": "terralith:windswept_spires",
+      "required": false
+    },
+    {
+      "id": "terralith:savanna_slopes",
+      "required": false
+    },
+    {
+      "id": "terralith:white_cliffs",
+      "required": false
+    },
+    {
+      "id": "terralith:yosemite_cliffs",
+      "required": false
+    }
+  ]
+}

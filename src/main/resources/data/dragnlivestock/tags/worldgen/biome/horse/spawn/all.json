@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#dragnlivestock:horse/spawn/common",
+    "#dragnlivestock:horse/spawn/uncommon",
+    "#dragnlivestock:horse/spawn/rare"
+  ]
+}

@@ -1,17 +1,6 @@
 {
   "type": "neoforge:add_spawns",
-  "biomes": [
-    "minecraft:savanna_plateau",
-    "minecraft:badlands",
-    "minecraft:wooded_badlands",
-    "minecraft:flower_forest",
-    "minecraft:taiga",
-    "minecraft:birch_forest",
-    "minecraft:snowy_slopes",
-    "minecraft:swamp",
-    "minecraft:windswept_savanna",
-    "minecraft:beach"
-  ],
+  "biomes": "#dragnlivestock:horse/spawn/uncommon",
   "spawners": {
     "type": "dragnlivestock:o_horse",
     "maxCount": 6,
